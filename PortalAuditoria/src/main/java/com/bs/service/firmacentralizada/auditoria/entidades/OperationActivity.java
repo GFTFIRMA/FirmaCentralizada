@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="OPERATION_ACTIVITY")
@@ -29,9 +31,6 @@ public class OperationActivity  implements Serializable {
     })
 	private Operation operation;
 
-	@Column(name="STEP_ID")
-	private Integer stepId;
-
 	@ManyToOne
 	@JoinColumn(name="LAYER_ID")
 	private Layer layer;
@@ -47,9 +46,11 @@ public class OperationActivity  implements Serializable {
 	@JoinColumn(name="EXECUTION_POINT")
 	private ExecutionPoint executionPoint;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="START_TIME")
 	private Date startTime;
-
+	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="END_TIME")
 	private Date endTime;
 
@@ -61,10 +62,7 @@ public class OperationActivity  implements Serializable {
 
 	@Column(name="XML_SVC_RESPONSE")
 	private Clob xmlSvcResponse;
-
-	@Column(name="XML_SVC_CONTEXT")
-	private Clob xmlSvcContext;
-
+	
 	@ManyToOne
 	@JoinColumn(name="STATUS_ID")
 	private OperationStatus status;
@@ -84,14 +82,6 @@ public class OperationActivity  implements Serializable {
 
 	public void setActivityId(Integer activityId) {
 		this.activityId = activityId;
-	}
-
-	public Integer getStepId() {
-		return stepId;
-	}
-
-	public void setStepId(Integer stepId) {
-		this.stepId = stepId;
 	}
 
 	public Layer getLayer() {
@@ -148,14 +138,6 @@ public class OperationActivity  implements Serializable {
 
 	public void setXmlSvcResponse(Clob xmlSvcResponse) {
 		this.xmlSvcResponse = xmlSvcResponse;
-	}
-
-	public Clob getXmlSvcContext() {
-		return xmlSvcContext;
-	}
-
-	public void setXmlSvcContext(Clob xmlSvcContext) {
-		this.xmlSvcContext = xmlSvcContext;
 	}
 
 	public OperationStatus getStatus() {

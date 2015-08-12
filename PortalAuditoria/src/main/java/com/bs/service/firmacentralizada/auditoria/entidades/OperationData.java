@@ -30,8 +30,8 @@ public class OperationData  implements Serializable {
 	@JoinColumn(name = "FLOW")
 	private Flow flow;
 
-	@Column(name="REQUESTC_ID")
-	private Integer requestId;
+	@Column(name="INPUT_CHANNEL")
+	private String inputChannel;
 
 	@Column(name="FC_ID")
 	private String fcId;
@@ -53,12 +53,12 @@ public class OperationData  implements Serializable {
 		this.flow = flow;
 	}
 
-	public Integer getRequestId() {
-		return requestId;
+	public String getInputChannel() {
+		return inputChannel;
 	}
 
-	public void setRequestId(Integer requestId) {
-		this.requestId = requestId;
+	public void setInputChannel(String inputChannel) {
+		this.inputChannel = inputChannel;
 	}
 
 	public String getFcId() {

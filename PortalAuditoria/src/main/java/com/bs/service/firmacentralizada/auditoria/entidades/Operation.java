@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="OPERATIONS")
@@ -19,10 +21,12 @@ public class Operation implements Serializable {
 
 	@EmbeddedId
 	private OperationPK operationPK;
-	
+
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="START_TIME")
 	private Date startTime;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="END_TIME")
 	private Date endTime;
 
