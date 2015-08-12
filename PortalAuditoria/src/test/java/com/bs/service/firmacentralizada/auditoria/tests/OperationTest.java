@@ -42,13 +42,13 @@ public class OperationTest {
 			    new AnnotationConfigApplicationContext(AuditoriaConfig.class);
 		AuditoriaDAO auditoriaDao = context.getBean(AuditoriaDAO.class);
 		
-		List<OperationData> components = auditoriaDao.getOperationData(null);
+		List<OperationData> result = auditoriaDao.getOperationData(null);
 		
-		System.out.println(" -- Número de entradas: " + components.size());
-		for (int i = 0; i < components.size(); i++) 
-			printOperationData(components.get(i));
+		System.out.println(" -- Número de entradas: " + result.size());
+		for (int i = 0; i < result.size(); i++) 
+			printOperationData(result.get(i));
 		
-		assertFalse(components.isEmpty());
+		assertFalse(result.isEmpty());
 		context.close();
 	}
 	
@@ -72,13 +72,13 @@ public class OperationTest {
 		odf.setEndTime(new Date(d.getTimeInMillis()));
 		odf.setInputChannel("inputChannel1");
 		
-		List<OperationData> components = auditoriaDao.getOperationData(odf);
+		List<OperationData> result = auditoriaDao.getOperationData(odf);
 		
-		System.out.println(" -- Número de entradas: " + components.size());
-		for (int i = 0; i < components.size(); i++) 
-			printOperationData(components.get(i));
+		System.out.println(" -- Número de entradas: " + result.size());
+		for (int i = 0; i < result.size(); i++) 
+			printOperationData(result.get(i));
 		
-		assertFalse(components.isEmpty());
+		assertFalse(result.isEmpty());
 		context.close();
 	}
 	
