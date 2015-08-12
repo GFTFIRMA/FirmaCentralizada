@@ -98,6 +98,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 			
 			if (filtro.getSessionId() != null) {
 				query += selectKeyword() + " o.sessionId = " + filtro.getSessionId();
+				
 			}
 		}
 		return emf.createEntityManager().createQuery(query, OperationData.class).getResultList();
