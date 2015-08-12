@@ -4,8 +4,11 @@ import java.util.List;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
+import javax.persistence.Query;
+import javax.persistence.TemporalType;
 
 import com.bs.service.firmacentralizada.auditoria.dao.AuditoriaDAO;
+import com.bs.service.firmacentralizada.auditoria.dao.OperationDataFilter;
 import com.bs.service.firmacentralizada.auditoria.entidades.Component;
 import com.bs.service.firmacentralizada.auditoria.entidades.ComponentService;
 import com.bs.service.firmacentralizada.auditoria.entidades.ExecutionPoint;
@@ -62,6 +65,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 		return emf.createEntityManager().createQuery("SELECT o FROM OperationStatus o", OperationStatus.class).getResultList();
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<OperationData> getOperationData(OperationDataFilter filtro) {
 		
@@ -76,42 +80,58 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 				query += selectKeyword() + " o.operation.status.statusId = " + filtro.getStatusId();
 			}
 			
-			if (filtro.getStartTime() != null) {
-				query += selectKeyword() + " o.operation.startTime = " + filtro.getStartTime();
-			}
-			
-			if (filtro.getEndTime() != null) {
-				query += selectKeyword() + " o.operation.endTime = " + filtro.getEndTime();
-			}
-			
 			if (filtro.getFlow() != null) {
-				query += selectKeyword() + " o.flow.flow = " + filtro.getFlow();
+				query += selectKeyword() + " o.flow.flow = '" + filtro.getFlow() + "'";
 			}
 			
 			if (filtro.getInputChannel() != null) {
-				query += selectKeyword() + " o.inputChannel = " + filtro.getInputChannel();
+				query += selectKeyword() + " o.inputChannel = '" + filtro.getInputChannel() + "'";
 			}
 			
 			if (filtro.getFcId() != null) {
-				query += selectKeyword() + " o.fcId = " + filtro.getFcId();
+				query += selectKeyword() + " o.fcId = '" + filtro.getFcId() + "'";
 			}
 			
 			if (filtro.getSessionId() != null) {
-				query += selectKeyword() + " o.sessionId = " + filtro.getSessionId();
+				query += selectKeyword() + " o.sessionId = '" + filtro.getSessionId() + "'";
 				
 			}
+			
+			// Para los filtros con fechas se usará el método setParameter
+			if (filtro.getStartTime() != null) {
+				query += selectKeyword() + " o.operation.startTime >= :startTime";
+			}
+			
+			if (filtro.getEndTime() != null) {
+				query += selectKeyword() + " o.operation.endTime <= :endTime";
+			}
 		}
-		return emf.createEntityManager().createQuery(query, OperationData.class).getResultList();
+		
+		Query typedQuery = emf.createEntityManager().createQuery(query, OperationData.class);
+		
+		if (filtro.getStartTime() != null) {
+			typedQuery.setParameter("startTime", filtro.getStartTime(), TemporalType.TIMESTAMP);
+		}
+		
+		if (filtro.getEndTime() != null) {
+			typedQuery.setParameter("endTime", filtro.getEndTime(), TemporalType.TIMESTAMP);
+		}
+		
+		return typedQuery.getResultList();
 	}
 
 	@Override
 	public List<OperationActivity> getOperationActivity(int operationId, int iteration) {
 		return emf.createEntityManager()
-				.createQuery("SELECT o FROM OperationActivity o WHERE o.operation.operationPK.operationId = :operationId AND o.operation.operationPK.iteration = :iteration", OperationActivity.class)
+				.createQuery("SELECT o FROM OperationActivity o WHERE o.operation.operationPK.operationId = :operationId "
+								+ "AND o.operation.operationPK.iteration = :iteration", OperationActivity.class)
 				.setParameter("operationId", operationId)
 				.setParameter("iteration", iteration)
 				.getResultList();
 	}
+	
+	
+	//** ELEMENTOS PRIVADOS **//
 	
 	private boolean firstFilterAdded = false;
 	private String selectKeyword () {
@@ -119,7 +139,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 			return " AND";
 		else {
 			firstFilterAdded = true;
-			return " WERE";
+			return " WHERE";
 		}
 	}
 }

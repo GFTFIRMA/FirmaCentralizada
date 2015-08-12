@@ -1,4 +1,4 @@
-package com.bs.service.firmacentralizada.auditoria.dao.impl;
+package com.bs.service.firmacentralizada.auditoria.dao;
 
 import java.util.Date;
 
