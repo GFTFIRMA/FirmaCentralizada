@@ -142,4 +142,12 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 			return " WHERE";
 		}
 	}
+
+	@Override
+	public Integer getTotalIterations(int operationId) {
+		return emf.createEntityManager()
+				.createQuery("SELECT MAX(o.operationPK.iteration) FROM Operation o WHERE o.operationPK.operationId = :operationId", Integer.class)
+				.setParameter("operationId", operationId)
+				.getResultList().get(0);
+	}
 }

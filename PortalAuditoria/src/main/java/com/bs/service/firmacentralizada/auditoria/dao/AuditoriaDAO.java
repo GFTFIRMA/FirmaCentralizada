@@ -129,4 +129,14 @@ public interface AuditoriaDAO {
 	 * @see com.bs.service.firmacentralizada.auditoria.entidades.OperationActivity
 	 */
 	public List<OperationActivity> getOperationActivity(int operationId, int iteration);
+	
+	/**
+	 * Devuelve el número total de iteraciones ejecutadas para una operación
+	 * 
+	 * @param operationId
+	 * 		El identificador de la operación dentro de la BBDD
+	 * @return
+	 * 		El número total de iteraciones registradas para la operación indicada
+	 */
+	public Integer getTotalIterations(int operationId);
 }
