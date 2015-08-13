@@ -43,6 +43,7 @@ public class AuditoriaConfig {
         entityManagerFactoryBean.setPackagesToScan("com.bs.service.firmacentralizada.auditoria.entidades");
         Properties jpaProperties = new Properties();
         jpaProperties.put(org.hibernate.cfg.Environment.SHOW_SQL, true);
+        jpaProperties.put(org.hibernate.cfg.Environment.FORMAT_SQL, true); 
         entityManagerFactoryBean.setJpaProperties(jpaProperties);
 
         return entityManagerFactoryBean;
