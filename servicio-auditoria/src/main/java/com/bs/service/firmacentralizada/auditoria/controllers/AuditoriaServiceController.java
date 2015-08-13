@@ -5,14 +5,12 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bs.service.firmacentralizada.auditoria.AuditoriaConfig;
 import com.bs.service.firmacentralizada.auditoria.beans.OperationData;
 import com.bs.service.firmacentralizada.auditoria.dao.AuditoriaDAO;
 import com.bs.service.firmacentralizada.auditoria.dao.OperationDataFilter;
@@ -21,10 +19,10 @@ import com.bs.service.firmacentralizada.auditoria.entidades.OperationStatus;
 
 @RestController
 @RequestMapping(value = "/auditoria")
-public class AuditoriaController {
+public class AuditoriaServiceController {
 	
-	private ApplicationContext context =  new AnnotationConfigApplicationContext(AuditoriaConfig.class);
-	private AuditoriaDAO auditoriaDao = context.getBean(AuditoriaDAO.class);
+	@Autowired
+	private AuditoriaDAO auditoriaDao;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public List<Flow> getFlows() {
@@ -40,7 +38,7 @@ public class AuditoriaController {
 	public List<OperationData> getOperationData(@RequestBody @Valid OperationDataFilter filter) {
 		
 		List<OperationData> operationsList = new ArrayList<OperationData>();
-		List<com.bs.service.firmacentralizada.auditoria.entidades.OperationData> result = auditoriaDao.getOperationData(null);
+		List<com.bs.service.firmacentralizada.auditoria.entidades.OperationData> result = auditoriaDao.getOperationData(filter);
 		
 		for (int i = 0; i < result.size(); i++) {
 			OperationData operation = new OperationData();
