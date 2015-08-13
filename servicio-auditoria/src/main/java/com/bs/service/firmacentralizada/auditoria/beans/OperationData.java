@@ -23,7 +23,7 @@ public class OperationData {
 	private String sessionId;
 	
 	@NotEmpty
-	private String statusId;
+	private int statusId;
 	
 	@NotEmpty
 	private int resultCode;
@@ -76,11 +76,11 @@ public class OperationData {
 		this.sessionId = sessionId;
 	}
 
-	public String getStatusId() {
+	public int getStatusId() {
 		return statusId;
 	}
 
-	public void setStatusId(String statusId) {
+	public void setStatusId(int statusId) {
 		this.statusId = statusId;
 	}
 
