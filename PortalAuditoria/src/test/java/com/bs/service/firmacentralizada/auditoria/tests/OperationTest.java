@@ -106,7 +106,7 @@ public class OperationTest {
 		System.out.println("  ---- OPERATION END TIME: " + o.getEndTime());
 		System.out.println("  ---- RESULT CODE: " + o.getResultCode().getCode());
 		System.out.println("  ---- OPERATION NODE: " + o.getNode());
-		System.out.println("  ---- OPERATION STATUS ID: " + o.getStatusId().getStatusId());
+		System.out.println("  ---- OPERATION STATUS ID: " + o.getStatus().getStatusId());
 	}
 	
 	private void printOperationData(OperationData o) {

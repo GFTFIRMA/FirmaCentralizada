@@ -65,11 +65,11 @@ public class Operation implements Serializable {
 		this.endTime = endTime;
 	}
 
-	public OperationStatus getStatusId() {
+	public OperationStatus getStatus() {
 		return status;
 	}
 
-	public void setStatusId(OperationStatus status) {
+	public void setStatus(OperationStatus status) {
 		this.status = status;
 	}
 
