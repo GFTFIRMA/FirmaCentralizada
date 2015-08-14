@@ -1,0 +1,133 @@
+
+
+@font-face {
+    font-family: titleFont;
+    src: url(../fonts/Android.ttf);
+}
+
+
+html{
+		overflow-y:scroll;
+}
+
+body {
+	display:table;
+	margin:2% auto 2% auto;
+	width:95%;
+	font-family:Segoe UI;
+}
+
+.color-background{
+	background-color: gainsboro;
+}
+
+.main-title{
+	font-family:titleFont;
+}
+
+#header table{
+	font-size:12px;
+}
+
+h1 {
+	line-height: 250%;
+}
+
+.blankspace {
+	height:50px;
+	background-color:gainsboro;
+}
+
+.centered{
+    text-align:center;
+    }
+
+.text-right{
+    text-align:right
+    }
+    	
+.full-width {
+	width: 100%;
+}
+
+.up-down-padding{
+	padding-top:2%;
+	padding-bottom:2%;
+}
+
+.alignment-vertical{
+	height:100%;
+}
+
+.red-label {
+	background-color:red;
+	color:white;
+	vertical-align:center;
+	text-align:center;
+}
+
+.title-center {
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.table-header{
+	font-weight: 600;
+}
+
+.results-table > th > td{
+	border:1px solid black;
+	border-collapse:collapse;
+}
+
+#content tr:nth-child(even) {
+    background-color: #FFFFFF;
+}
+
+#content tr:last-child {
+	border-bottom: 2px solid black;
+}
+
+.table-header td{
+	border-bottom:2px solid black;
+	border-top: none;
+	border-right:none;
+	border-left:none;
+}
+
+.simple-border {
+	border:1px solid black;
+}
+
+a:hover{
+	text-decoration:none;
+}
+
+.no-visible {
+	display:none;
+}
+
+.visible {
+	display:block;
+}
+
+.btnActive{
+	background-color:lightblue;
+}
+
+.bigger {
+	font-size:30px;
+	font-weight:600;
+}
+
+.blankspaceSmall{
+	height:30px;
+}
+
+.clickable-row:hover, .clickable-row2:hover{
+	background-color:lightblue;
+}
+
+a:hover{
+	cursor:pointer;
+}
