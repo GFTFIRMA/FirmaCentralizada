@@ -2,7 +2,7 @@ package com.bs.service.firmacentralizada.auditoria.entidades;
 
 import java.io.Serializable;
 import java.sql.Clob;
-import java.util.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,8 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="OPERATION_ACTIVITY")
@@ -46,13 +44,11 @@ public class OperationActivity  implements Serializable {
 	@JoinColumn(name="EXECUTION_POINT")
 	private ExecutionPoint executionPoint;
 
-	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="START_TIME")
-	private Date startTime;
+	private Timestamp startTime;
 	
-	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="END_TIME")
-	private Date endTime;
+	private Timestamp endTime;
 
 	@Column(name="TRACKING_ID")
 	private String trackingId;
@@ -100,19 +96,19 @@ public class OperationActivity  implements Serializable {
 		this.executionPoint = executionPoint;
 	}
 
-	public Date getStartTime() {
+	public Timestamp getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(Date startTime) {
+	public void setStartTime(Timestamp startTime) {
 		this.startTime = startTime;
 	}
 
-	public Date getEndTime() {
+	public Timestamp getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(Date endTime) {
+	public void setEndTime(Timestamp endTime) {
 		this.endTime = endTime;
 	}
 
