@@ -1,83 +1,79 @@
-<!doctype html>
-<html ng-app>
-	<head>
-		<meta charset="utf-8"/>
-		<link rel="stylesheet" href="css/bootstrap.min.css"/>
-		<link rel="stylesheet" href="css/frontalweb.css"/>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
-		<script src="auditService.js"></script>
-		<script src="./js/services.js"></script>
-		<script>
-			$(document).ready(function(){
-				var resultsTableVisible = false;
-				var operationVisible = false;
-				var visible = false;
-				var operationDetailVisible = false;
-				$("#btn-search").click(function() {
-					$("#results-table").css({"display":"block", 
-												"border-top":"3px solid black"});
-					resultsTableVisible = true;
+	<!doctype html>
+	<html ng-app>
+		<head>
+			<meta charset="utf-8"/>
+			<link rel="stylesheet" href="css/bootstrap.min.css"/>
+			<link rel="stylesheet" href="css/frontalweb.css"/>
+			<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+			<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+			<script src="js/bootstrap.min.js"></script>
+			<script src="auditService.js"></script>
+			<script src="./js/services.js"></script>
+			<script>
+				$(document).ready(function(){
+					var resultsTableVisible = false;
+					var operationVisible = false;
+					var visible = false;
+					var operationDetailVisible = false;
+					$("#btn-search").click(function() {
+						$("#results-table").css("display","block");
+						resultsTableVisible = true;
+					});
+					
+					$("#operationYYY").click(function() {
+						$("#operation-view").css("display","block");
+						operationVisible = true;
+					});
+					
+					$(".show-operation-details").click(function(){
+						$("#requestResponseOperationModal").modal();
+					});
+					
+					$(".show-activity-details").click(function(){
+						$("#requestResponseActivityModal").modal();
+					});
+									
+					$("#operation-details").click(function() {
+						$("#operation-details-view").css("display","block");
+					});
+					
+					$(".clickable-row2").click(function() {
+						if(operationDetailVisible == false){
+							$("#activity-details").css("display","block");
+							operationDetailVisible = true;
+						}
+					});
+					
+					$("#search-form").submit(function() {
+						var idOperacion = $("input[name=operation-id]").val();
+						var fechaIni = $("input[name=date-initial]").val();
+						var fechaFin = $("input[name=date-final]").val();
+						var estado = $("#status-list option:selected").val();
+						var flow = $("#flows-list option:selected").val();
+						var resultado = $("input[name=result]").val();
+						var idFirma = $("input[name=idfc]").val();
+						var requestCId = $("input[name=requestc_id]").val();
+						var canalEntrada = $("input[name=input-channel]").val();
+						var sessionId = $("input[name=sessionid]").val();
+						
+						$("#submit-result").modal();
+						
+						$(".pIdOperacion").append(idOperacion); 
+						$(".pFechaIni").append(fechaIni); 
+						$(".pFechaFin").append(fechaFin); 
+						$(".pEstado").append(estado); 
+						$(".pFlow").append(flow); 
+						$(".pResultado").append(resultado); 
+						$(".pIdFirma").append(idFirma); 
+						$(".pRequestCID").append(requestCId); 
+						$(".pCanalEntrada").append(canalEntrada); 
+						$(".pSessionID").append(sessionId); 
+					});
 				});
-				
-				$("#operationYYY").click(function() {
-					$("#operation-view").css({"display":"block", 
-												"border-top":"3px solid black"});
-					operationVisible = true;
-				});
-				
-				/*$(".show-operation-details").click(function() {
-					if(visible == false){
-						$("#request-message").css("display","block");
-						$("#response-message").css("display","block");
-						$("#btnText").prop('value', 'Ocultar');
-						visible = true;
-					}
-					else{
-						$("#request-message").css("display","none");
-						$("#response-message").css("display","none");
-						$("#btnText").prop('value', 'Mostrar');
-						visible = false;
-					}
-				});*/
-				
-				$(".show-operation-details").click(function(){
-					$("#requestResponseModal").modal();
-				});
-				
-				$(".show-activity-details").click(function() {
-					if(visible == false){
-						$("#activity-request-message").css("display","block");
-						$("#activity-response-message").css("display","block");
-						$("#btnTextActivity").prop('value', 'Ocultar');
-						visible = true;
-					}
-					else{
-						$("#request-message").css("display","none");
-						$("#response-message").css("display","none");
-						$("#btnText").prop('value', 'Mostrar');
-						visible = false;
-					}
-				});
-				
-				$("#operation-details").click(function() {
-					$("#operation-details-view").css({"display":"block", 
-												"border-top":"3px solid black"});
-				});
-				
-				$(".clickable-row2").click(function() {
-					if(operationDetailVisible == false){
-						$("#activity-details").css({"display":"block", 
-												"border-top":"3px solid black"});
-						operationDetailVisible = true;
-					}
-				});
-			});
-		</script>
-	</head>
-	<body>
+			</script>
+		</head>
+		<body>
 		<div id="wrapper" class="col-md-12 color-background center-block text-center simple-border">
 		<nav id="main-menu">
 		</nav>
@@ -97,12 +93,12 @@
 							<td class="col-md-1 text-right">ID_OPERACION:</td>
 							<td class="col-md-1"><input type="text" name="operation-id"/></td>
 							<td class="col-md-1 text-right">FLUJO:</td>
-							<td class="col-md-1"><select name="flows">
+							<td class="col-md-1"><select name="flows" id="flows-list">
 								<option value="flow1">Flujo 1</option>
 								<option value="flow2">Flujo 2</option>
 								<option value="flow3">Flujo 3</option>
 								<option value="flow4">Flujo 4</option></select></td>
-							<td class="col-md-1 text-right">FECHA INICIO:</td>
+							<td class="col-md-1 text-right">FECHA INI:</td>
 							<td class="col-md-1"><input type="datetime" name="date-initial"/></td>
 							<td class="col-md-1 text-right">FECHA FIN:</td>
 							<td class="col-md-1"><input type="datetime" name="date-final"/></td>
@@ -113,7 +109,7 @@
 						<tr>
 							<td class="col-md-1"></td>
 							<td class="col-md-1 text-right">ESTADO:</td>
-							<td class="col-md-1"><select name="status">
+							<td class="col-md-1"><select name="status" id="status-list">
 								<option value="status1">Estado 1</option>
 								<option value="status2">Estado 2</option>
 								<option value="status3">Estado 3</option>
@@ -140,11 +136,27 @@
 							<td class="col-md-12" colspan="12"><div class="blankspaceSmall"></div></td>
 						</tr>
 					</form>
+					
+					<div id="submit-result" class="modal fade" role:"dialog">
+						<div id="modalContent" class="modal-content text-left">
+							<h3 class="col-md-12 text-center"> Parámetros de búsqueda: </h3>
+							<p class="pIdOperacion">id operacion = </p>
+							<p class="pFechaIni">fecha inicial = </p>
+							<p class="pFechaFin">fecha fin= </p>
+							<p class="pEstado">estado = </p>
+							<p class="pFlow">flujo = </p>
+							<p class="pResultado">resultado = </p>
+							<p class="pIdFirma">idfc = </p>
+							<p class="pRequestCID">requestc_id = </p>
+							<p class="pCanalEntrada">canalEntrada = </p>
+							<p class="pSessionID">sessionId = </p>
+						</div>
+					</div>
+					
 				</table>
-				<div class="blankspace"></div>
-			</section><!--HEADER-->
+			</section><!--SEARCH-->
 			<section id="results-table" class="col-md-12 color-background center-block no-visible">
-				<div class="col-md-12 blankspace"></div>
+				<div class="col-md-12 "></div>
 				<div class="col-md-4"></div>
 				<div class="col-md-4 text-center bigger">SEARCH RESULTS</div>
 				<div class="col-md-4 text-center">Total registros encontrados: </div>
@@ -266,18 +278,12 @@
 							<td class="col-md-1"><input type="submit" class="btn btn-info full-width" name="go-to-next" value="Siguiente"/>	</td>
 							<td class="col-md-3" colspan="3"></td>
 						</tr>
-						<tr>
-							<td class="col-md-12" colspan="12"><div class="blankspace"></div></td>
-						</tr>
-						<tr>
-							<td class="col-md-12" colspan="12"><div class="blankspace"></div></td>
-						</tr>
 					</form>
 				</table>
 			</section><!--RESULTS-TABLE-->
 			
 			<section id="operation-view" class="col-md-12 no-visible">
-				<div class="col-md-12 blankspace"></div>
+				<div class="col-md-12 "></div>
 				<div class="col-md-12">
 					<div class="col-md-4"></div>
 					<div class="col-md-4 text-center bigger">Detalle de la operacion YYY</div>
@@ -318,7 +324,7 @@
 				</div>
 			<div class="col-md-12 blankspace"></div>
 			
-			<div id="requestResponseModal" class="modal fade" role="dialog">
+			<div id="requestResponseOperationModal" class="modal fade" role="dialog">
 				<div id="modalContent" class="modal-content">
 				<div class="col-md-6 left-block">
 						<h3 style="color:white;">Operation Request Message</h3>
@@ -372,7 +378,7 @@
 					</xmp></pre>
 				</div>
 				<div class="col-md-6 right-block">
-					<h3 style="color:white;">Operation Response Message</h3>
+					<h3>Operation Response Message</h3>
 					<pre class="text-left"><xmp>
 	<mes:InputData>  
 		<dom:canalEntrada>OSP</dom:canalEntrada>
@@ -516,22 +522,21 @@
 								<td class="col-md-3" colspan="3"></td>
 							</tr>
 						<tr>
-							<td class="col-md-12" colspan="12"><div class="blankspace"></div></td>
+							<td class="col-md-12" colspan="12"><div class=""></div></td>
 						</tr>
 						<tr>
-							<td class="col-md-12" colspan="12"><div class="blankspace"></div></td>
+							<td class="col-md-12" colspan="12"><div class=""></div></td>
 						</tr>
 					</form>
 				</table>
 				
 				<section id="activity-details" class="col-md-12 no-visible block-center">
-					<div class="col-md-12 blankspace"></div>
 					<div class="col-md-12">
 						<div class="col-md-4"></div>
 						<div class="col-md-4 text-center bigger">Detalle de la Actividad</div>
 						<div class="col-md-4"></div>
 					</div>
-					<table id="activities-table" class="col-md-12 center-block color-background text-right">
+					<table id="activities-table" class="col-md-12 center-block text-right">
 						<tr>
 							<td class="col-md-12" colspan="12"><div class="blankspaceSmall"></div></td>
 						</tr>
@@ -546,7 +551,7 @@
 							<td class="col-md-1">FLUJO</td>
 							<td class="col-md-1">XXXXXXXXX</td>
 							<td class="col-md-1" rowspan = "2">REQUEST &</br>RESPONSE</td>						
-							<td class="col-md-1" rowspan = "2"><input type="button" id="btnTextActivity" value="Mostrar" class="btn btn-default full-width show-activity-details mostrarBtn"/></td>
+							<td class="col-md-1" rowspan = "2"><input type="button" id="btnTextActivity" value="Mostrar" class="btn btn-default full-width show-activity-details"/></td>
 							<td class="col-md-1"></td>						
 						</tr>
 						<tr>
@@ -561,15 +566,12 @@
 							<td class="col-md-1">XXXXXXXXX</td>
 							<td class="col-md-1"></td>										
 						</tr>
-						<tr>
-							<td class="col-md-12" colspan="12"><div class="blankspace"></div></td>
-						</tr>
 					</table>
 				</div>
-			<div class="col-md-12 blankspace"></div>
 			
-			<div class="color-background center-block">
-				<div id="activity-request-message" class="color-background center-block no-visible">
+			<div id="requestResponseActivityModal" class="modal fade" role="dialog">
+				<div id="modalContent2" class="modal-content">
+					<div id="activity-request-message" class="center-block">
 					<div class="col-md-6 right-block">
 						<h3>Activity Request Message</h3>
 						<pre class="text-left"><xmp>
@@ -623,7 +625,7 @@
 					</div>
 				</div>
 				
-				<div id="activity-response-message" class="col-md-6 block-left no-visible">
+				<div id="activity-response-message" class="col-md-6 block-left">
 					<h3>Activity Response Message</h3>
 					<pre class="text-left"><xmp>
 	<mes:InputData>  
@@ -655,17 +657,12 @@
 		<dom:codigoEntidad>01</dom:codigoEntidad>
 		<dom:desistimiento>?</dom:desistimiento>
 	 </mes:InputData>
-					</xmp></pre>
-					<div class="blankspace"></div>
+							</xmp></pre>
 				</div>
-				
-				</section><!-- ACTIVITY-DETAILS -->
-				
-				
+				</div>
+			</div>
+			</section><!-- ACTIVITY-DETAILS -->
 			</section><!-- OPERATION-VIEW -->
-			
-			
-		
 		</div><!-- WRAPPER -->
 	</body>
 </html>

@@ -1,10 +1,7 @@
-
-
 @font-face {
     font-family: titleFont;
-    src: url(../fonts/Android.ttf);
+    src: url(../fonts/Exo-Medium.otf);
 }
-
 
 html{
 		overflow-y:scroll;
@@ -17,25 +14,72 @@ body {
 	font-family:Segoe UI;
 }
 
-.color-background{
-	background-color: gainsboro;
-}
-
-.main-title{
-	font-family:titleFont;
-}
-
-#header table{
-	font-size:12px;
+header{
+	border:2px solid black;
 }
 
 h1 {
 	line-height: 250%;
 }
 
+a:hover{
+	text-decoration:none;
+}
+
+section{
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top:40px;
+  margin-bottom:40px;
+  padding-right: auto;
+  padding-left: auto;
+  padding-top:40px;
+  padding-bottom:40px;
+  border:2px solid black;
+  background-color:gainsboro;
+}
+
+#wrapper{
+	background-color:#989898;
+	border:5px solid black;
+}
+
+#header table{
+	font-size:12px;
+}
+
+#content tr:nth-child(even) {
+    background-color: #FFFFFF;
+}
+
+#content tr:last-child {
+	border-bottom: 2px solid black;
+}
+
+#activity-details{
+	background-color:#C0C0C0;
+}
+
+#wrapper{
+	padding:40px;
+}
+
+#operation-view h3{
+	color:white;
+}
+
+.color-background{
+	background-color: gainsboro;
+}
+
+.main-title{
+	font-family:titleFont;
+	font-weight:600;
+}
+
 .blankspace {
 	height:50px;
-	background-color:gainsboro;
 }
 
 .centered{
@@ -59,13 +103,6 @@ h1 {
 	height:100%;
 }
 
-.red-label {
-	background-color:red;
-	color:white;
-	vertical-align:center;
-	text-align:center;
-}
-
 .title-center {
 	margin-left:auto;
 	margin-right:auto;
@@ -73,19 +110,12 @@ h1 {
 
 .table-header{
 	font-weight: 600;
+	font-family:titleFont;
 }
 
 .results-table > th > td{
 	border:1px solid black;
 	border-collapse:collapse;
-}
-
-#content tr:nth-child(even) {
-    background-color: #FFFFFF;
-}
-
-#content tr:last-child {
-	border-bottom: 2px solid black;
 }
 
 .table-header td{
@@ -97,10 +127,6 @@ h1 {
 
 .simple-border {
 	border:1px solid black;
-}
-
-a:hover{
-	text-decoration:none;
 }
 
 .no-visible {
@@ -117,7 +143,8 @@ a:hover{
 
 .bigger {
 	font-size:30px;
-	font-weight:600;
+	font-weight:300;
+	font-family:titleFont;
 }
 
 .blankspaceSmall{
