@@ -16,21 +16,28 @@ body {
 
 header{
 	border:2px solid black;
+	margin-bottom:40px;
 }
 
 h1 {
 	line-height: 250%;
 }
 
+a{
+	transition:all .5s;
+}
+
 a:hover{
+	cursor:pointer;
+	font-size:15px;
 	text-decoration:none;
 }
 
 section{
   display: block;
+  opacity:1;
   margin-right: auto;
   margin-left: auto;
-  margin-top:40px;
   margin-bottom:40px;
   padding-right: auto;
   padding-left: auto;
@@ -43,6 +50,7 @@ section{
 #wrapper{
 	background-color:#989898;
 	border:5px solid black;
+	padding-bottom:0 !important;
 }
 
 #header table{
@@ -67,6 +75,10 @@ section{
 
 #operation-view h3{
 	color:white;
+}
+
+#activity-details{
+	margin-top:40px;
 }
 
 .color-background{
@@ -155,6 +167,4 @@ section{
 	background-color:lightblue;
 }
 
-a:hover{
-	cursor:pointer;
-}
+

@@ -57,6 +57,7 @@
 						var canalEntrada = $("input[name=input-channel]").val();
 						var sessionId = $("input[name=sessionid]").val();
 						
+// Función para la ventana modal a eliminar mas adelante
 						$("#submit-result").modal();
 						
 						$(".pIdOperacion").append(idOperacion); 
@@ -103,7 +104,7 @@
 							<td class="col-md-1 text-right">FECHA FIN:</td>
 							<td class="col-md-1"><input type="datetime" name="date-final"/></td>
 							<td class="col-md-1"></td>
-							<td class="col-md-1"><input id="btn-search" type="submit" method="GET" name="send" value="Buscar" class="btn btn-success full-width"/></td>
+							<td class="col-md-1"><button id="btn-search" type="submit" method="GET" name="send" class="btn btn-success full-width">Buscar  <span class="glyphicon glyphicon-search" aria-hidden="true"></span></button></td>
 							<td class="col-md-1"></td>
 						</tr>
 						<tr>
@@ -121,7 +122,7 @@
 							<td class="col-md-1 text-right">REQUESTC_ID:</td>
 							<td class="col-md-1"><input type="text" name="requestc_id" /></td>
 							<td class="col-md-1"></td>
-							<td class="col-md-1"><input type="reset" value="Limpiar" class="btn btn-info full-width left-block"/></td>
+							<td class="col-md-1"><button type="reset" value="Limpiar" class="btn btn-info full-width left-block">Limpiar  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></td>
 							<td class="col-md-1"></td>
 						</tr>
 						<tr>
@@ -136,9 +137,9 @@
 							<td class="col-md-12" colspan="12"><div class="blankspaceSmall"></div></td>
 						</tr>
 					</form>
-					
-					<div id="submit-result" class="modal fade" role:"dialog">
-						<div id="modalContent" class="modal-content text-left">
+<!-- DIV modal a eliminar más adelante -->
+					<div id="submit-result" class="modal fade col-md-8 center-block" role:"dialog">
+						<div id="modalContent" class="modal-content text-center">
 							<h3 class="col-md-12 text-center"> Parámetros de búsqueda: </h3>
 							<p class="pIdOperacion">id operacion = </p>
 							<p class="pFechaIni">fecha inicial = </p>
@@ -160,12 +161,12 @@
 				<div class="col-md-4"></div>
 				<div class="col-md-4 text-center bigger">SEARCH RESULTS</div>
 				<div class="col-md-4 text-center">Total registros encontrados: </div>
-				<table id="results-table" class="col-md-12 center-block">
+				<table id="results-table" class="col-md-12">
 					<tr>
 						<td class="col-md-12" colspan="12"><div class="blankspaceSmall"></div></td>
 					</tr>
 					<tr class="table-header">
-						<td class="col-md-1 text-center"><div class="blankspaceSmall"></div></td>
+						<td class="col-md-1 text-center"></td>
 						<td class="col-md-1 text-center">ID_OPERACION</td>
 						<td class="col-md-1 text-center">ITERACION</td>
 						<td class="col-md-1 text-center">C. ENTRADA</td>
@@ -180,86 +181,56 @@
 					</tr>
 					<tr class="clickable-row">
 						<td class="col-md-1 text-center"></td>
-						<td class="col-md-1 text-center"><a id="operationYYY">OPERATION YYY</a></td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center"><a id="operationYYY">OPERATION YY</a></td>
+						<td class="col-md-1 text-center"><a>5</a></td>
+						<td class="col-md-1 text-center"><a>OSP</a></td>
+						<td class="col-md-1 text-center"><a>Flujo 1</a></td>
+						<td class="col-md-1 text-center"><a>123DSFS12145ASDFA"</a></td>
+						<td class="col-md-1 text-center"><a>1231-asdfa-123</a></td>
+						<td class="col-md-1 text-center"><a>12/01/15</a></td>
+						<td class="col-md-1 text-center"><a>13/01/15</a></td>
+						<td class="col-md-1 text-center"><a>4</a></td>
+						<td class="col-md-1 text-center"><a>Error</a></td>
 						<td class="col-md-1 text-center"></td>
 					</tr>
 					<tr class="clickable-row">
 						<td class="col-md-1 text-center"></td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center"><a id="operationYYY">OPERATION YY</a></td>
+						<td class="col-md-1 text-center"><a>5</a></td>
+						<td class="col-md-1 text-center"><a>OSP</a></td>
+						<td class="col-md-1 text-center"><a>Flujo 1</a></td>
+						<td class="col-md-1 text-center"><a>123DSFS12145ASDFA"</a></td>
+						<td class="col-md-1 text-center"><a>1231-asdfa-123</a></td>
+						<td class="col-md-1 text-center"><a>12/01/15</a></td>
+						<td class="col-md-1 text-center"><a>13/01/15</a></td>
+						<td class="col-md-1 text-center"><a>4</a></td>
+						<td class="col-md-1 text-center"><a>Error</a></td>
 						<td class="col-md-1 text-center"></td>
-					</tr>
-					<tr class="clickable-row">
+					</tr><tr class="clickable-row">
 						<td class="col-md-1 text-center"></td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center"><a id="operationYYY">OPERATION YY</a></td>
+						<td class="col-md-1 text-center"><a>5</a></td>
+						<td class="col-md-1 text-center"><a>OSP</a></td>
+						<td class="col-md-1 text-center"><a>Flujo 1</a></td>
+						<td class="col-md-1 text-center"><a>123DSFS12145ASDFA"</a></td>
+						<td class="col-md-1 text-center"><a>1231-asdfa-123</a></td>
+						<td class="col-md-1 text-center"><a>12/01/15</a></td>
+						<td class="col-md-1 text-center"><a>13/01/15</a></td>
+						<td class="col-md-1 text-center"><a>4</a></td>
+						<td class="col-md-1 text-center"><a>Error</a></td>
 						<td class="col-md-1 text-center"></td>
-					</tr>
-					<tr class="clickable-row">
+					</tr><tr class="clickable-row">
 						<td class="col-md-1 text-center"></td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center"></td>
-					</tr>
-					<tr class="clickable-row">
-						<td class="col-md-1 text-center"></td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center"></td>
-					</tr>
-					<tr class="clickable-row">
-						<td class="col-md-1 text-center"></td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
-						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center"><a id="operationYYY">OPERATION YY</a></td>
+						<td class="col-md-1 text-center"><a>5</a></td>
+						<td class="col-md-1 text-center"><a>OSP</a></td>
+						<td class="col-md-1 text-center"><a>Flujo 1</a></td>
+						<td class="col-md-1 text-center"><a>123DSFS12145ASDFA"</a></td>
+						<td class="col-md-1 text-center"><a>1231-asdfa-123</a></td>
+						<td class="col-md-1 text-center"><a>12/01/15</a></td>
+						<td class="col-md-1 text-center"><a>13/01/15</a></td>
+						<td class="col-md-1 text-center"><a>4</a></td>
+						<td class="col-md-1 text-center"><a>Error</a></td>
 						<td class="col-md-1 text-center"></td>
 					</tr>
 					<tr>
@@ -273,9 +244,9 @@
 							<td class="col-md-1 text-right">Pagina 1 de X </td>
 							<td class="col-md-1 text-left">Ir a la pagina...</td>
 							<td class="col-md-1"><input type="text" name="page-number"/></td>
-							<td class="col-md-1"><input type="submit" class="btn btn-success full-width" name="go-to-page" value="OK"/></td>
-							<td class="col-md-1"><input type="submit" class="btn btn-info full-width" name="go-to-prev" value="Anterior"/></td>
-							<td class="col-md-1"><input type="submit" class="btn btn-info full-width" name="go-to-next" value="Siguiente"/>	</td>
+							<td class="col-md-1"><button type="submit" class="btn btn-success full-width" name="go-to-page"/>OK  <span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button></td>
+							<td class="col-md-1"><button type="submit" class="btn btn-info full-width" name="go-to-prev"/><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>  Anterior</button></td>
+							<td class="col-md-1"><button type="submit" class="btn btn-info full-width" name="go-to-next"/>Siguiente  <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button></td>
 							<td class="col-md-3" colspan="3"></td>
 						</tr>
 					</form>
@@ -437,7 +408,6 @@
 						<td class="col-md-2" colspan="2">DESCRIPCION</td>
 						<td class="col-md-1"></td>
 					</tr>
-				
 					<tr class="clickable-row2">
 						<td class="col-md-1"></td>
 						<td class="col-md-2" colspan="2">X</td>
@@ -516,9 +486,9 @@
 								<td class="col-md-1 text-right">Pagina 1 de X </td>
 								<td class="col-md-1 text-left">Ir a la pagina...</td>
 								<td class="col-md-1"><input type="text" name="page-number"/></td>
-								<td class="col-md-1"><input type="submit" class="btn btn-success full-width" name="go-to-page" value="OK"/></td>
-								<td class="col-md-1"><input type="submit" class="btn btn-info full-width" name="go-to-prev" value="Anterior"/></td>
-								<td class="col-md-1"><input type="submit" class="btn btn-info full-width" name="go-to-next" value="Siguiente"/>	</td>
+								<td class="col-md-1"><button type="submit" class="btn btn-success full-width" name="go-to-page"/>OK  <span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button></td>
+								<td class="col-md-1"><button type="submit" class="btn btn-info full-width" name="go-to-prev"/><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>  Anterior</button></td>
+								<td class="col-md-1"><button type="submit" class="btn btn-info full-width" name="go-to-next"/>Siguiente  <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button></td>
 								<td class="col-md-3" colspan="3"></td>
 							</tr>
 						<tr>
