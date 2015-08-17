@@ -5,9 +5,10 @@
 		<link rel="stylesheet" href="css/bootstrap.min.css"/>
 		<link rel="stylesheet" href="css/frontalweb.css"/>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		<script src="auditService.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script src="./js/services.js"></script>
 		<script>
 			$(document).ready(function(){
@@ -16,16 +17,18 @@
 				var visible = false;
 				var operationDetailVisible = false;
 				$("#btn-search").click(function() {
-					$("#results-table").css("display","block");
+					$("#results-table").css({"display":"block", 
+												"border-top":"3px solid black"});
 					resultsTableVisible = true;
 				});
 				
 				$("#operationYYY").click(function() {
-					$("#operation-view").css("display", "block");
+					$("#operation-view").css({"display":"block", 
+												"border-top":"3px solid black"});
 					operationVisible = true;
 				});
 				
-				$(".show-operation-details").click(function() {
+				/*$(".show-operation-details").click(function() {
 					if(visible == false){
 						$("#request-message").css("display","block");
 						$("#response-message").css("display","block");
@@ -38,6 +41,10 @@
 						$("#btnText").prop('value', 'Mostrar');
 						visible = false;
 					}
+				});*/
+				
+				$(".show-operation-details").click(function(){
+					$("#requestResponseModal").modal();
 				});
 				
 				$(".show-activity-details").click(function() {
@@ -56,12 +63,14 @@
 				});
 				
 				$("#operation-details").click(function() {
-					$("#operation-details-view").css("display","block");
+					$("#operation-details-view").css({"display":"block", 
+												"border-top":"3px solid black"});
 				});
 				
 				$(".clickable-row2").click(function() {
 					if(operationDetailVisible == false){
-						$("#activity-details").css("display","block");
+						$("#activity-details").css({"display":"block", 
+												"border-top":"3px solid black"});
 						operationDetailVisible = true;
 					}
 				});
@@ -69,14 +78,14 @@
 		</script>
 	</head>
 	<body>
+		<div id="wrapper" class="col-md-12 color-background center-block text-center simple-border">
 		<nav id="main-menu">
 		</nav>
-		<div id="wrapper" class="col-md-12 color-background center-block text-center simple-border">
-			<header id="header" class="col-md-12 center-block color-background">
-				<h1 class="text-center main-title">AUDITORIA FC</h1>
-			</header>
+		<header id="header" class="col-md-12 center-block color-background">
+			<h1 class="text-center main-title">AUDITORIA FC</h1>
+		</header>
 			
-			<section id="header" class="col-md-12">
+			<section id="search" class="col-md-12">
 				<div class="col-md-12 block-center bigger">OPERATIONS SEARCH</div>
 				<table class="col-md-12 text-left">
 					<form id="search-form">
@@ -135,6 +144,7 @@
 				<div class="blankspace"></div>
 			</section><!--HEADER-->
 			<section id="results-table" class="col-md-12 color-background center-block no-visible">
+				<div class="col-md-12 blankspace"></div>
 				<div class="col-md-4"></div>
 				<div class="col-md-4 text-center bigger">SEARCH RESULTS</div>
 				<div class="col-md-4 text-center">Total registros encontrados: </div>
@@ -267,6 +277,7 @@
 			</section><!--RESULTS-TABLE-->
 			
 			<section id="operation-view" class="col-md-12 no-visible">
+				<div class="col-md-12 blankspace"></div>
 				<div class="col-md-12">
 					<div class="col-md-4"></div>
 					<div class="col-md-4 text-center bigger">Detalle de la operacion YYY</div>
@@ -276,7 +287,7 @@
 				</div>
 				<div class="col-md-12 blankspaceSmall"></div>
 				<div class="col-md-12 center-block color-background">
-					<table class="col-md-12 center-block color-background text-right">
+					<table id="operations-table" class="col-md-12 center-block color-background text-right">
 						<tr>
 							<td class="col-md-1"></td>
 							<td class="col-md-1">ID</td>
@@ -307,10 +318,10 @@
 				</div>
 			<div class="col-md-12 blankspace"></div>
 			
-			<div class="color-background center-block">
-				<div id="request-message" class="color-background center-block no-visible">
-					<div class="col-md-6 right-block">
-						<h3>Operation Request Message</h3>
+			<div id="requestResponseModal" class="modal fade" role="dialog">
+				<div id="modalContent" class="modal-content">
+				<div class="col-md-6 left-block">
+						<h3 style="color:white;">Operation Request Message</h3>
 						<pre class="text-left"><xmp>
 	<head:HeaderRequest>
 		<head:trackingId>32198f52693a402286ffa8b98eb9e5ac</head:trackingId>
@@ -358,12 +369,10 @@
 		<dom:codigoEntidad>01</dom:codigoEntidad>
 		<dom:desistimiento>?</dom:desistimiento>
 	 </mes:InputData>
-						</xmp></pre>
-					</div>
+					</xmp></pre>
 				</div>
-				
-				<div id="response-message" class="col-md-6 block-left no-visible">
-					<h3>Operation Response Message</h3>
+				<div class="col-md-6 right-block">
+					<h3 style="color:white;">Operation Response Message</h3>
 					<pre class="text-left"><xmp>
 	<mes:InputData>  
 		<dom:canalEntrada>OSP</dom:canalEntrada>
@@ -396,19 +405,22 @@
 	 </mes:InputData>
 					</xmp></pre>
 				</div>
-				<div class="col-md-12">
-					<div class="col-md-4"></div>
-					<div class="col-md-4 text-center bigger">Actividad de la operacion</div>
-					<div class="col-md-4 text-center">Total registros encontrados: </div>
 				</div>
+			</div>
+			
+			<div class="col-md-12">
+				<div class="col-md-4"></div>
+				<div class="col-md-4 text-center bigger">Actividad de la operacion</div>
+				<div class="col-md-4 text-center">Total registros encontrados: </div>
+			</div>
+			
 				<table id="operation-activity" class="col-md-12 center-block color-background text-center">
 					<tr>
 						<td class="col-md-12" colspan="12"><div class="blankspaceSmall"></div></td>
 					</tr>
 					<tr class="table-header">
 						<td class="col-md-1"></td>
-						<td class="col-md-1"></td>
-						<td class="col-md-1">ID Operacion</td>
+						<td class="col-md-2" colspan="2">ID Operacion</td>
 						<td class="col-md-1">ORIGEN</td>
 						<td class="col-md-1">DESTINO</td>
 						<td class="col-md-1">SERVICIO</td>
@@ -416,74 +428,83 @@
 						<td class="col-md-1">FIN</td>
 						<td class="col-md-1">ESTADO</td>
 						<td class="col-md-1">RESULTADO</td>
-						<td class="col-md-1">DESCRIPCION</td>
-						<td class="col-md-1"></td>
+						<td class="col-md-2" colspan="2">DESCRIPCION</td>
 						<td class="col-md-1"></td>
 					</tr>
 				
 					<tr class="clickable-row2">
-							<td class="col-md-1"></td>
-							<td class="col-md-1"></td>
-							<td class="col-md-1">pinchame</td>
-							<td class="col-md-1">X</td>
-							<td class="col-md-1">X:X</td>
-							<td class="col-md-1">X</td>
-							<td class="col-md-1">X</td>
-							<td class="col-md-1">X</td>
-							<td class="col-md-1">X</td>
-							<td class="col-md-1">X</td>
-							<td class="col-md-1"></td>
-							<td class="col-md-1"></td>
+						<td class="col-md-1"></td>
+						<td class="col-md-2" colspan="2">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-2" colspan="2">X</td>
+						<td class="col-md-1"></td>
 					</tr>
-					<tr class="clickable-row">
-							<td class="col-md-1"></td>
-							<td class="col-md-1"></td>
-							<td class="col-md-1">X</td>
-							<td class="col-md-1">X</td>
-							<td class="col-md-1">X:X</td>
-							<td class="col-md-1">X</td>
-							<td class="col-md-1">X</td>
-							<td class="col-md-1">X</td>
-							<td class="col-md-1">X</td>
-							<td class="col-md-1">X</td>
-							<td class="col-md-1"></td>
-							<td class="col-md-1"></td>
+					<tr class="clickable-row2">
+						<td class="col-md-1"></td>
+						<td class="col-md-2" colspan="2">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-2" colspan="2">X</td>
+						<td class="col-md-1"></td>
 					</tr>
-					<tr class="clickable-row">
-							<td class="col-md-1"></td>
-							<td class="col-md-1"></td>
-							<td class="col-md-1">X</td>
-							<td class="col-md-1">X</td>
-							<td class="col-md-1">X:X</td>
-							<td class="col-md-1">X</td>
-							<td class="col-md-1">X</td>
-							<td class="col-md-1">X</td>
-							<td class="col-md-1">X</td>
-							<td class="col-md-1">X</td>
-							<td class="col-md-1"></td>
-							<td class="col-md-1"></td>
+					<tr class="clickable-row2">
+						<td class="col-md-1"></td>
+						<td class="col-md-2" colspan="2">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-2" colspan="2">X</td>
+						<td class="col-md-1"></td>
 					</tr>
-					<tr class="clickable-row">
-							<td class="col-md-1"></td>
-							<td class="col-md-1"></td>
-							<td class="col-md-1">X</td>
-							<td class="col-md-1">X</td>
-							<td class="col-md-1">X:X</td>
-							<td class="col-md-1">X</td>
-							<td class="col-md-1">X</td>
-							<td class="col-md-1">X</td>
-							<td class="col-md-1">X</td>
-							<td class="col-md-1">X</td>
-							<td class="col-md-1"></td>
-							<td class="col-md-1"></td>
+					<tr class="clickable-row2">
+						<td class="col-md-1"></td>
+						<td class="col-md-2" colspan="2">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-2" colspan="2">X</td>
+						<td class="col-md-1"></td>
 					</tr>
+					<tr class="clickable-row2">
+						<td class="col-md-1"></td>
+						<td class="col-md-2" colspan="2">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-2" colspan="2">X</td>
+						<td class="col-md-1"></td>
+					</tr>
+					
 					<tr>
 						<td class="col-md-12" colspan="12"><div class="blankspace"></div></td>
 					</tr>
 				</table>
 				
 				<table class="col-md-12">
-					<form id="page-form">
+					<form id="page-form2">
 							<tr>
 								<td class="col-md-3" colspan="3"></td>
 								<td class="col-md-1 text-right">Pagina 1 de X </td>
@@ -504,12 +525,13 @@
 				</table>
 				
 				<section id="activity-details" class="col-md-12 no-visible block-center">
+					<div class="col-md-12 blankspace"></div>
 					<div class="col-md-12">
 						<div class="col-md-4"></div>
 						<div class="col-md-4 text-center bigger">Detalle de la Actividad</div>
 						<div class="col-md-4"></div>
 					</div>
-					<table class="col-md-12 center-block color-background text-right">
+					<table id="activities-table" class="col-md-12 center-block color-background text-right">
 						<tr>
 							<td class="col-md-12" colspan="12"><div class="blankspaceSmall"></div></td>
 						</tr>
