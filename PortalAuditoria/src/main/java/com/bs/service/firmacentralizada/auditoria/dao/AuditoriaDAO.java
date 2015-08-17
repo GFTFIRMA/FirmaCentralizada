@@ -109,14 +109,26 @@ public interface AuditoriaDAO {
 	public List<OperationDTO> getOperationList(OperationFilterDTO filter, SortDTO ordination, PaginationDTO pagination);
 	
 	/**
-	 * Devuelve los datos relativos a la operación indicada, sin incluir información de la actividad asociada a la misma
+	 * Devuelve los datos relativos a la última iteración de la operación indicada, sin incluir información de la actividad asociada a la misma
 	 * 
 	 * @param operationId
 	 * 		El identificador de la operación
 	 * @return
 	 * 		La operación con el identificador proporcionado, null si no existe tal operación
 	 */
-	public OperationDTO getOperationById(long operationId);
+	public OperationDTO getLastIterationByOperationId(long operationId);
+	
+	/**
+	 * Devuelve los datos relativos a la iteración concreta de la operación indicada, sin incluir información de la actividad asociada a la misma
+	 * 
+	 * @param operationId
+	 * 		El identificador de la operación
+	 * @param
+	 * 		La iteración de la operación a recuperar
+	 * @return
+	 * 		La operación con el identificador proporcionado, null si no existe tal operación
+	 */
+	public OperationDTO getOperationById(long operationId, int iteration);
 	
 	/**
 	 * Devuelve la lista de actividades englobadas en la operación indicada, de acuerdo con los criterios de paginacion y ordenación

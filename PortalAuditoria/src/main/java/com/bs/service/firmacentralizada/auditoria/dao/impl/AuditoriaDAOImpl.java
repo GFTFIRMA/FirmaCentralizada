@@ -124,12 +124,12 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 		List<BasicDTO> result = new ArrayList<BasicDTO>();
 		List<ComponentService> services = emf.createEntityManager()
 											 .createQuery("SELECT c FROM ComponentService c " +
-													 	  "WHERE c.componentServicesPK.component.component = :componentId", ComponentService.class)
+													 	  "WHERE c.componentServicePK.component.component = :componentId", ComponentService.class)
 											 .setParameter("componentId", componentId)
 											 .getResultList();
 		
 		for (ComponentService service : services) {
-			result.add(new BasicDTO(service.getComponentServicesPK().getService(), service.getDescription()));
+			result.add(new BasicDTO(service.getComponentServicePK().getService(), service.getDescription()));
 		}
 		
 		return result;
@@ -137,8 +137,9 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<OperationDTO> getOperationList(OperationFilterDTO filter, SortDTO ordination,
-			PaginationDTO pagination) {
+	public List<OperationDTO> getOperationList(OperationFilterDTO filter, SortDTO ordination, PaginationDTO pagination) {
+		
+		List<OperationDTO> result = new ArrayList<OperationDTO>();
 		
 		String query = "SELECT o FROM OperationData o";
 		if (filter != null) {
@@ -170,7 +171,6 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 			
 			if (filter.getSessionId() != null) {
 				query += selectKeyword() + " o.sessionId = '" + filter.getSessionId() + "'";
-				
 			}
 			
 			if (filter.isSendActivity()) {
@@ -181,7 +181,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 				query += selectKeyword() + " o.operation.status.statusId = " + filter.getStatusId();
 			}
 			
-			// Para los filtros con fechas se usará el método setParameter
+			// Para los filtros con fechas se usará el método Query.setParameter
 			if (filter.getStartTime() != null) {
 				query += selectKeyword() + " o.operation.startTime >= :startTime";
 			}
@@ -189,6 +189,11 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 			if (filter.getEndTime() != null) {
 				query += selectKeyword() + " o.operation.endTime <= :endTime";
 			}
+		}
+		
+		// Ordenación
+		if (ordination != null) {
+			query += " ORDER BY o." + ordination.getField();
 		}
 		
 		Query typedQuery = emf.createEntityManager().createQuery(query, OperationData.class);
@@ -201,7 +206,109 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 			typedQuery.setParameter("endTime", filter.getEndTime(), TemporalType.TIMESTAMP);
 		}
 		
-		return typedQuery.getResultList();
+		// Paginación
+		if (pagination != null) {
+			int startPosition = retrieveLowRowRange(pagination.getNumPage(), pagination.getNumRegisters());
+			int maxResults = retrieveHighRowRange(pagination.getNumPage(), pagination.getNumRegisters());
+			typedQuery.setFirstResult(startPosition).setMaxResults(maxResults);
+		}
+		
+		List<OperationData> operations = typedQuery.getResultList();
+		
+		for (OperationData operation : operations) {
+			result.add(buildOperationDtoFromOperationData(operation));
+		}
+		
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ActivityDTO> getActivityList(ActivityFilterDTO filter, SortDTO ordination, PaginationDTO pagination) {
+		List<ActivityDTO> result = new ArrayList<ActivityDTO>();
+
+		String query = "SELECT a FROM OperationActivity a";
+		if (filter != null) {
+			
+			if (filter.getActivityId() != null) {
+				query += selectKeyword() + " a.activityId = " + filter.getActivityId();
+			}
+			
+			if (filter.getOperationId() != null) {
+				query += selectKeyword() + " a.operation.operationPK.operationId = " + filter.getOperationId();
+			}
+			
+			if (filter.getFlow() != null) {
+				query += selectKeyword() + " a.flow.flow = '" + filter.getFlow() + "'";
+			}
+			
+			if (filter.getResultCode() != null) {
+				query += selectKeyword() + " a.operation.resultCode.code = " + filter.getResultCode();
+			}
+			
+			if (filter.getExecutionPoint() != null) {
+				query += selectKeyword() + "a.executionPoint = '" + filter.getExecutionPoint() + "'";
+			}
+			
+			if (filter.getTrackingId() != null) {
+				query += selectKeyword() + "a.trackingId = '" + filter.getTrackingId() + "'";
+			}
+			
+			if (filter.getLayer() != null) {
+				query += selectKeyword() + "a.layer.layerId = " + filter.getLayer();
+			}
+			
+			if (filter.getComponent() != null) {
+				query += selectKeyword() + "a.componentService.componentServicePK.component.component = '" + filter.getComponent() + "'";
+			}
+			
+			if (filter.getService() != null) {
+				query += selectKeyword() + "a.componentService.componentServicePK.service = '" + filter.getService() +"'";
+			}
+			
+			if (filter.getStatusId() != null) {
+				query += selectKeyword() + " a.status.statusId = " + filter.getStatusId();
+			}
+			
+			// Para los filtros con fechas se usará el método setParameter
+			if (filter.getStartTime() != null) {
+				query += selectKeyword() + " a.startTime >= :startTime";
+			}
+			
+			if (filter.getEndTime() != null) {
+				query += selectKeyword() + " a.endTime <= :endTime";
+			}
+		}
+		
+		// Ordenación
+		if (ordination != null) {
+			query += " ORDER BY a." + ordination.getField();
+		}
+
+		Query typedQuery = emf.createEntityManager().createQuery(query, OperationActivity.class);
+		
+		if (filter.getStartTime() != null) {
+			typedQuery.setParameter("startTime", filter.getStartTime(), TemporalType.TIMESTAMP);
+		}
+		
+		if (filter.getEndTime() != null) {
+			typedQuery.setParameter("endTime", filter.getEndTime(), TemporalType.TIMESTAMP);
+		}
+		
+		// Paginación
+		if (pagination != null) {
+			int startPosition = retrieveLowRowRange(pagination.getNumPage(), pagination.getNumRegisters());
+			int maxResults = retrieveHighRowRange(pagination.getNumPage(), pagination.getNumRegisters());
+			typedQuery.setFirstResult(startPosition).setMaxResults(maxResults);
+		}
+		
+		List<OperationActivity> activities = typedQuery.getResultList();
+		
+		for (OperationActivity opActivity : activities) {
+			result.add(buildActivityDtoFromOperationActivity(opActivity));
+		}
+
+		return result;
 	}
 
 	@Override
@@ -214,58 +321,51 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 												.setParameter("operationId", operationId)
 												.getResultList();
 		
+		// TODO incluir paginación y ordenación
+		
 		for (OperationActivity opActivity : opActivities) {
-			ActivityDTO activity = new ActivityDTO();
-			activity.setActivityId(opActivity.getActivityId());
-			activity.setOperationId(opActivity.getOperation().getOperationPK().getOperationId());
-			activity.setIteration(opActivity.getOperation().getOperationPK().getIteration());
-			activity.setLayer(opActivity.getLayer().getDescription());
-			activity.setExecutionPoint(opActivity.getExecutionPoint().getExecutionPoint());
-			activity.setSourceComponent(null); //TODO
-			activity.setDestinationComponent(null); //TODO
-			activity.setService(opActivity.getComponentService().getComponentServicesPK().getService());
-			activity.setStartTime(opActivity.getStartTime());
-			activity.setEndTime(opActivity.getEndTime());
-			activity.setTrackingId(opActivity.getTrackingId());
-			activity.setStatusId(opActivity.getStatus().getStatusId());
-			activity.setReturnCode(opActivity.getReturnCode());
-			activity.setReturnDescription(opActivity.getReturnDescription());
-			activity.setNode(opActivity.getNode());
-				
-			try {
-				activity.setXmlSvcRequest(opActivity.getXmlSvcRequest().getSubString(1, (int)opActivity.getXmlSvcRequest().length()));
-			} catch (SQLException e) {
-				// TODO Setear un mensaje de error?
-			}
-			
-			try {
-				activity.setXmlSvcResponse(opActivity.getXmlSvcResponse().getSubString(1, (int)opActivity.getXmlSvcResponse().length()));
-			} catch (SQLException e) {
-				// TODO Setear un mensaje de error?
-			}
-			
-			result.add(activity);
+			result.add(buildActivityDtoFromOperationActivity(opActivity));
 		}
 		
 		return result;
 	}
 
 	@Override
-	public OperationDTO getOperationById(long operationId) {
-		// TODO Auto-generated method stub
-		return null;
+	public OperationDTO getLastIterationByOperationId(long operationId) {
+		OperationDTO result = new OperationDTO();
+		// TODO
+		return result;
+	}
+	
+	@Override
+	public OperationDTO getOperationById(long operationId, int iteration) {
+		OperationDTO result = new OperationDTO();
+		List<OperationData> operation = emf.createEntityManager()
+				.createQuery("SELECT o FROM Operation o " +
+							 "WHERE o.operation.operationPK.operationId = :operationId", OperationData.class)
+				.setParameter("operationId", operationId)
+				.getResultList();
+		
+		// TODO -> qué devuelve este método si hay varias entradas para el mismo id con diferentes iteraciones?
+		
+		return result;
 	}
 
 	@Override
 	public ActivityDTO getActivityById(long activityId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<ActivityDTO> getActivityList(ActivityFilterDTO filter, SortDTO ordination, PaginationDTO pagination) {
-		// TODO Auto-generated method stub
-		return null;
+		ActivityDTO result = new ActivityDTO();
+		List<OperationActivity> activityList = emf.createEntityManager()
+				.createQuery("SELECT a FROM OperationActivity a " +
+							 "WHERE a.activityId = :activityId", OperationActivity.class)
+				.setParameter("activityId", activityId)
+				.getResultList();
+		
+		if (activityList != null && activityList.size() == 1) {
+			result = buildActivityDtoFromOperationActivity(activityList.get(0));
+		} else {
+			// TODO Devolver mensaje de error?
+		}
+		return result;
 	}
 	
 	
@@ -279,5 +379,70 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 			firstFilterAdded = true;
 			return " WHERE";
 		}
+	}
+	
+	private OperationDTO buildOperationDtoFromOperationData(OperationData operationData) {
+	
+		OperationDTO operation = new OperationDTO();
+		
+		operation.setOperationId(operationData.getOperation().getOperationPK().getOperationId());
+		operation.setIteration(operationData.getOperation().getOperationPK().getIteration());
+		operation.setFlow(operationData.getFlow().getFlow());
+		operation.setStartTime(operationData.getOperation().getStartTime());
+		operation.setEndTime(operationData.getOperation().getEndTime());
+		operation.setStatusId(operationData.getOperation().getStatus().getStatusId());
+		operation.setResultCode(operationData.getOperation().getResultCode().getDescription());
+		operation.setFcId(operationData.getFcId());
+		operation.setRequestcId(-1); // TODO
+		operation.setInputChannel(operationData.getInputChannel());
+		operation.setSessionId(operationData.getSessionId());
+		
+		return operation;
+	}
+	
+	private ActivityDTO buildActivityDtoFromOperationActivity(OperationActivity opActivity) {
+		
+		ActivityDTO activity = new ActivityDTO();
+		
+		activity.setActivityId(opActivity.getActivityId());
+		activity.setOperationId(opActivity.getOperation().getOperationPK().getOperationId());
+		activity.setIteration(opActivity.getOperation().getOperationPK().getIteration());
+		activity.setLayer(opActivity.getLayer().getDescription());
+		activity.setExecutionPoint(opActivity.getExecutionPoint().getExecutionPoint());
+		activity.setSourceComponent(null); //TODO
+		activity.setDestinationComponent(null); //TODO
+		activity.setService(opActivity.getComponentService().getComponentServicePK().getService());
+		activity.setStartTime(opActivity.getStartTime());
+		activity.setEndTime(opActivity.getEndTime());
+		activity.setTrackingId(opActivity.getTrackingId());
+		activity.setStatusId(opActivity.getStatus().getStatusId());
+		activity.setReturnCode(opActivity.getReturnCode());
+		activity.setReturnDescription(opActivity.getReturnDescription());
+		activity.setNode(opActivity.getNode());
+			
+		try {
+			activity.setXmlSvcRequest(opActivity.getXmlSvcRequest().getSubString(1, (int)opActivity.getXmlSvcRequest().length()));
+		} catch (SQLException e) {
+			// TODO Setear un mensaje de error?
+		}
+		
+		try {
+			activity.setXmlSvcResponse(opActivity.getXmlSvcResponse().getSubString(1, (int)opActivity.getXmlSvcResponse().length()));
+		} catch (SQLException e) {
+			// TODO Setear un mensaje de error?
+		}
+		
+		return activity;
+	}
+	
+	private int retrieveLowRowRange(int pageNumber, int pageSize) {
+		int iMaxRow = pageNumber * pageSize;
+		int iMinRow = iMaxRow - pageSize + 1;
+		return iMinRow;
+	}
+
+	private int retrieveHighRowRange(int pageNumber, int pageSize) {
+		int numberOfRows = pageNumber * pageSize;
+		return numberOfRows;
 	}
 }

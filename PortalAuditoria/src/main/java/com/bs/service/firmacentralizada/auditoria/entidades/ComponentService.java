@@ -17,7 +17,7 @@ public class ComponentService  implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
-	private ComponentServicesPK componentServicesPK;
+	private ComponentServicePK componentServicePK;
 	
 	@Column(name="DESCRIPTION")
 	private String description;
@@ -31,19 +31,19 @@ public class ComponentService  implements Serializable {
 		this.description = description;
 	}
 	
-	public ComponentServicesPK getComponentServicesPK() {
-		return componentServicesPK;
+	public ComponentServicePK getComponentServicePK() {
+		return componentServicePK;
 	}
 
-	public void setComponentServicesPK(ComponentServicesPK componentServicesPK) {
-		this.componentServicesPK = componentServicesPK;
+	public void setComponentServicePK(ComponentServicePK componentServicePK) {
+		this.componentServicePK = componentServicePK;
 	}
 
 	/**
 	 * Composite Primary Key
 	 */
 	@Embeddable
-	public static class ComponentServicesPK implements Serializable {
+	public static class ComponentServicePK implements Serializable {
 
 		private static final long serialVersionUID = 1L;
 
@@ -54,9 +54,9 @@ public class ComponentService  implements Serializable {
 		@Column(name="SERVICE")
 		private String service;
 		
-		public ComponentServicesPK() {}
+		public ComponentServicePK() {}
 		
-		public ComponentServicesPK(Component component, String service) {
+		public ComponentServicePK(Component component, String service) {
 			this.component = component;
 			this.service = service;
 		}
@@ -83,10 +83,10 @@ public class ComponentService  implements Serializable {
 	        if (this == o) 
 	        	return true;
 	        
-	        if (o == null || !(o instanceof ComponentServicesPK) ) 
+	        if (o == null || !(o instanceof ComponentServicePK) ) 
 	        	return false;
 
-	        final ComponentServicesPK cspk = (ComponentServicesPK) o;
+	        final ComponentServicePK cspk = (ComponentServicePK) o;
 
 	        if (!cspk.getComponent().equals(getComponent()) || !cspk.getService().equals( getService()))
 	       		return false;

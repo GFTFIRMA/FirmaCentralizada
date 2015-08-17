@@ -1,6 +1,6 @@
-package com.bs.service.firmacentralizada.auditoria;
+package com.bs.service.firmacentralizada.auditoria.dto;
 
-public class SearchStats {
+public class SearchStatsDTO {
 	
 	private int totalResults;
 	

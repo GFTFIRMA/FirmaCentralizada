@@ -2,9 +2,9 @@ package com.bs.service.firmacentralizada.auditoria.dto.filtros;
 
 public class ActivityFilterDTO extends FilterDTO {
 
-	private long activityId;
+	private Long activityId;
 	
-	private long operationId;
+	private Long operationId;
 	
 	private String flow;
 	
@@ -20,19 +20,19 @@ public class ActivityFilterDTO extends FilterDTO {
 	
 	private String service;
 
-	public long getActivityId() {
+	public Long getActivityId() {
 		return activityId;
 	}
 
-	public void setActivityId(long activityId) {
+	public void setActivityId(Long activityId) {
 		this.activityId = activityId;
 	}
 
-	public long getOperationId() {
+	public Long getOperationId() {
 		return operationId;
 	}
 
-	public void setOperationId(long operationId) {
+	public void setOperationId(Long operationId) {
 		this.operationId = operationId;
 	}
 

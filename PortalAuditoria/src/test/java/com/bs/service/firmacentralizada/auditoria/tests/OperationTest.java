@@ -111,8 +111,8 @@ public class OperationTest {
 		System.out.println("  ---- ACTIVITY ID: " + o.getActivityId());
 		printOperation(o.getOperation());
 		System.out.println("  ---- LAYER ID: " + o.getLayer().getLayerId());
-		System.out.println("  ---- COMPONENT: " + o.getComponentService().getComponentServicesPK().getComponent().getComponent());
-		System.out.println("  ---- SERVICE: " + o.getComponentService().getComponentServicesPK().getService());
+		System.out.println("  ---- COMPONENT: " + o.getComponentService().getComponentServicePK().getComponent().getComponent());
+		System.out.println("  ---- SERVICE: " + o.getComponentService().getComponentServicePK().getService());
 		System.out.println("  ---- EXECUTION POINT: " + o.getExecutionPoint().getExecutionPoint());
 		System.out.println("  ---- ACTIVITY START TIME: " + o.getStartTime());
 		System.out.println("  ---- ACTIVITY END TIME: " + o.getEndTime());
