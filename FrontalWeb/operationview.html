@@ -1,0 +1,280 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="css/frontalweb.css">
+		<script src="js/bootstrap.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script>
+			$(document).ready(function(){
+				var visible = false;
+									
+				$(".mostrar").click(function() {
+					if(visible == false){
+						$("#request-message").css("display","block");
+						$("#response-message").css("display","block");
+						$("#btnText").prop('value', 'Ocultar');
+						visible = true;
+					}
+					else{
+						$("#request-message").css("display","none");
+						$("#response-message").css("display","none");
+						$("#btnText").prop('value', 'Mostrar');
+						visible = false;
+					}
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div id="wrapper" class="col-md-12 color-background center-block text-center simple-border">
+			<div id="header" class="col-md-12 center-block color-background">
+				<h1>OPERATION YYY</h1>
+				<table class="col-md-12 center-block color-background text-right">
+					<tr>
+						<td class="col-md-1"></td>
+						<td class="col-md-1">ID</td>
+						<td class="col-md-1">XXXXXXXXX</td>
+						<td class="col-md-1">ITERACIONES</td>
+						<td class="col-md-1">XXXXXXXXX</td>
+						<td class="col-md-1">C. ENTRADA</td>
+						<td class="col-md-1">XXX</td>
+						<td class="col-md-1">FLUJO</td>
+						<td class="col-md-1">XXXXXXXXX</td>
+						<td class="col-md-1" rowspan = "2">REQUEST &</br>RESPONSE</td>						
+						<td class="col-md-1" rowspan = "2"><input type="button" id="btnText" value="Mostrar" class="btn btn-default full-width mostrar mostrarBtn"/></td>
+						<td class="col-md-1"></td>						
+					</tr>
+					<tr>
+						<td class="col-md-1"></td>
+						<td class="col-md-1">IDFC</td>
+						<td class="col-md-1">XXXXXXXXX</td>
+						<td class="col-md-1">SESSION_ID</td>
+						<td class="col-md-1">XXXXXXXXX</td>
+						<td class="col-md-1">ESTADO</td>
+						<td class="col-md-1">XXXXXXXXX</td>
+						<td class="col-md-1">RESULTADO</td>
+						<td class="col-md-1">XXXXXXXXX</td>
+						<td class="col-md-1"></td>										
+					</tr>
+				</table>
+			</div><!--HEADER-->
+			<div class="col-md-12 blankspace"></div>
+			
+			<div id="content" class="color-background center-block">
+				<div id="request-message" class="color-background center-block no-visible">
+					<div class="col-md-6 right-block">
+						<h3>REQUEST MESSAGE</h3>
+						<pre class="text-left"><xmp>
+	<head:HeaderRequest>
+		<head:trackingId>32198f52693a402286ffa8b98eb9e5ac</head:trackingId>
+		<head:step>1</head:step>
+		<head:applicationId>FIRMA</head:applicationId>
+		<head:language>es-ES</head:language>
+		<head:HostRequest>
+		   <head:sessionId>b2d0f2e8-e92b-4d2b-89b9-6fd55c050edb</head:sessionId>
+		   <head:authorizationId>?</head:authorizationId>
+		</head:HostRequest>
+		<head:HeaderProperties>
+		   <head:HeaderProperty>
+			  <head:key>?</head:key>
+			  <head:value>?</head:value>
+		   </head:HeaderProperty>
+		</head:HeaderProperties>
+	 </head:HeaderRequest>
+	 
+	 <mes:InputData>  
+		<dom:canalEntrada>OSP</dom:canalEntrada>
+		<dom:tipoOperacion>ContratoDV</dom:tipoOperacion>
+		<dom:idOperacion>testb2d0f2e8-e92b-4d2b-89b9-6fd55c050edb</dom:idOperacion>
+		<dom:codAplicacion>DV</dom:codAplicacion>
+		<dom:codUsuario>46624722L</dom:codUsuario>
+		<dom:idioma>es-ES</dom:idioma>
+		<dom:idRepositorio>DMS</dom:idRepositorio>
+		<dom:idDocumento>[20150513_041409968_1][Original][1][Firma]</dom:idDocumento>
+		<dom:documento>cid:552428373506</dom:documento>
+		<dom:descripcion>Test Registrar Multidoc - 2COORDENADA </dom:descripcion>
+		<dom:LOPD>?</dom:LOPD>
+		<dom:nombreDocumento>?</dom:nombreDocumento>
+		<dom:mimeType>?</dom:mimeType>
+		<dom:agregacion>inicial</dom:agregacion>
+		<dom:orden>1</dom:orden>
+		<dom:titularContrato>2189206</dom:titularContrato>
+		<dom:idFirmante></dom:idFirmante>
+		<dom:tipoFirma>individual</dom:tipoFirma>
+		<dom:idProducto>product</dom:idProducto>
+		<dom:idContrato>contract</dom:idContrato>
+		<dom:contexto>
+		   <dom1:clave>es_ES-importe</dom1:clave>
+		   <dom1:valor>5000</dom1:valor>
+		</dom:contexto>
+		<dom:caducidad>?</dom:caducidad>
+		<dom:codigoEntidad>01</dom:codigoEntidad>
+		<dom:desistimiento>?</dom:desistimiento>
+	 </mes:InputData>
+						</xmp></pre>
+					</div>
+				</div>
+				
+				<div id="response-message" class="col-md-6 block-left no-visible">
+					<h3>RESPONSE MESSAGE</h3>
+					<pre class="text-left"><xmp>
+	<mes:InputData>  
+		<dom:canalEntrada>OSP</dom:canalEntrada>
+		<dom:tipoOperacion>ContratoDV</dom:tipoOperacion>
+		<dom:idOperacion>testb2d0f2e8-e92b-4d2b-89b9-6fd55c050edb</dom:idOperacion>
+		<dom:codAplicacion>DV</dom:codAplicacion>
+		<dom:codUsuario>46624722L</dom:codUsuario>
+		<dom:idioma>es-ES</dom:idioma>
+		<dom:idRepositorio>DMS</dom:idRepositorio>
+		<dom:idDocumento>[20150513_041409968_1][Original][1][Firma]</dom:idDocumento>
+		<dom:documento>cid:552428373506</dom:documento>
+		<dom:descripcion>Test Registrar Multidoc - 2COORDENADA </dom:descripcion>
+		<dom:LOPD>?</dom:LOPD>
+		<dom:nombreDocumento>?</dom:nombreDocumento>
+		<dom:mimeType>?</dom:mimeType>
+		<dom:agregacion>inicial</dom:agregacion>
+		<dom:orden>1</dom:orden>
+		<dom:titularContrato>2189206</dom:titularContrato>
+		<dom:idFirmante></dom:idFirmante>
+		<dom:tipoFirma>individual</dom:tipoFirma>
+		<dom:idProducto>product</dom:idProducto>
+		<dom:idContrato>contract</dom:idContrato>
+		<dom:contexto>
+		   <dom1:clave>es_ES-importe</dom1:clave>
+		   <dom1:valor>5000</dom1:valor>
+		</dom:contexto>
+		<dom:caducidad>?</dom:caducidad>
+		<dom:codigoEntidad>01</dom:codigoEntidad>
+		<dom:desistimiento>?</dom:desistimiento>
+	 </mes:InputData>
+					</xmp></pre>
+				</div>
+			
+			<div class="col-md-12 blankspace"></div>
+			<div class="col-md-12 text-center"><h2>ACTIVIDAD DE LA OPERACION</h2></div>
+				<table class="col-md-12 color-background centered">
+					<tr class="table-header">
+						<td class="col-md-1">PUNTO EJECUCION</td>
+						<td class="col-md-1">CAPA</td>
+						<td class="col-md-1">ORIGEN</td>
+						<td class="col-md-1">DESTINO</td>
+						<td class="col-md-1">SERVICIO</td>
+						<td class="col-md-1">INICIO</td>
+						<td class="col-md-1">FIN</td>
+						<td class="col-md-1">REQUEST</td>
+						<td class="col-md-1">RESPONSE</td>
+						<td class="col-md-1">ESTADO</td>
+						<td class="col-md-1">RESULTADO</td>
+						<td class="col-md-1">DESCRIPCION</td>
+					</tr>
+					<tr>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center"><a class="mostrar">Mostrar</a></td>
+						<td class="col-md-1 text-center"><a class="mostrar">Mostrar</a></td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+					</tr>
+					<tr>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">< mostrar ></td>
+						<td class="col-md-1 text-center">< mostrar ></td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+					</tr>
+					<tr>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">< mostrar ></td>
+						<td class="col-md-1 text-center">< mostrar ></td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+					</tr>
+					<tr>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">< mostrar ></td>
+						<td class="col-md-1 text-center">< mostrar ></td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+					</tr>
+					<tr>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">< mostrar ></td>
+						<td class="col-md-1 text-center">< mostrar ></td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+					</tr>
+					<tr>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">< mostrar ></td>
+						<td class="col-md-1 text-center">< mostrar ></td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+					</tr>
+				</table>
+			</div><!--CONTENT-->		
+			<div id="footer" class="col-md-12 color-background">
+			<div class="blankspace"></div>
+				<table class="col-md-12">
+					<form id="page-form">
+						<tr>
+							<td class="col-md-3" colspan="3"></td>
+							<td class="col-md-1 text-right">Pagina 1 de X </td>
+							<td class="col-md-1 text-left">Ir a la pagina...</td>
+							<td class="col-md-1"><input type="text" name="page-number" placeholder="Introduce un numero"/></td>
+							<td class="col-md-1"><input type="submit" class="btn btn-success full-width" name="go-to-page" value="OK"/></td>
+							<td class="col-md-1"><input type="submit" class="btn btn-info full-width" name="go-to-prev" value="Anterior"/></td>
+							<td class="col-md-1"><input type="submit" class="btn btn-info full-width" name="go-to-next" value="Siguiente"/>	</td>
+							<td class="col-md-3" colspan="3"></td>
+						</tr>
+					</form>
+				</table>
+			<div class="blankspace"></div>
+				<a href="operationssearch.html" class="link-basic"><button class="btn btn-info center-block">Volver</button></a>
+				<div class="blankspace"></div>
+			</div><!--FOOTER-->
+		</div><!-- WRAPPER -->
+	</body>
+</html>

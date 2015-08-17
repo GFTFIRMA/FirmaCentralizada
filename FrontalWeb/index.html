@@ -1,0 +1,671 @@
+<!doctype html>
+<html ng-app>
+	<head>
+		<meta charset="utf-8"/>
+		<link rel="stylesheet" href="css/bootstrap.min.css"/>
+		<link rel="stylesheet" href="css/frontalweb.css"/>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="auditService.js"></script>
+		<script src="./js/services.js"></script>
+		<script>
+			$(document).ready(function(){
+				var resultsTableVisible = false;
+				var operationVisible = false;
+				var visible = false;
+				var operationDetailVisible = false;
+				$("#btn-search").click(function() {
+					$("#results-table").css({"display":"block", 
+												"border-top":"3px solid black"});
+					resultsTableVisible = true;
+				});
+				
+				$("#operationYYY").click(function() {
+					$("#operation-view").css({"display":"block", 
+												"border-top":"3px solid black"});
+					operationVisible = true;
+				});
+				
+				/*$(".show-operation-details").click(function() {
+					if(visible == false){
+						$("#request-message").css("display","block");
+						$("#response-message").css("display","block");
+						$("#btnText").prop('value', 'Ocultar');
+						visible = true;
+					}
+					else{
+						$("#request-message").css("display","none");
+						$("#response-message").css("display","none");
+						$("#btnText").prop('value', 'Mostrar');
+						visible = false;
+					}
+				});*/
+				
+				$(".show-operation-details").click(function(){
+					$("#requestResponseModal").modal();
+				});
+				
+				$(".show-activity-details").click(function() {
+					if(visible == false){
+						$("#activity-request-message").css("display","block");
+						$("#activity-response-message").css("display","block");
+						$("#btnTextActivity").prop('value', 'Ocultar');
+						visible = true;
+					}
+					else{
+						$("#request-message").css("display","none");
+						$("#response-message").css("display","none");
+						$("#btnText").prop('value', 'Mostrar');
+						visible = false;
+					}
+				});
+				
+				$("#operation-details").click(function() {
+					$("#operation-details-view").css({"display":"block", 
+												"border-top":"3px solid black"});
+				});
+				
+				$(".clickable-row2").click(function() {
+					if(operationDetailVisible == false){
+						$("#activity-details").css({"display":"block", 
+												"border-top":"3px solid black"});
+						operationDetailVisible = true;
+					}
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div id="wrapper" class="col-md-12 color-background center-block text-center simple-border">
+		<nav id="main-menu">
+		</nav>
+		<header id="header" class="col-md-12 center-block color-background">
+			<h1 class="text-center main-title">AUDITORIA FC</h1>
+		</header>
+			
+			<section id="search" class="col-md-12">
+				<div class="col-md-12 block-center bigger">OPERATIONS SEARCH</div>
+				<table class="col-md-12 text-left">
+					<form id="search-form">
+						<tr>
+							<td class="col-md-12" colspan="12"><div class="blankspaceSmall"></div></td>
+						</tr>
+						<tr>
+							<td class="col-md-1"></td>
+							<td class="col-md-1 text-right">ID_OPERACION:</td>
+							<td class="col-md-1"><input type="text" name="operation-id"/></td>
+							<td class="col-md-1 text-right">FLUJO:</td>
+							<td class="col-md-1"><select name="flows">
+								<option value="flow1">Flujo 1</option>
+								<option value="flow2">Flujo 2</option>
+								<option value="flow3">Flujo 3</option>
+								<option value="flow4">Flujo 4</option></select></td>
+							<td class="col-md-1 text-right">FECHA INICIO:</td>
+							<td class="col-md-1"><input type="datetime" name="date-initial"/></td>
+							<td class="col-md-1 text-right">FECHA FIN:</td>
+							<td class="col-md-1"><input type="datetime" name="date-final"/></td>
+							<td class="col-md-1"></td>
+							<td class="col-md-1"><input id="btn-search" type="submit" method="GET" name="send" value="Buscar" class="btn btn-success full-width"/></td>
+							<td class="col-md-1"></td>
+						</tr>
+						<tr>
+							<td class="col-md-1"></td>
+							<td class="col-md-1 text-right">ESTADO:</td>
+							<td class="col-md-1"><select name="status">
+								<option value="status1">Estado 1</option>
+								<option value="status2">Estado 2</option>
+								<option value="status3">Estado 3</option>
+								<option value="status4">Estado 4</option></select></td>
+							<td class="col-md-1 text-right">RESULTADO:</td>
+							<td class="col-md-1"><input type="text" name="result" /></td>
+							<td class="col-md-1 text-right">ID FIRMA:</td>
+							<td class="col-md-1"><input type="text" name="idfc" /></td>
+							<td class="col-md-1 text-right">REQUESTC_ID:</td>
+							<td class="col-md-1"><input type="text" name="requestc_id" /></td>
+							<td class="col-md-1"></td>
+							<td class="col-md-1"><input type="reset" value="Limpiar" class="btn btn-info full-width left-block"/></td>
+							<td class="col-md-1"></td>
+						</tr>
+						<tr>
+							<td class="col-md-1"></td>
+							<td class="col-md-1 text-right">C. ENTRADA:</td>
+							<td class="col-md-1"><input type="text" name="input-channel"/></td>
+							<td class="col-md-1 text-right">SESSION_ID:</td>
+							<td class="col-md-1"><input type="text" name="sessionid"/></td>
+							<td class="col-md-7" colspan="7"></td>
+						</tr>
+						<tr>
+							<td class="col-md-12" colspan="12"><div class="blankspaceSmall"></div></td>
+						</tr>
+					</form>
+				</table>
+				<div class="blankspace"></div>
+			</section><!--HEADER-->
+			<section id="results-table" class="col-md-12 color-background center-block no-visible">
+				<div class="col-md-12 blankspace"></div>
+				<div class="col-md-4"></div>
+				<div class="col-md-4 text-center bigger">SEARCH RESULTS</div>
+				<div class="col-md-4 text-center">Total registros encontrados: </div>
+				<table id="results-table" class="col-md-12 center-block">
+					<tr>
+						<td class="col-md-12" colspan="12"><div class="blankspaceSmall"></div></td>
+					</tr>
+					<tr class="table-header">
+						<td class="col-md-1 text-center"><div class="blankspaceSmall"></div></td>
+						<td class="col-md-1 text-center">ID_OPERACION</td>
+						<td class="col-md-1 text-center">ITERACION</td>
+						<td class="col-md-1 text-center">C. ENTRADA</td>
+						<td class="col-md-1 text-center">FLUJO</td>
+						<td class="col-md-1 text-center">IDFC</td>
+						<td class="col-md-1 text-center">SESSION ID</td>
+						<td class="col-md-1 text-center">INICIO</td>
+						<td class="col-md-1 text-center">FIN</td>
+						<td class="col-md-1 text-center">ESTADO</td>
+						<td class="col-md-1 text-center">RESULTADO</td>
+						<td class="col-md-1 text-center"></td>
+					</tr>
+					<tr class="clickable-row">
+						<td class="col-md-1 text-center"></td>
+						<td class="col-md-1 text-center"><a id="operationYYY">OPERATION YYY</a></td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center"></td>
+					</tr>
+					<tr class="clickable-row">
+						<td class="col-md-1 text-center"></td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center"></td>
+					</tr>
+					<tr class="clickable-row">
+						<td class="col-md-1 text-center"></td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center"></td>
+					</tr>
+					<tr class="clickable-row">
+						<td class="col-md-1 text-center"></td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center"></td>
+					</tr>
+					<tr class="clickable-row">
+						<td class="col-md-1 text-center"></td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center"></td>
+					</tr>
+					<tr class="clickable-row">
+						<td class="col-md-1 text-center"></td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center"></td>
+					</tr>
+					<tr>
+						<td class="col-md-12" colspan="12"><div class="blankspaceSmall"></div></td>
+					</tr>
+				</table>
+				<table class="col-md-12">
+					<form id="page-form">
+						<tr>
+							<td class="col-md-3" colspan="3"></td>
+							<td class="col-md-1 text-right">Pagina 1 de X </td>
+							<td class="col-md-1 text-left">Ir a la pagina...</td>
+							<td class="col-md-1"><input type="text" name="page-number"/></td>
+							<td class="col-md-1"><input type="submit" class="btn btn-success full-width" name="go-to-page" value="OK"/></td>
+							<td class="col-md-1"><input type="submit" class="btn btn-info full-width" name="go-to-prev" value="Anterior"/></td>
+							<td class="col-md-1"><input type="submit" class="btn btn-info full-width" name="go-to-next" value="Siguiente"/>	</td>
+							<td class="col-md-3" colspan="3"></td>
+						</tr>
+						<tr>
+							<td class="col-md-12" colspan="12"><div class="blankspace"></div></td>
+						</tr>
+						<tr>
+							<td class="col-md-12" colspan="12"><div class="blankspace"></div></td>
+						</tr>
+					</form>
+				</table>
+			</section><!--RESULTS-TABLE-->
+			
+			<section id="operation-view" class="col-md-12 no-visible">
+				<div class="col-md-12 blankspace"></div>
+				<div class="col-md-12">
+					<div class="col-md-4"></div>
+					<div class="col-md-4 text-center bigger">Detalle de la operacion YYY</div>
+					<div class="col-md-1"></div>
+					<div class="col-md-2"><input type="button" class="btn btn-info full-width" value="Ver Caso Firma">
+					<div class="col-md-1"></div>
+				</div>
+				<div class="col-md-12 blankspaceSmall"></div>
+				<div class="col-md-12 center-block color-background">
+					<table id="operations-table" class="col-md-12 center-block color-background text-right">
+						<tr>
+							<td class="col-md-1"></td>
+							<td class="col-md-1">ID</td>
+							<td class="col-md-1">XXXXXXXXX</td>
+							<td class="col-md-1">ITERACIONES</td>
+							<td class="col-md-1">XXXXXXXXX</td>
+							<td class="col-md-1">C. ENTRADA</td>
+							<td class="col-md-1">XXX</td>
+							<td class="col-md-1">FLUJO</td>
+							<td class="col-md-1">XXXXXXXXX</td>
+							<td class="col-md-1" rowspan = "2">REQUEST &</br>RESPONSE</td>						
+							<td class="col-md-1" rowspan = "2"><input type="button" id="btnText" value="Mostrar" class="btn btn-default full-width show-operation-details mostrarBtn"/></td>
+							<td class="col-md-1"></td>						
+						</tr>
+						<tr>
+							<td class="col-md-1"></td>
+							<td class="col-md-1">IDFC</td>
+							<td class="col-md-1">XXXXXXXXX</td>
+							<td class="col-md-1">SESSION_ID</td>
+							<td class="col-md-1">XXXXXXXXX</td>
+							<td class="col-md-1">ESTADO</td>
+							<td class="col-md-1">XXXXXXXXX</td>
+							<td class="col-md-1">RESULTADO</td>
+							<td class="col-md-1">XXXXXXXXX</td>
+							<td class="col-md-1"></td>										
+						</tr>
+					</table>
+				</div>
+			<div class="col-md-12 blankspace"></div>
+			
+			<div id="requestResponseModal" class="modal fade" role="dialog">
+				<div id="modalContent" class="modal-content">
+				<div class="col-md-6 left-block">
+						<h3 style="color:white;">Operation Request Message</h3>
+						<pre class="text-left"><xmp>
+	<head:HeaderRequest>
+		<head:trackingId>32198f52693a402286ffa8b98eb9e5ac</head:trackingId>
+		<head:step>1</head:step>
+		<head:applicationId>FIRMA</head:applicationId>
+		<head:language>es-ES</head:language>
+		<head:HostRequest>
+		   <head:sessionId>b2d0f2e8-e92b-4d2b-89b9-6fd55c050edb</head:sessionId>
+		   <head:authorizationId>?</head:authorizationId>
+		</head:HostRequest>
+		<head:HeaderProperties>
+		   <head:HeaderProperty>
+			  <head:key>?</head:key>
+			  <head:value>?</head:value>
+		   </head:HeaderProperty>
+		</head:HeaderProperties>
+	 </head:HeaderRequest>
+	 
+	 <mes:InputData>  
+		<dom:canalEntrada>OSP</dom:canalEntrada>
+		<dom:tipoOperacion>ContratoDV</dom:tipoOperacion>
+		<dom:idOperacion>testb2d0f2e8-e92b-4d2b-89b9-6fd55c050edb</dom:idOperacion>
+		<dom:codAplicacion>DV</dom:codAplicacion>
+		<dom:codUsuario>46624722L</dom:codUsuario>
+		<dom:idioma>es-ES</dom:idioma>
+		<dom:idRepositorio>DMS</dom:idRepositorio>
+		<dom:idDocumento>[20150513_041409968_1][Original][1][Firma]</dom:idDocumento>
+		<dom:documento>cid:552428373506</dom:documento>
+		<dom:descripcion>Test Registrar Multidoc - 2COORDENADA </dom:descripcion>
+		<dom:LOPD>?</dom:LOPD>
+		<dom:nombreDocumento>?</dom:nombreDocumento>
+		<dom:mimeType>?</dom:mimeType>
+		<dom:agregacion>inicial</dom:agregacion>
+		<dom:orden>1</dom:orden>
+		<dom:titularContrato>2189206</dom:titularContrato>
+		<dom:idFirmante></dom:idFirmante>
+		<dom:tipoFirma>individual</dom:tipoFirma>
+		<dom:idProducto>product</dom:idProducto>
+		<dom:idContrato>contract</dom:idContrato>
+		<dom:contexto>
+		   <dom1:clave>es_ES-importe</dom1:clave>
+		   <dom1:valor>5000</dom1:valor>
+		</dom:contexto>
+		<dom:caducidad>?</dom:caducidad>
+		<dom:codigoEntidad>01</dom:codigoEntidad>
+		<dom:desistimiento>?</dom:desistimiento>
+	 </mes:InputData>
+					</xmp></pre>
+				</div>
+				<div class="col-md-6 right-block">
+					<h3 style="color:white;">Operation Response Message</h3>
+					<pre class="text-left"><xmp>
+	<mes:InputData>  
+		<dom:canalEntrada>OSP</dom:canalEntrada>
+		<dom:tipoOperacion>ContratoDV</dom:tipoOperacion>
+		<dom:idOperacion>testb2d0f2e8-e92b-4d2b-89b9-6fd55c050edb</dom:idOperacion>
+		<dom:codAplicacion>DV</dom:codAplicacion>
+		<dom:codUsuario>46624722L</dom:codUsuario>
+		<dom:idioma>es-ES</dom:idioma>
+		<dom:idRepositorio>DMS</dom:idRepositorio>
+		<dom:idDocumento>[20150513_041409968_1][Original][1][Firma]</dom:idDocumento>
+		<dom:documento>cid:552428373506</dom:documento>
+		<dom:descripcion>Test Registrar Multidoc - 2COORDENADA </dom:descripcion>
+		<dom:LOPD>?</dom:LOPD>
+		<dom:nombreDocumento>?</dom:nombreDocumento>
+		<dom:mimeType>?</dom:mimeType>
+		<dom:agregacion>inicial</dom:agregacion>
+		<dom:orden>1</dom:orden>
+		<dom:titularContrato>2189206</dom:titularContrato>
+		<dom:idFirmante></dom:idFirmante>
+		<dom:tipoFirma>individual</dom:tipoFirma>
+		<dom:idProducto>product</dom:idProducto>
+		<dom:idContrato>contract</dom:idContrato>
+		<dom:contexto>
+		   <dom1:clave>es_ES-importe</dom1:clave>
+		   <dom1:valor>5000</dom1:valor>
+		</dom:contexto>
+		<dom:caducidad>?</dom:caducidad>
+		<dom:codigoEntidad>01</dom:codigoEntidad>
+		<dom:desistimiento>?</dom:desistimiento>
+	 </mes:InputData>
+					</xmp></pre>
+				</div>
+				</div>
+			</div>
+			
+			<div class="col-md-12">
+				<div class="col-md-4"></div>
+				<div class="col-md-4 text-center bigger">Actividad de la operacion</div>
+				<div class="col-md-4 text-center">Total registros encontrados: </div>
+			</div>
+			
+				<table id="operation-activity" class="col-md-12 center-block color-background text-center">
+					<tr>
+						<td class="col-md-12" colspan="12"><div class="blankspaceSmall"></div></td>
+					</tr>
+					<tr class="table-header">
+						<td class="col-md-1"></td>
+						<td class="col-md-2" colspan="2">ID Operacion</td>
+						<td class="col-md-1">ORIGEN</td>
+						<td class="col-md-1">DESTINO</td>
+						<td class="col-md-1">SERVICIO</td>
+						<td class="col-md-1">INICIO</td>
+						<td class="col-md-1">FIN</td>
+						<td class="col-md-1">ESTADO</td>
+						<td class="col-md-1">RESULTADO</td>
+						<td class="col-md-2" colspan="2">DESCRIPCION</td>
+						<td class="col-md-1"></td>
+					</tr>
+				
+					<tr class="clickable-row2">
+						<td class="col-md-1"></td>
+						<td class="col-md-2" colspan="2">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-2" colspan="2">X</td>
+						<td class="col-md-1"></td>
+					</tr>
+					<tr class="clickable-row2">
+						<td class="col-md-1"></td>
+						<td class="col-md-2" colspan="2">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-2" colspan="2">X</td>
+						<td class="col-md-1"></td>
+					</tr>
+					<tr class="clickable-row2">
+						<td class="col-md-1"></td>
+						<td class="col-md-2" colspan="2">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-2" colspan="2">X</td>
+						<td class="col-md-1"></td>
+					</tr>
+					<tr class="clickable-row2">
+						<td class="col-md-1"></td>
+						<td class="col-md-2" colspan="2">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-2" colspan="2">X</td>
+						<td class="col-md-1"></td>
+					</tr>
+					<tr class="clickable-row2">
+						<td class="col-md-1"></td>
+						<td class="col-md-2" colspan="2">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-1">X</td>
+						<td class="col-md-2" colspan="2">X</td>
+						<td class="col-md-1"></td>
+					</tr>
+					
+					<tr>
+						<td class="col-md-12" colspan="12"><div class="blankspace"></div></td>
+					</tr>
+				</table>
+				
+				<table class="col-md-12">
+					<form id="page-form2">
+							<tr>
+								<td class="col-md-3" colspan="3"></td>
+								<td class="col-md-1 text-right">Pagina 1 de X </td>
+								<td class="col-md-1 text-left">Ir a la pagina...</td>
+								<td class="col-md-1"><input type="text" name="page-number"/></td>
+								<td class="col-md-1"><input type="submit" class="btn btn-success full-width" name="go-to-page" value="OK"/></td>
+								<td class="col-md-1"><input type="submit" class="btn btn-info full-width" name="go-to-prev" value="Anterior"/></td>
+								<td class="col-md-1"><input type="submit" class="btn btn-info full-width" name="go-to-next" value="Siguiente"/>	</td>
+								<td class="col-md-3" colspan="3"></td>
+							</tr>
+						<tr>
+							<td class="col-md-12" colspan="12"><div class="blankspace"></div></td>
+						</tr>
+						<tr>
+							<td class="col-md-12" colspan="12"><div class="blankspace"></div></td>
+						</tr>
+					</form>
+				</table>
+				
+				<section id="activity-details" class="col-md-12 no-visible block-center">
+					<div class="col-md-12 blankspace"></div>
+					<div class="col-md-12">
+						<div class="col-md-4"></div>
+						<div class="col-md-4 text-center bigger">Detalle de la Actividad</div>
+						<div class="col-md-4"></div>
+					</div>
+					<table id="activities-table" class="col-md-12 center-block color-background text-right">
+						<tr>
+							<td class="col-md-12" colspan="12"><div class="blankspaceSmall"></div></td>
+						</tr>
+						<tr>
+							<td class="col-md-1"></td>
+							<td class="col-md-1">ID</td>
+							<td class="col-md-1">XXXXXXXXX</td>
+							<td class="col-md-1">ITERACIONES</td>
+							<td class="col-md-1">XXXXXXXXX</td>
+							<td class="col-md-1">C. ENTRADA</td>
+							<td class="col-md-1">XXX</td>
+							<td class="col-md-1">FLUJO</td>
+							<td class="col-md-1">XXXXXXXXX</td>
+							<td class="col-md-1" rowspan = "2">REQUEST &</br>RESPONSE</td>						
+							<td class="col-md-1" rowspan = "2"><input type="button" id="btnTextActivity" value="Mostrar" class="btn btn-default full-width show-activity-details mostrarBtn"/></td>
+							<td class="col-md-1"></td>						
+						</tr>
+						<tr>
+							<td class="col-md-1"></td>
+							<td class="col-md-1">IDFC</td>
+							<td class="col-md-1">XXXXXXXXX</td>
+							<td class="col-md-1">SESSION_ID</td>
+							<td class="col-md-1">XXXXXXXXX</td>
+							<td class="col-md-1">ESTADO</td>
+							<td class="col-md-1">XXXXXXXXX</td>
+							<td class="col-md-1">RESULTADO</td>
+							<td class="col-md-1">XXXXXXXXX</td>
+							<td class="col-md-1"></td>										
+						</tr>
+						<tr>
+							<td class="col-md-12" colspan="12"><div class="blankspace"></div></td>
+						</tr>
+					</table>
+				</div>
+			<div class="col-md-12 blankspace"></div>
+			
+			<div class="color-background center-block">
+				<div id="activity-request-message" class="color-background center-block no-visible">
+					<div class="col-md-6 right-block">
+						<h3>Activity Request Message</h3>
+						<pre class="text-left"><xmp>
+	<head:HeaderRequest>
+		<head:trackingId>32198f52693a402286ffa8b98eb9e5ac</head:trackingId>
+		<head:step>1</head:step>
+		<head:applicationId>FIRMA</head:applicationId>
+		<head:language>es-ES</head:language>
+		<head:HostRequest>
+		   <head:sessionId>b2d0f2e8-e92b-4d2b-89b9-6fd55c050edb</head:sessionId>
+		   <head:authorizationId>?</head:authorizationId>
+		</head:HostRequest>
+		<head:HeaderProperties>
+		   <head:HeaderProperty>
+			  <head:key>?</head:key>
+			  <head:value>?</head:value>
+		   </head:HeaderProperty>
+		</head:HeaderProperties>
+	 </head:HeaderRequest>
+	 
+	 <mes:InputData>  
+		<dom:canalEntrada>OSP</dom:canalEntrada>
+		<dom:tipoOperacion>ContratoDV</dom:tipoOperacion>
+		<dom:idOperacion>testb2d0f2e8-e92b-4d2b-89b9-6fd55c050edb</dom:idOperacion>
+		<dom:codAplicacion>DV</dom:codAplicacion>
+		<dom:codUsuario>46624722L</dom:codUsuario>
+		<dom:idioma>es-ES</dom:idioma>
+		<dom:idRepositorio>DMS</dom:idRepositorio>
+		<dom:idDocumento>[20150513_041409968_1][Original][1][Firma]</dom:idDocumento>
+		<dom:documento>cid:552428373506</dom:documento>
+		<dom:descripcion>Test Registrar Multidoc - 2COORDENADA </dom:descripcion>
+		<dom:LOPD>?</dom:LOPD>
+		<dom:nombreDocumento>?</dom:nombreDocumento>
+		<dom:mimeType>?</dom:mimeType>
+		<dom:agregacion>inicial</dom:agregacion>
+		<dom:orden>1</dom:orden>
+		<dom:titularContrato>2189206</dom:titularContrato>
+		<dom:idFirmante></dom:idFirmante>
+		<dom:tipoFirma>individual</dom:tipoFirma>
+		<dom:idProducto>product</dom:idProducto>
+		<dom:idContrato>contract</dom:idContrato>
+		<dom:contexto>
+		   <dom1:clave>es_ES-importe</dom1:clave>
+		   <dom1:valor>5000</dom1:valor>
+		</dom:contexto>
+		<dom:caducidad>?</dom:caducidad>
+		<dom:codigoEntidad>01</dom:codigoEntidad>
+		<dom:desistimiento>?</dom:desistimiento>
+	 </mes:InputData>
+						</xmp></pre>
+					</div>
+				</div>
+				
+				<div id="activity-response-message" class="col-md-6 block-left no-visible">
+					<h3>Activity Response Message</h3>
+					<pre class="text-left"><xmp>
+	<mes:InputData>  
+		<dom:canalEntrada>OSP</dom:canalEntrada>
+		<dom:tipoOperacion>ContratoDV</dom:tipoOperacion>
+		<dom:idOperacion>testb2d0f2e8-e92b-4d2b-89b9-6fd55c050edb</dom:idOperacion>
+		<dom:codAplicacion>DV</dom:codAplicacion>
+		<dom:codUsuario>46624722L</dom:codUsuario>
+		<dom:idioma>es-ES</dom:idioma>
+		<dom:idRepositorio>DMS</dom:idRepositorio>
+		<dom:idDocumento>[20150513_041409968_1][Original][1][Firma]</dom:idDocumento>
+		<dom:documento>cid:552428373506</dom:documento>
+		<dom:descripcion>Test Registrar Multidoc - 2COORDENADA </dom:descripcion>
+		<dom:LOPD>?</dom:LOPD>
+		<dom:nombreDocumento>?</dom:nombreDocumento>
+		<dom:mimeType>?</dom:mimeType>
+		<dom:agregacion>inicial</dom:agregacion>
+		<dom:orden>1</dom:orden>
+		<dom:titularContrato>2189206</dom:titularContrato>
+		<dom:idFirmante></dom:idFirmante>
+		<dom:tipoFirma>individual</dom:tipoFirma>
+		<dom:idProducto>product</dom:idProducto>
+		<dom:idContrato>contract</dom:idContrato>
+		<dom:contexto>
+		   <dom1:clave>es_ES-importe</dom1:clave>
+		   <dom1:valor>5000</dom1:valor>
+		</dom:contexto>
+		<dom:caducidad>?</dom:caducidad>
+		<dom:codigoEntidad>01</dom:codigoEntidad>
+		<dom:desistimiento>?</dom:desistimiento>
+	 </mes:InputData>
+					</xmp></pre>
+					<div class="blankspace"></div>
+				</div>
+				
+				</section><!-- ACTIVITY-DETAILS -->
+				
+				
+			</section><!-- OPERATION-VIEW -->
+			
+			
+		
+		</div><!-- WRAPPER -->
+	</body>
+</html>

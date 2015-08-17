@@ -1,0 +1,179 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="css/frontalweb.css">
+		<script src="js/bootstrap.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+			
+	</head>
+	<body>
+		<div id="wrapper" class="col-md-12 color-background simple-border">
+			<div id="header" class="col-md-12">
+				<h1 class="col-md-12 text-center">OPERATIONS SEARCH</h1>
+				<table class="col-md-12 center-block">
+					<form id="search-form">
+						<tr>
+							<td class="col-md-1 text-right">ID_OPERACION:</td>
+							<td class="col-md-1"><input type="text" name="operation-id"/></td>
+							<td class="col-md-1 text-right">FLUJO:</td>
+							<td class="col-md-1"><select name="flows">
+								<option value="flow1">Flujo 1</option>
+								<option value="flow2">Flujo 2</option>
+								<option value="flow3">Flujo 3</option>
+								<option value="flow4">Flujo 4</option></select></td>
+							<td class="col-md-1 text-right">FECHA INICIO:</td>
+							<td class="col-md-1"><input type="datetime" name="date-initial"/></td>
+							<td class="col-md-1 text-right">FECHA FIN:</td>
+							<td class="col-md-1"><input type="datetime" name="date-final"/></td>
+							<td class="col-md-1"><input type="submit" method="GET" name="send" value="Buscar" class="btn btn-success full-width"/></td>
+						</tr>
+						<tr>
+							<td class="col-md-1 text-right">ESTADO:</td>
+							<td class="col-md-1"><select name="status">
+								<option value="status1">Estado 1</option>
+								<option value="status2">Estado 2</option>
+								<option value="status3">Estado 3</option>
+								<option value="status4">Estado 4</option></select></td>
+							<td class="col-md-1 text-right">RESULTADO:</td>
+							<td class="col-md-1"><input type="text" name="result" /></td>
+							<td class="col-md-1 text-right">ID FIRMA:</td>
+							<td class="col-md-1"><input type="text" name="idfc" /></td>
+							<td class="col-md-1 text-right">REQUESTC_ID:</td>
+							<td class="col-md-1"><input type="text" name="requestc_id" /></td>
+							<td class="col-md-1"><input type="reset" value="Limpiar" class="btn btn-info full-width left-block"/></td>
+						</tr>
+						<tr>
+							<td class="col-md-1 text-right">C. ENTRADA:</td>
+							<td class="col-md-1"><input type="text" name="input-channel"/></td>
+							<td class="col-md-1 text-right">SESSION_ID:</td>
+							<td class="col-md-1"><input type="text" name="sessionid"/></td>
+						</tr>
+					</form>
+				</table>
+			</div><!--HEADER-->
+			<div id="content" class="col-md-12 color-background center-block">
+				<div class="col-md-12 text-center"><h2>SEARCH RESULTS</h2></div>
+				<table id="results-table" class="col-md-12 table center-block">
+					<tr class="table-header">
+						<td class="col-md-1 text-center"></td>
+						<td class="col-md-1 text-center">OPERACION</td>
+						<td class="col-md-1 text-center">ITERACION</td>
+						<td class="col-md-1 text-center">C. ENTRADA</td>
+						<td class="col-md-1 text-center">FLUJO</td>
+						<td class="col-md-1 text-center">IDFC</td>
+						<td class="col-md-1 text-center">SESSION ID</td>
+						<td class="col-md-1 text-center">INICIO</td>
+						<td class="col-md-1 text-center">FIN</td>
+						<td class="col-md-1 text-center">ESTADO</td>
+						<td class="col-md-1 text-center">RESULTADO</td>
+						<td class="col-md-1 text-center"></td>
+					</tr>
+					<tr>
+						<td class="col-md-1 text-center"></td>
+						<td class="col-md-1 text-center"><a href="operationview.html">OPERATION YYY</a></td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center"></td>
+					</tr>
+					<tr>
+						<td class="col-md-1 text-center"></td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center"></td>
+					</tr>
+					<tr>
+						<td class="col-md-1 text-center"></td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center"></td>
+					</tr>
+					<tr>
+						<td class="col-md-1 text-center"></td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center"></td>
+					</tr>
+					<tr>
+						<td class="col-md-1 text-center"></td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center"></td>
+					</tr>
+					<tr>
+						<td class="col-md-1 text-center"></td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center">X</td>
+						<td class="col-md-1 text-center"></td>
+					</tr>
+				</table>
+			</div><!--CONTENT-->
+			<div class="col-md-12 blankspace"></div>
+			<div id="footer" class="col-md-12 color-background">
+				<table class="col-md-12">
+					<form id="page-form">
+						<tr>
+							<td class="col-md-3" colspan="3"></td>
+							<td class="col-md-1 text-right">Pagina 1 de X </td>
+							<td class="col-md-1 text-left">Ir a la pagina...</td>
+							<td class="col-md-1"><input type="text" name="page-number"/></td>
+							<td class="col-md-1"><input type="submit" class="btn btn-success full-width" name="go-to-page" value="OK"/></td>
+							<td class="col-md-1"><input type="submit" class="btn btn-info full-width" name="go-to-prev" value="Anterior"/></td>
+							<td class="col-md-1"><input type="submit" class="btn btn-info full-width" name="go-to-next" value="Siguiente"/>	</td>
+							<td class="col-md-3" colspan="3"></td>
+						</tr>
+					</form>
+				</table>
+			<div class="blankspace"></div>
+			</div><!--FOOTER-->
+		</div><!--WRAPPER-->
+	</body>
+</html>
