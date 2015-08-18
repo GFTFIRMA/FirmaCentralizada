@@ -5,6 +5,7 @@ import java.util.List;
 import com.bs.service.firmacentralizada.auditoria.dto.ActivityDTO;
 import com.bs.service.firmacentralizada.auditoria.dto.BasicDTO;
 import com.bs.service.firmacentralizada.auditoria.dto.OperationDTO;
+import com.bs.service.firmacentralizada.auditoria.dto.SearchResultDTO;
 import com.bs.service.firmacentralizada.auditoria.dto.filtros.ActivityFilterDTO;
 import com.bs.service.firmacentralizada.auditoria.dto.filtros.OperationFilterDTO;
 import com.bs.service.firmacentralizada.auditoria.dto.filtros.PaginationDTO;
@@ -106,7 +107,7 @@ public interface AuditoriaDAO {
 	 * 		de búsqueda, devolverá una lista vacía.
 	 * 
 	 */
-	public List<OperationDTO> getOperationList(OperationFilterDTO filter, SortDTO ordination, PaginationDTO pagination);
+	public SearchResultDTO<OperationDTO> getOperationList(OperationFilterDTO filter, SortDTO ordination, PaginationDTO pagination);
 	
 	/**
 	 * Devuelve los datos relativos a la última iteración de la operación indicada, sin incluir información de la actividad asociada a la misma
@@ -145,7 +146,7 @@ public interface AuditoriaDAO {
 	 * 		de búsqueda, devolverá una lista vacía.
 	 * 
 	 */
-	public List<ActivityDTO> getOperationActivityList(long operationId, SortDTO ordination, PaginationDTO pagination);
+	public SearchResultDTO<ActivityDTO> getOperationActivityList(long operationId, SortDTO ordination, PaginationDTO pagination);
 	
 	/**
 	 * Recupera los datos relativos a la actividad indicada
@@ -171,5 +172,5 @@ public interface AuditoriaDAO {
 	 * 		Una lista de ActivityDTO con las actividades recuperadas. Si no existen actividades que se ajusten a los criterios
 	 * 		de búsqueda, devolverá una lista vacía.
 	 */
-	public List<ActivityDTO> getActivityList(ActivityFilterDTO filter, SortDTO ordination, PaginationDTO pagination);
+	public SearchResultDTO<ActivityDTO> getActivityList(ActivityFilterDTO filter, SortDTO ordination, PaginationDTO pagination);
 }

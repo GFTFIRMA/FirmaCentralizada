@@ -14,18 +14,18 @@ public class ExecutionPoint  implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@Column (name="EXECUTION_POINT")
-	private String executionPoint;
+	@Column (name="EXECUTION_POINT_ID")
+	private long executionPointId;
 	
 	@Column (name="DESCRIPTION")
 	private String description;
 
-	public String getExecutionPoint() {
-		return executionPoint;
+	public long getExecutionPointId() {
+		return executionPointId;
 	}
 
-	public void setExecutionPoint(String executionPoint) {
-		this.executionPoint = executionPoint;
+	public void setExecutionPointId(long executionPointId) {
+		this.executionPointId = executionPointId;
 	}
 
 	public String getDescription() {

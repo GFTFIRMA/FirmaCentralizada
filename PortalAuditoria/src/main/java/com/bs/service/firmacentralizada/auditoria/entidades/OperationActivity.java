@@ -20,7 +20,7 @@ public class OperationActivity  implements Serializable {
 	
 	@Id
 	@Column(name="ACTIVITY_ID")
-	private Integer activityId;
+	private long activityId;
 
 	@ManyToOne (targetEntity = Operation.class)
     @JoinColumns({
@@ -30,21 +30,22 @@ public class OperationActivity  implements Serializable {
 	private Operation operation;
 
 	@ManyToOne
-	@JoinColumn(name="LAYER_ID")
+	@JoinColumn(name="LAYER_ID", nullable = false)
 	private Layer layer;
-
-	@ManyToOne (targetEntity = ComponentService.class)
-    @JoinColumns({
-        @JoinColumn(name="COMPONENT", referencedColumnName="COMPONENT"),
-        @JoinColumn(name="SERVICE", referencedColumnName="SERVICE")
-    })
-	private ComponentService componentService;
-
+	
 	@ManyToOne
-	@JoinColumn(name="EXECUTION_POINT")
+	@JoinColumn(name="EXECUTION_POINT_ID")
 	private ExecutionPoint executionPoint;
 
-	@Column(name="START_TIME")
+	@ManyToOne
+	@JoinColumn(name="ORIG_COMPONENT_ID", referencedColumnName="COMPONENT_ID")
+	private Component origComponent;
+	
+	@ManyToOne
+    @JoinColumn(name="DEST_SERVICE_ID", referencedColumnName="SERVICE_ID")
+	private ComponentService destService;
+
+	@Column(name="START_TIME", nullable = false)
 	private Timestamp startTime;
 	
 	@Column(name="END_TIME")
@@ -72,11 +73,11 @@ public class OperationActivity  implements Serializable {
 	@Column(name="NODE")
 	private String node;
 
-	public Integer getActivityId() {
+	public long getActivityId() {
 		return activityId;
 	}
 
-	public void setActivityId(Integer activityId) {
+	public void setActivityId(long activityId) {
 		this.activityId = activityId;
 	}
 
@@ -176,11 +177,19 @@ public class OperationActivity  implements Serializable {
 		this.operation = operation;
 	}
 
-	public ComponentService getComponentService() {
-		return componentService;
+	public ComponentService getDestService() {
+		return destService;
 	}
 
-	public void setComponentService(ComponentService componentService) {
-		this.componentService = componentService;
+	public void setDestService(ComponentService destService) {
+		this.destService = destService;
+	}
+
+	public Component getOrigComponent() {
+		return origComponent;
+	}
+
+	public void setOrigComponent(Component origComponent) {
+		this.origComponent = origComponent;
 	}
 }

@@ -2,7 +2,7 @@ package com.bs.service.firmacentralizada.auditoria.dto;
 
 import java.util.List;
 
-public class ComplexDTO<T> {
+public class SearchResultDTO<T> {
 	
 	private List<T> searchData;
 	

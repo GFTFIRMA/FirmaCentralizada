@@ -1,7 +1,7 @@
 package com.bs.service.firmacentralizada.auditoria.entidades;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -26,16 +26,16 @@ public class OpenOperation  implements Serializable {
 	private Operation operation;
 
 	@Column(name="START_TIME")
-	private Date startTime;
+	private Timestamp startTime;
 
 	@Column(name="NODE")
 	private String node;
 	
-	public Date getStartTime() {
+	public Timestamp getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(Date startTime) {
+	public void setStartTime(Timestamp startTime) {
 		this.startTime = startTime;
 	}
 

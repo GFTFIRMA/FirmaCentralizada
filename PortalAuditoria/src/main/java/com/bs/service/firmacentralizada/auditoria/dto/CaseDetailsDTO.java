@@ -4,18 +4,18 @@ import java.util.List;
 
 public class CaseDetailsDTO extends CaseDTO {
 
-	private CaseDTO caso;
+	private CaseDTO caseFC;
 	
 	private List<CaseDocumentDTO> documents;
 	
 	private List<CasePersonDTO> persons;
 
-	public CaseDTO getCaso() {
-		return caso;
+	public CaseDTO getCaseFC() {
+		return caseFC;
 	}
 
-	public void setCaso(CaseDTO caso) {
-		this.caso = caso;
+	public void setCaseFC(CaseDTO caseFC) {
+		this.caseFC = caseFC;
 	}
 
 	public List<CaseDocumentDTO> getDocuments() {

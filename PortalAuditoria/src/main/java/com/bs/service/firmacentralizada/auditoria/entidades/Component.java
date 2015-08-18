@@ -8,24 +8,27 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="COMPONENT")
+@Table(name="COMPONENTS")
 public class Component implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@Column (name="COMPONENT")
-	private String component;
+	@Column (name="COMPONENT_ID")
+	private long componentId;
 	
 	@Column (name="DESCRIPTION")
 	private String description;
 
-	public String getComponent() {
-		return component;
+	@Column (name="IS_EXTERNAL")
+	private int isExternal;
+
+	public long getComponentId() {
+		return componentId;
 	}
 
-	public void setComponent(String component) {
-		this.component = component;
+	public void setComponentId(long componentId) {
+		this.componentId = componentId;
 	}
 
 	public String getDescription() {
@@ -34,5 +37,13 @@ public class Component implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public int getIsExternal() {
+		return isExternal;
+	}
+
+	public void setIsExternal(int isExternal) {
+		this.isExternal = isExternal;
 	}
 }

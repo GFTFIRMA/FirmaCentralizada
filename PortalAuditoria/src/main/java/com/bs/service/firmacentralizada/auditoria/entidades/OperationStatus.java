@@ -15,16 +15,16 @@ public class OperationStatus implements Serializable {
 	
 	@Id
 	@Column(name="STATUS_ID")
-	private Integer statusId;
+	private int statusId;
 
 	@Column(name="DESCRIPTION")
 	private String description;
 
-	public Integer getStatusId() {
+	public int getStatusId() {
 		return statusId;
 	}
 
-	public void setStatusId(Integer statusId) {
+	public void setStatusId(int statusId) {
 		this.statusId = statusId;
 	}
 

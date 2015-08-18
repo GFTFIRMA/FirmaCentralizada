@@ -14,18 +14,18 @@ public class Flow  implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@Column (name="FLOW")
-	private String flow;
+	@Column (name="FLOW_ID")
+	private long flowId;
 	
 	@Column (name="DESCRIPTION")
 	private String description;
 
-	public String getFlow() {
-		return flow;
+	public long getFlowId() {
+		return flowId;
 	}
 
-	public void setFlow(String flow) {
-		this.flow = flow;
+	public void setFlowId(long flowId) {
+		this.flowId = flowId;
 	}
 
 	public String getDescription() {

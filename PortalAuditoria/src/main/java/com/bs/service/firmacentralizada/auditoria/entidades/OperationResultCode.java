@@ -15,19 +15,19 @@ public class OperationResultCode  implements Serializable {
 
 	@Id
 	@Column(name="CODE")
-	private Integer code;
+	private long code;
 
 	@Column(name="DESCRIPTION")
 	private String description;
 
-	@Column(name="RETRYABLE")
-	private Integer retryable;
+	@Column(name="IS_RETRYABLE")
+	private int isRetryable;
 
-	public Integer getCode() {
+	public long getCode() {
 		return code;
 	}
 
-	public void setCode(Integer code) {
+	public void setCode(long code) {
 		this.code = code;
 	}
 
@@ -39,11 +39,11 @@ public class OperationResultCode  implements Serializable {
 		this.description = description;
 	}
 
-	public Integer getRetryable() {
-		return retryable;
+	public int getIsRetryable() {
+		return isRetryable;
 	}
 
-	public void setRetryable(Integer retryable) {
-		this.retryable = retryable;
+	public void setIsRetryable(int isRetryable) {
+		this.isRetryable = isRetryable;
 	}
 }

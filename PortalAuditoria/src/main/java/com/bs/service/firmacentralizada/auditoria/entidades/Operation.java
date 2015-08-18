@@ -20,14 +20,14 @@ public class Operation implements Serializable {
 	@EmbeddedId
 	private OperationPK operationPK;
 
-	@Column(name="START_TIME")
+	@Column(name="START_TIME", nullable = false)
 	private Timestamp startTime;
 	
 	@Column(name="END_TIME")
 	private Timestamp endTime;
 
 	@ManyToOne
-	@JoinColumn(name="STATUS_ID")
+	@JoinColumn(name="STATUS_ID", nullable = false)
 	private OperationStatus status;
 
 	@ManyToOne
@@ -84,29 +84,30 @@ public class Operation implements Serializable {
 	public void setNode(String node) {
 		this.node = node;
 	}
+	
 	@Embeddable
 	public static class OperationPK implements Serializable {
 
 		private static final long serialVersionUID = 1L;
 
 		@Column(name="OPERATION_ID")
-		private Integer operationId;
+		private Long operationId;
 
 		@Column(name="ITERATION")
 		private Integer iteration;
 		
 		public OperationPK() {}
 		
-		public OperationPK(int operationId, int iteration) {
+		public OperationPK(long operationId, int iteration) {
 			this.setOperationId(operationId);
 			this.setIteration(iteration);
 		}
 
-		public Integer getOperationId() {
+		public Long getOperationId() {
 			return operationId;
 		}
 
-		public void setOperationId(Integer operationId) {
+		public void setOperationId(Long operationId) {
 			this.operationId = operationId;
 		}
 
@@ -139,7 +140,7 @@ public class Operation implements Serializable {
 	    public int hashCode() {
 	        int result;
 	        result = getOperationId().hashCode();
-	        result = 29 * result + getIteration();
+	        result = (int) (29 * result + getIteration());
 	        return result;
 	    }
 	}

@@ -13,6 +13,8 @@ import com.bs.service.firmacentralizada.auditoria.dao.AuditoriaDAO;
 import com.bs.service.firmacentralizada.auditoria.dto.ActivityDTO;
 import com.bs.service.firmacentralizada.auditoria.dto.BasicDTO;
 import com.bs.service.firmacentralizada.auditoria.dto.OperationDTO;
+import com.bs.service.firmacentralizada.auditoria.dto.SearchResultDTO;
+import com.bs.service.firmacentralizada.auditoria.dto.SearchStatsDTO;
 import com.bs.service.firmacentralizada.auditoria.dto.filtros.ActivityFilterDTO;
 import com.bs.service.firmacentralizada.auditoria.dto.filtros.OperationFilterDTO;
 import com.bs.service.firmacentralizada.auditoria.dto.filtros.PaginationDTO;
@@ -39,7 +41,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 		List<Component> components = emf.createEntityManager().createQuery("SELECT c FROM Component c", Component.class).getResultList();
 		
 		for (Component component : components) {
-			result.add(new BasicDTO(component.getComponent(), component.getDescription()));
+			result.add(new BasicDTO(component.getComponentId(), component.getDescription()));
 		}
 		
 		return result;
@@ -52,7 +54,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 		List<ExecutionPoint> executionPoints = emf.createEntityManager().createQuery("SELECT e FROM ExecutionPoint e", ExecutionPoint.class).getResultList();
 		
 		for (ExecutionPoint executionPoint : executionPoints) {
-			result.add(new BasicDTO(executionPoint.getExecutionPoint(), executionPoint.getDescription()));
+			result.add(new BasicDTO(executionPoint.getExecutionPointId(), executionPoint.getDescription()));
 		}
 		
 		return result;
@@ -65,7 +67,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 		List<Flow> flows = emf.createEntityManager().createQuery("SELECT f FROM Flow f", Flow.class).getResultList();
 		
 		for (Flow flow : flows) {
-			result.add(new BasicDTO(flow.getFlow(), flow.getDescription()));
+			result.add(new BasicDTO(flow.getFlowId(), flow.getDescription()));
 		}
 		
 		return result;
@@ -124,12 +126,12 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 		List<BasicDTO> result = new ArrayList<BasicDTO>();
 		List<ComponentService> services = emf.createEntityManager()
 											 .createQuery("SELECT c FROM ComponentService c " +
-													 	  "WHERE c.componentServicePK.component.component = :componentId", ComponentService.class)
+													 	  "WHERE c.component.componentId = :componentId", ComponentService.class)
 											 .setParameter("componentId", componentId)
 											 .getResultList();
 		
 		for (ComponentService service : services) {
-			result.add(new BasicDTO(service.getComponentServicePK().getService(), service.getDescription()));
+			result.add(new BasicDTO(service.getServiceId(), service.getDescription()));
 		}
 		
 		return result;
@@ -137,9 +139,11 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<OperationDTO> getOperationList(OperationFilterDTO filter, SortDTO ordination, PaginationDTO pagination) {
+	public SearchResultDTO<OperationDTO> getOperationList(OperationFilterDTO filter, SortDTO ordination, PaginationDTO pagination) {
 		
-		List<OperationDTO> result = new ArrayList<OperationDTO>();
+		List<OperationDTO> searchData = new ArrayList<OperationDTO>();
+		SearchResultDTO<OperationDTO> searchResult = new SearchResultDTO<OperationDTO>();
+		SearchStatsDTO stats = new SearchStatsDTO();
 		
 		String query = "SELECT o FROM OperationData o";
 		if (filter != null) {
@@ -148,11 +152,10 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 				query += selectKeyword() + " o.operation.operationPK.operationId = " + filter.getOperationId();
 			}
 			
-			if (filter.getFlow() != null) {
-				query += selectKeyword() + " o.flow.flow = '" + filter.getFlow() + "'";
+			if (filter.getFlowId() != null) {
+				query += selectKeyword() + " o.flow.flowId = " + filter.getFlowId();
 			}
 			
-			// TODO resultCode string o int?
 			if (filter.getResultCode() != null) {
 				query += selectKeyword() + " o.operation.resultCode.code = " + filter.getResultCode();
 			}
@@ -162,7 +165,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 			}
 			
 			if (filter.getRequestcId() != null) {
-				// TODO implementar cuando se pueda recuperar el requestcId
+				query += selectKeyword() + " o.requestcId = '" + filter.getRequestcId() + "'";
 			}
 			
 			if (filter.getInputChannel() != null) {
@@ -171,10 +174,6 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 			
 			if (filter.getSessionId() != null) {
 				query += selectKeyword() + " o.sessionId = '" + filter.getSessionId() + "'";
-			}
-			
-			if (filter.isSendActivity()) {
-				// TODO ?
 			}
 			
 			if (filter.getStatusId() != null) {
@@ -206,6 +205,11 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 			typedQuery.setParameter("endTime", filter.getEndTime(), TemporalType.TIMESTAMP);
 		}
 		
+		// La consulta se hace una primera vez sin paginación para obtener el número total de resultados
+		stats.setTotalResults(typedQuery.getResultList().size());
+		stats.setCurrentPage(pagination.getNumPage());
+		stats.setTotalPages(stats.getTotalResults() / pagination.getNumRegisters());
+		
 		// Paginación
 		if (pagination != null) {
 			int startPosition = retrieveLowRowRange(pagination.getNumPage(), pagination.getNumRegisters());
@@ -216,16 +220,22 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 		List<OperationData> operations = typedQuery.getResultList();
 		
 		for (OperationData operation : operations) {
-			result.add(buildOperationDtoFromOperationData(operation));
+			searchData.add(buildOperationDtoFromOperationData(operation));
 		}
 		
-		return result;
+		searchResult.setSearchData(searchData);
+		searchResult.setSearchStats(stats);
+		
+		return searchResult;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ActivityDTO> getActivityList(ActivityFilterDTO filter, SortDTO ordination, PaginationDTO pagination) {
-		List<ActivityDTO> result = new ArrayList<ActivityDTO>();
+	public SearchResultDTO<ActivityDTO> getActivityList(ActivityFilterDTO filter, SortDTO ordination, PaginationDTO pagination) {
+		
+		List<ActivityDTO> searchData = new ArrayList<ActivityDTO>();
+		SearchResultDTO<ActivityDTO> searchResult = new SearchResultDTO<ActivityDTO>();
+		SearchStatsDTO stats = new SearchStatsDTO();
 
 		String query = "SELECT a FROM OperationActivity a";
 		if (filter != null) {
@@ -238,32 +248,32 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 				query += selectKeyword() + " a.operation.operationPK.operationId = " + filter.getOperationId();
 			}
 			
-			if (filter.getFlow() != null) {
-				query += selectKeyword() + " a.flow.flow = '" + filter.getFlow() + "'";
+			if (filter.getFlowId() != null) {
+				// TODO Como relacionar activity con flow ???
 			}
 			
 			if (filter.getResultCode() != null) {
 				query += selectKeyword() + " a.operation.resultCode.code = " + filter.getResultCode();
 			}
 			
-			if (filter.getExecutionPoint() != null) {
-				query += selectKeyword() + "a.executionPoint = '" + filter.getExecutionPoint() + "'";
+			if (filter.getExecutionPointId() != null) {
+				query += selectKeyword() + "a.executionPoint.executionPointId = " + filter.getExecutionPointId();
 			}
 			
 			if (filter.getTrackingId() != null) {
 				query += selectKeyword() + "a.trackingId = '" + filter.getTrackingId() + "'";
 			}
 			
-			if (filter.getLayer() != null) {
-				query += selectKeyword() + "a.layer.layerId = " + filter.getLayer();
+			if (filter.getLayerId() != null) {
+				query += selectKeyword() + "a.layer.layerId = " + filter.getLayerId();
 			}
 			
-			if (filter.getComponent() != null) {
-				query += selectKeyword() + "a.componentService.componentServicePK.component.component = '" + filter.getComponent() + "'";
+			if (filter.getComponentId() != null) {
+				query += selectKeyword() + "a.origComponent.componentId = " + filter.getComponentId();
 			}
 			
-			if (filter.getService() != null) {
-				query += selectKeyword() + "a.componentService.componentServicePK.service = '" + filter.getService() +"'";
+			if (filter.getServiceId() != null) {
+				query += selectKeyword() + "a.destService.serviceId = " + filter.getServiceId();
 			}
 			
 			if (filter.getStatusId() != null) {
@@ -295,6 +305,11 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 			typedQuery.setParameter("endTime", filter.getEndTime(), TemporalType.TIMESTAMP);
 		}
 		
+		// La consulta se hace una primera vez sin paginación para obtener el número total de resultados
+		stats.setTotalResults(typedQuery.getResultList().size());
+		stats.setCurrentPage(pagination.getNumPage());
+		stats.setTotalPages(stats.getTotalResults() / pagination.getNumRegisters());
+		
 		// Paginación
 		if (pagination != null) {
 			int startPosition = retrieveLowRowRange(pagination.getNumPage(), pagination.getNumRegisters());
@@ -305,55 +320,95 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 		List<OperationActivity> activities = typedQuery.getResultList();
 		
 		for (OperationActivity opActivity : activities) {
-			result.add(buildActivityDtoFromOperationActivity(opActivity));
+			searchData.add(buildActivityDtoFromOperationActivity(opActivity));
 		}
 
-		return result;
+		searchResult.setSearchData(searchData);
+		searchResult.setSearchStats(stats);
+		
+		return searchResult;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<ActivityDTO> getOperationActivityList(long operationId, SortDTO ordination, PaginationDTO pagination) {
+	public SearchResultDTO<ActivityDTO> getOperationActivityList(long operationId, SortDTO ordination, PaginationDTO pagination) {
 		
-		List<ActivityDTO> result = new ArrayList<ActivityDTO>();
-		List<OperationActivity> opActivities = emf.createEntityManager()
-												.createQuery("SELECT o FROM OperationActivity o " +
-															 "WHERE o.operation.operationPK.operationId = :operationId", OperationActivity.class)
-												.setParameter("operationId", operationId)
-												.getResultList();
+		List<ActivityDTO> searchData = new ArrayList<ActivityDTO>();
+		SearchResultDTO<ActivityDTO> searchResult = new SearchResultDTO<ActivityDTO>();
+		SearchStatsDTO stats = new SearchStatsDTO();
 		
-		// TODO incluir paginación y ordenación
+		String query = "SELECT o FROM OperationActivity o " +
+				 	   "WHERE o.operation.operationPK.operationId = " + operationId;
 		
-		for (OperationActivity opActivity : opActivities) {
-			result.add(buildActivityDtoFromOperationActivity(opActivity));
+		// Ordenacion
+		if (ordination != null) {
+			query += " ORDER BY o." + ordination.getField();
 		}
 		
-		return result;
+		Query typedQuery = emf.createEntityManager().createQuery(query, OperationActivity.class);
+		
+		// La consulta se hace una primera vez sin paginación para obtener el número total de resultados
+		stats.setTotalResults(typedQuery.getResultList().size());
+		stats.setCurrentPage(pagination.getNumPage());
+		stats.setTotalPages(stats.getTotalResults() / pagination.getNumRegisters());
+		
+		// Paginación
+		if (pagination != null) {
+			int startPosition = retrieveLowRowRange(pagination.getNumPage(), pagination.getNumRegisters());
+			int maxResults = retrieveHighRowRange(pagination.getNumPage(), pagination.getNumRegisters());
+			typedQuery.setFirstResult(startPosition).setMaxResults(maxResults);
+		}
+		
+		List<OperationActivity> opActivities = typedQuery.getResultList();
+		
+		for (OperationActivity opActivity : opActivities) {
+			searchData.add(buildActivityDtoFromOperationActivity(opActivity));
+		}
+		
+		searchResult.setSearchStats(stats);
+		searchResult.setSearchData(searchData);
+		
+		return searchResult;
 	}
 
 	@Override
 	public OperationDTO getLastIterationByOperationId(long operationId) {
-		OperationDTO result = new OperationDTO();
-		// TODO
-		return result;
+		
+		List<OperationData> operation = emf.createEntityManager()
+				.createQuery("SELECT o FROM OperationData o " +
+							 "WHERE o.operation.operationPK.operationId = :operationId " +
+							 "ORDER BY o.operation.operationPK.iteration DESC", OperationData.class)
+				.setParameter("operationId", operationId)
+				.getResultList();
+		
+		if (operation != null) {
+			return buildOperationDtoFromOperationData(operation.get(0));
+		}
+		
+		return null;
 	}
 	
 	@Override
 	public OperationDTO getOperationById(long operationId, int iteration) {
-		OperationDTO result = new OperationDTO();
+		
 		List<OperationData> operation = emf.createEntityManager()
-				.createQuery("SELECT o FROM Operation o " +
-							 "WHERE o.operation.operationPK.operationId = :operationId", OperationData.class)
+				.createQuery("SELECT o FROM OperationData o " +
+							 "WHERE o.operation.operationPK.operationId = :operationId " +
+							 "AND o.operation.operationPK.iteration = :iteration", OperationData.class)
 				.setParameter("operationId", operationId)
+				.setParameter("iteration", iteration)
 				.getResultList();
 		
-		// TODO -> qué devuelve este método si hay varias entradas para el mismo id con diferentes iteraciones?
+		if (operation != null && operation.size() == 1) {
+			return buildOperationDtoFromOperationData(operation.get(0));
+		}
 		
-		return result;
+		return null;
 	}
 
 	@Override
 	public ActivityDTO getActivityById(long activityId) {
-		ActivityDTO result = new ActivityDTO();
+		
 		List<OperationActivity> activityList = emf.createEntityManager()
 				.createQuery("SELECT a FROM OperationActivity a " +
 							 "WHERE a.activityId = :activityId", OperationActivity.class)
@@ -361,11 +416,10 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 				.getResultList();
 		
 		if (activityList != null && activityList.size() == 1) {
-			result = buildActivityDtoFromOperationActivity(activityList.get(0));
-		} else {
-			// TODO Devolver mensaje de error?
+			return buildActivityDtoFromOperationActivity(activityList.get(0));
 		}
-		return result;
+		
+		return null;
 	}
 	
 	
@@ -387,13 +441,13 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 		
 		operation.setOperationId(operationData.getOperation().getOperationPK().getOperationId());
 		operation.setIteration(operationData.getOperation().getOperationPK().getIteration());
-		operation.setFlow(operationData.getFlow().getFlow());
+		operation.setFlow(operationData.getFlow().getDescription());
 		operation.setStartTime(operationData.getOperation().getStartTime());
 		operation.setEndTime(operationData.getOperation().getEndTime());
 		operation.setStatusId(operationData.getOperation().getStatus().getStatusId());
 		operation.setResultCode(operationData.getOperation().getResultCode().getDescription());
 		operation.setFcId(operationData.getFcId());
-		operation.setRequestcId(-1); // TODO
+		operation.setRequestcId(operationData.getRequestcId());
 		operation.setInputChannel(operationData.getInputChannel());
 		operation.setSessionId(operationData.getSessionId());
 		
@@ -408,10 +462,10 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 		activity.setOperationId(opActivity.getOperation().getOperationPK().getOperationId());
 		activity.setIteration(opActivity.getOperation().getOperationPK().getIteration());
 		activity.setLayer(opActivity.getLayer().getDescription());
-		activity.setExecutionPoint(opActivity.getExecutionPoint().getExecutionPoint());
-		activity.setSourceComponent(null); //TODO
-		activity.setDestinationComponent(null); //TODO
-		activity.setService(opActivity.getComponentService().getComponentServicePK().getService());
+		activity.setExecutionPoint(opActivity.getExecutionPoint().getDescription());
+		activity.setSourceComponent(opActivity.getOrigComponent().getDescription());
+		activity.setDestinationComponent(opActivity.getDestService().getComponent().getDescription());
+		activity.setService(opActivity.getDestService().getDescription());
 		activity.setStartTime(opActivity.getStartTime());
 		activity.setEndTime(opActivity.getEndTime());
 		activity.setTrackingId(opActivity.getTrackingId());
@@ -423,13 +477,13 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 		try {
 			activity.setXmlSvcRequest(opActivity.getXmlSvcRequest().getSubString(1, (int)opActivity.getXmlSvcRequest().length()));
 		} catch (SQLException e) {
-			// TODO Setear un mensaje de error?
+			activity.setXmlSvcRequest("Ha ocurrido el siguente error recuperando la petición: " + e);
 		}
 		
 		try {
 			activity.setXmlSvcResponse(opActivity.getXmlSvcResponse().getSubString(1, (int)opActivity.getXmlSvcResponse().length()));
 		} catch (SQLException e) {
-			// TODO Setear un mensaje de error?
+			activity.setXmlSvcRequest("Ha ocurrido el siguente error recuperando la respuesta: " + e);
 		}
 		
 		return activity;

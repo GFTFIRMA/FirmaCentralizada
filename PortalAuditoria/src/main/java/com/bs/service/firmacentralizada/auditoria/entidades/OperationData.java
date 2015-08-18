@@ -30,6 +30,9 @@ public class OperationData  implements Serializable {
 	@JoinColumn(name = "FLOW")
 	private Flow flow;
 
+	@Column(name="REQUESTC_ID")
+	private long requestcId;
+	
 	@Column(name="INPUT_CHANNEL")
 	private String inputChannel;
 
@@ -99,5 +102,13 @@ public class OperationData  implements Serializable {
 
 	public void setOperation(Operation operation) {
 		this.operation = operation;
+	}
+
+	public long getRequestcId() {
+		return requestcId;
+	}
+
+	public void setRequestcId(long requestcId) {
+		this.requestcId = requestcId;
 	}
 }

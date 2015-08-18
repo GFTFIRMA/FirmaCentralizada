@@ -6,19 +6,19 @@ public class ActivityFilterDTO extends FilterDTO {
 	
 	private Long operationId;
 	
-	private String flow;
+	private Long flowId;
 	
 	private String resultCode;
 	
-	private String executionPoint;
+	private Long executionPointId;
 	
 	private String trackingId;
 	
-	private String layer;
+	private Long layerId;
 	
-	private String component;
+	private Long componentId;
 	
-	private String service;
+	private Long serviceId;
 
 	public Long getActivityId() {
 		return activityId;
@@ -36,28 +36,12 @@ public class ActivityFilterDTO extends FilterDTO {
 		this.operationId = operationId;
 	}
 
-	public String getFlow() {
-		return flow;
-	}
-
-	public void setFlow(String flow) {
-		this.flow = flow;
-	}
-
 	public String getResultCode() {
 		return resultCode;
 	}
 
 	public void setResultCode(String resultCode) {
 		this.resultCode = resultCode;
-	}
-
-	public String getExecutionPoint() {
-		return executionPoint;
-	}
-
-	public void setExecutionPoint(String executionPoint) {
-		this.executionPoint = executionPoint;
 	}
 
 	public String getTrackingId() {
@@ -68,27 +52,43 @@ public class ActivityFilterDTO extends FilterDTO {
 		this.trackingId = trackingId;
 	}
 
-	public String getLayer() {
-		return layer;
+	public Long getFlowId() {
+		return flowId;
 	}
 
-	public void setLayer(String layer) {
-		this.layer = layer;
+	public void setFlowId(Long flowId) {
+		this.flowId = flowId;
 	}
 
-	public String getComponent() {
-		return component;
+	public Long getExecutionPointId() {
+		return executionPointId;
 	}
 
-	public void setComponent(String component) {
-		this.component = component;
+	public void setExecutionPointId(Long executionPointId) {
+		this.executionPointId = executionPointId;
 	}
 
-	public String getService() {
-		return service;
+	public Long getLayerId() {
+		return layerId;
 	}
 
-	public void setService(String service) {
-		this.service = service;
+	public void setLayerId(Long layerId) {
+		this.layerId = layerId;
+	}
+
+	public Long getComponentId() {
+		return componentId;
+	}
+
+	public void setComponentId(Long componentId) {
+		this.componentId = componentId;
+	}
+
+	public Long getServiceId() {
+		return serviceId;
+	}
+
+	public void setServiceId(Long serviceId) {
+		this.serviceId = serviceId;
 	}
 }

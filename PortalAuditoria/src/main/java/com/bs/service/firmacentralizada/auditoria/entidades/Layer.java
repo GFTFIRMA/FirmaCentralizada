@@ -15,19 +15,19 @@ public class Layer  implements Serializable {
 	
 	@Id
 	@Column (name="LAYER_ID")
-	private Integer layerId;
+	private long layerId;
 
 	@Column (name="DESCRIPTION")
 	private String description;
 
 	@Column (name="DEPTH")
-	private Integer depth;
+	private long depth;
 
-	public Integer getLayerId() {
+	public long getLayerId() {
 		return layerId;
 	}
 
-	public void setLayerId(Integer layerId) {
+	public void setLayerId(long layerId) {
 		this.layerId = layerId;
 	}
 
@@ -39,11 +39,11 @@ public class Layer  implements Serializable {
 		this.description = description;
 	}
 
-	public Integer getDepth() {
+	public long getDepth() {
 		return depth;
 	}
 
-	public void setDepth(Integer depth) {
+	public void setDepth(long depth) {
 		this.depth = depth;
 	}
 }

@@ -20,7 +20,7 @@ public class OperationDTO {
 	
 	private String fcId;
 	
-	private int requestcId;
+	private long requestcId;
 	
 	private String inputChannel;
 	
@@ -90,12 +90,12 @@ public class OperationDTO {
 		this.fcId = fcId;
 	}
 
-	public int getRequestcId() {
+	public long getRequestcId() {
 		return requestcId;
 	}
 
-	public void setRequestcId(int requestcId) {
-		this.requestcId = requestcId;
+	public void setRequestcId(long l) {
+		this.requestcId = l;
 	}
 
 	public String getInputChannel() {
