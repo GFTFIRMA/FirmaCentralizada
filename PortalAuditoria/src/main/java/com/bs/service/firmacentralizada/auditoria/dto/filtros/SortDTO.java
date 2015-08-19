@@ -4,81 +4,106 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Class SortDTO
+ * 
  * Clase que proporciona constantes y métodos para definir la ordenación a usar en una consulta a BBDD
  */
 public class SortDTO {
 	
-	/**
-	 * Tipo de ordenación para {@link #getOrder()} y {@link #setOrder(String)} indicando una ordenación ascendente
-	 */
-	public static final String ASC = "ASC";
-	
-	/**
-	 * Tipo de ordenación para {@link #getOrder()} y {@link #setOrder(String)} indicando una ordenación descendente
-	 */
-	public static final String DESC = "DESC";
-	
-	public static final String ID_OPERACION = "operationId";
-	public static final String ID_ACTIVIDAD = "activityId";
-	public static final String FLUJO = "flow";
-	public static final String CANAL_ENTRADA = "inputChannel";
-	public static final String REQUESTC_ID ="requestcId";
-	public static final String INICIO_OPERACION = "operationStartTime";
-	public static final String FIN_OPERACION = "operationEndTime";
-	public static final String INICIO_ACTIVIDAD = "activityStartTime";
-	public static final String FIN_ACTIVIDAD = "activityEndTime";
-	public static final String ESTADO_OPERACION ="operationStatus";
-	public static final String ESTADO_ACTIVIDAD ="activityStatus";
-	public static final String ORIGEN ="origen";
-	public static final String DESTINO = "destino";
-	
-	private String order;
-	private String field;
-	
-	private static Map<String,String> sortMap = new HashMap<String, String>();
+	private SortDTO.OrderType type;
+	private SortDTO.OrderField field;
+	private static Map<SortDTO.OrderField,String> fieldMap = new HashMap<SortDTO.OrderField, String>();
+	private static Map<SortDTO.OrderType,String> typeMap = new HashMap<SortDTO.OrderType, String>();
 	
 	static {
-		sortMap.put(ID_OPERACION, "operation.operationPK.operationId");
-		sortMap.put(ID_ACTIVIDAD, "activityId");
-		sortMap.put(FLUJO, "flow.flow");
-		sortMap.put(CANAL_ENTRADA, "inputChannel");
-		sortMap.put(REQUESTC_ID, ""); // TODO
-		sortMap.put(INICIO_OPERACION, "operation.startTime");
-		sortMap.put(FIN_OPERACION, "operation.endTime");
-		sortMap.put(INICIO_ACTIVIDAD, "startTime");
-		sortMap.put(FIN_ACTIVIDAD, "startTime");
-		sortMap.put(ESTADO_OPERACION, "operation.status.statusId");
-		sortMap.put(ESTADO_ACTIVIDAD, "status.statusId");
+		fieldMap.put(OrderField.ID_OPERACION, "operation.operationPK.operationId");
+		fieldMap.put(OrderField.ID_ACTIVIDAD, "activityId");
+		fieldMap.put(OrderField.FLUJO, "flow.flowId");
+		fieldMap.put(OrderField.CANAL_ENTRADA, "inputChannel");
+		fieldMap.put(OrderField.REQUESTC_ID, "requestcId");
+		fieldMap.put(OrderField.INICIO_OPERACION, "operation.startTime");
+		fieldMap.put(OrderField.FIN_OPERACION, "operation.endTime");
+		fieldMap.put(OrderField.INICIO_ACTIVIDAD, "startTime");
+		fieldMap.put(OrderField.FIN_ACTIVIDAD, "startTime");
+		fieldMap.put(OrderField.ESTADO_OPERACION, "operation.status.statusId");
+		fieldMap.put(OrderField.ESTADO_ACTIVIDAD, "status.statusId"); 
+		fieldMap.put(OrderField.ORIGEN, "origComponent.componentId");
+		fieldMap.put(OrderField.DESTINO, "destService.serviceId");
+		
+		typeMap.put(OrderType.ASC, "ASC");
+		typeMap.put(OrderType.DESC, "DESC");
+	}
+	
+
+	/**
+	 * Campos de ordenación para {@link SortDTO#getType()} y {@link SortDTO#setType(OrderType)}
+	 */
+	public enum OrderType {
+		ASC, DESC
+	}
+	
+	/**
+	 * Campos de ordenación para {@link SortDTO#getField()} y {@link SortDTO#setField(OrderField)}
+	 */
+	public enum OrderField {
+		ID_OPERACION,
+		ID_ACTIVIDAD,
+		FLUJO,
+		CANAL_ENTRADA,
+		REQUESTC_ID,
+		INICIO_OPERACION,
+		FIN_OPERACION,
+		INICIO_ACTIVIDAD,
+		FIN_ACTIVIDAD,
+		ESTADO_OPERACION,
+		ESTADO_ACTIVIDAD,
+		ORIGEN,
+		DESTINO
 	}
 	
 	/**
 	 * Devuelve el tipo de ordenación del filtro
-	 * 
-	 * @return
-	 * 		El valor del tipo de ordenación activo, {@value #ASC} o {@value #DESC}
 	 */
-	public String getOrder() {
-		return order;
+	public SortDTO.OrderType getType() {
+		return type;
 	}
 
 	/**
-	 * Fija el tipo de ordenación del filto. Se recomienda utilizar uno de los dos valores definidos, {@link #ASC} o {@link #DESC}
+	 * Fija el tipo de ordenación del filto.
+	 * @param type
+	 * 		El tipo de ordenación, especificado por uno de los valores definidos en {@link SortDTO.OrderType}
 	 */
-	public void setOrder(String order) {
-		this.order = order;
+	public void setType(SortDTO.OrderType type) {
+		this.type = type;
 	}
-
+	
+	/**
+	 * Devuelve la representación String del tipo de ordenación del filtro
+	 */
+	public String getTypeAsString() {
+		return typeMap.containsKey(type) ? typeMap.get(type) : typeMap.get(OrderType.ASC);
+	}
+	
 	/**
 	 * Devuelve el campo por el cual se realiza la ordenación
 	 */
-	public String getField() {
-		return sortMap.containsKey(field) ? sortMap.get(field) : ID_OPERACION;
+	public SortDTO.OrderField getField() {
+		return field;
 	}
 
 	/**
-	 * Fija el campo por el cual se realizará la ordenación.
+	 * Fija el campo de ordenación del filto.
+	 * @param field
+	 * 		El campo de ordenación, especificado por uno de los valores definidos en {@link SortDTO.OrderField}
 	 */
-	public void setField(String field) {
+	public void setField(SortDTO.OrderField field) {
 		this.field = field;
+	}
+	
+	/**
+	 * Devuelve la representación String del campo por el cual se realiza la ordenación
+	 */
+	public String getFieldAsString() {
+		return fieldMap.containsKey(field) ? fieldMap.get(field) : fieldMap.get(OrderField.ID_OPERACION);
 	}
 }

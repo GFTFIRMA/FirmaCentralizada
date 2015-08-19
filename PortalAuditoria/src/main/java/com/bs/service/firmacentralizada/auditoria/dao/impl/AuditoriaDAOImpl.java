@@ -1,6 +1,5 @@
 package com.bs.service.firmacentralizada.auditoria.dao.impl;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -121,7 +120,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 	}
 
 	@Override
-	public List<BasicDTO> getServicesByComponentId(String componentId) {
+	public List<BasicDTO> getServicesByComponentId(long componentId) {
 		
 		List<BasicDTO> result = new ArrayList<BasicDTO>();
 		List<ComponentService> services = emf.createEntityManager()
@@ -156,8 +155,8 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 				query += selectKeyword() + " o.flow.flowId = " + filter.getFlowId();
 			}
 			
-			if (filter.getResultCode() != null) {
-				query += selectKeyword() + " o.operation.resultCode.code = " + filter.getResultCode();
+			if (filter.getResultCodeId() != null) {
+				query += selectKeyword() + " o.operation.resultCode.code = " + filter.getResultCodeId();
 			}
 			
 			if (filter.getFcId() != null) {
@@ -192,7 +191,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 		
 		// Ordenación
 		if (ordination != null) {
-			query += " ORDER BY o." + ordination.getField();
+			query += " ORDER BY o." + ordination.getFieldAsString() + " " + ordination.getTypeAsString();
 		}
 		
 		Query typedQuery = emf.createEntityManager().createQuery(query, OperationData.class);
@@ -205,16 +204,12 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 			typedQuery.setParameter("endTime", filter.getEndTime(), TemporalType.TIMESTAMP);
 		}
 		
-		// La consulta se hace una primera vez sin paginación para obtener el número total de resultados
-		stats.setTotalResults(typedQuery.getResultList().size());
-		stats.setCurrentPage(pagination.getNumPage());
-		stats.setTotalPages(stats.getTotalResults() / pagination.getNumRegisters());
+		stats = setStats(typedQuery, pagination);
 		
 		// Paginación
 		if (pagination != null) {
-			int startPosition = retrieveLowRowRange(pagination.getNumPage(), pagination.getNumRegisters());
-			int maxResults = retrieveHighRowRange(pagination.getNumPage(), pagination.getNumRegisters());
-			typedQuery.setFirstResult(startPosition).setMaxResults(maxResults);
+			typedQuery.setFirstResult(retrieveFirstPosition(pagination.getNumPage(), pagination.getNumRegisters()))
+					  .setMaxResults(pagination.getNumRegisters());
 		}
 		
 		List<OperationData> operations = typedQuery.getResultList();
@@ -249,31 +244,34 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 			}
 			
 			if (filter.getFlowId() != null) {
-				// TODO Como relacionar activity con flow ???
+				query += selectKeyword() + " a.operation.operationPK.operationId = " + 
+										   "(SELECT od.operation.operationPK.operationId FROM OperationData od WHERE od.flow.flowId = " + filter.getFlowId() +
+										   " AND od.operation.operationPK.operationId = a.operation.operationPK.operationId" +
+										   " AND od.operation.operationPK.iteration = a.operation.operationPK.iteration)";
 			}
 			
-			if (filter.getResultCode() != null) {
-				query += selectKeyword() + " a.operation.resultCode.code = " + filter.getResultCode();
+			if (filter.getResultCodeId() != null) {
+				query += selectKeyword() + " a.operation.resultCode.code = " + filter.getResultCodeId();
 			}
 			
 			if (filter.getExecutionPointId() != null) {
-				query += selectKeyword() + "a.executionPoint.executionPointId = " + filter.getExecutionPointId();
+				query += selectKeyword() + " a.executionPoint.executionPointId = " + filter.getExecutionPointId();
 			}
 			
 			if (filter.getTrackingId() != null) {
-				query += selectKeyword() + "a.trackingId = '" + filter.getTrackingId() + "'";
+				query += selectKeyword() + " a.trackingId = '" + filter.getTrackingId() + "'";
 			}
 			
 			if (filter.getLayerId() != null) {
-				query += selectKeyword() + "a.layer.layerId = " + filter.getLayerId();
+				query += selectKeyword() + " a.layer.layerId = " + filter.getLayerId();
 			}
 			
 			if (filter.getComponentId() != null) {
-				query += selectKeyword() + "a.origComponent.componentId = " + filter.getComponentId();
+				query += selectKeyword() + " a.origComponent.componentId = " + filter.getComponentId();
 			}
 			
 			if (filter.getServiceId() != null) {
-				query += selectKeyword() + "a.destService.serviceId = " + filter.getServiceId();
+				query += selectKeyword() + " a.destService.serviceId = " + filter.getServiceId();
 			}
 			
 			if (filter.getStatusId() != null) {
@@ -292,7 +290,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 		
 		// Ordenación
 		if (ordination != null) {
-			query += " ORDER BY a." + ordination.getField();
+			query += " ORDER BY a." + ordination.getFieldAsString() + " " + ordination.getTypeAsString();
 		}
 
 		Query typedQuery = emf.createEntityManager().createQuery(query, OperationActivity.class);
@@ -305,16 +303,12 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 			typedQuery.setParameter("endTime", filter.getEndTime(), TemporalType.TIMESTAMP);
 		}
 		
-		// La consulta se hace una primera vez sin paginación para obtener el número total de resultados
-		stats.setTotalResults(typedQuery.getResultList().size());
-		stats.setCurrentPage(pagination.getNumPage());
-		stats.setTotalPages(stats.getTotalResults() / pagination.getNumRegisters());
+		stats = setStats(typedQuery, pagination);
 		
 		// Paginación
 		if (pagination != null) {
-			int startPosition = retrieveLowRowRange(pagination.getNumPage(), pagination.getNumRegisters());
-			int maxResults = retrieveHighRowRange(pagination.getNumPage(), pagination.getNumRegisters());
-			typedQuery.setFirstResult(startPosition).setMaxResults(maxResults);
+			typedQuery.setFirstResult(retrieveFirstPosition(pagination.getNumPage(), pagination.getNumRegisters()))
+					  .setMaxResults(pagination.getNumRegisters());
 		}
 		
 		List<OperationActivity> activities = typedQuery.getResultList();
@@ -342,21 +336,16 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 		
 		// Ordenacion
 		if (ordination != null) {
-			query += " ORDER BY o." + ordination.getField();
+			query += " ORDER BY o." + ordination.getFieldAsString() + " " + ordination.getTypeAsString();
 		}
 		
 		Query typedQuery = emf.createEntityManager().createQuery(query, OperationActivity.class);
-		
-		// La consulta se hace una primera vez sin paginación para obtener el número total de resultados
-		stats.setTotalResults(typedQuery.getResultList().size());
-		stats.setCurrentPage(pagination.getNumPage());
-		stats.setTotalPages(stats.getTotalResults() / pagination.getNumRegisters());
+		stats = setStats(typedQuery, pagination);
 		
 		// Paginación
 		if (pagination != null) {
-			int startPosition = retrieveLowRowRange(pagination.getNumPage(), pagination.getNumRegisters());
-			int maxResults = retrieveHighRowRange(pagination.getNumPage(), pagination.getNumRegisters());
-			typedQuery.setFirstResult(startPosition).setMaxResults(maxResults);
+			typedQuery.setFirstResult(retrieveFirstPosition(pagination.getNumPage(), pagination.getNumRegisters()))
+					  .setMaxResults(pagination.getNumRegisters());
 		}
 		
 		List<OperationActivity> opActivities = typedQuery.getResultList();
@@ -381,7 +370,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 				.setParameter("operationId", operationId)
 				.getResultList();
 		
-		if (operation != null) {
+		if (operation != null && !operation.isEmpty()) {
 			return buildOperationDtoFromOperationData(operation.get(0));
 		}
 		
@@ -435,6 +424,23 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 		}
 	}
 	
+	private SearchStatsDTO setStats(Query query, PaginationDTO pagination) {
+		
+		SearchStatsDTO stats = new SearchStatsDTO();
+		
+		stats.setTotalResults(query.getResultList().size());
+		stats.setCurrentPage(pagination == null ? 1 : pagination.getNumPage());
+		stats.setTotalPages(pagination == null ? 1 : (int) Math.ceil((float) stats.getTotalResults() / (float) pagination.getNumRegisters()));
+		
+		return stats;
+	}
+	
+	private int retrieveFirstPosition(int pageNumber, int pageSize) {
+		int iMaxRow = pageNumber * pageSize;
+		int iMinRow = iMaxRow - pageSize;
+		return iMinRow;
+	}
+	
 	private OperationDTO buildOperationDtoFromOperationData(OperationData operationData) {
 	
 		OperationDTO operation = new OperationDTO();
@@ -473,30 +479,23 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 		activity.setReturnCode(opActivity.getReturnCode());
 		activity.setReturnDescription(opActivity.getReturnDescription());
 		activity.setNode(opActivity.getNode());
-			
-		try {
-			activity.setXmlSvcRequest(opActivity.getXmlSvcRequest().getSubString(1, (int)opActivity.getXmlSvcRequest().length()));
-		} catch (SQLException e) {
-			activity.setXmlSvcRequest("Ha ocurrido el siguente error recuperando la petición: " + e);
+		
+		if (opActivity.getXmlSvcRequest() != null) {
+			try {
+				activity.setXmlSvcRequest(opActivity.getXmlSvcRequest().getSubString(1, (int)opActivity.getXmlSvcRequest().length()));
+			} catch (Exception e) {
+				activity.setXmlSvcRequest("Ha ocurrido el siguente error recuperando la petición: " + e);
+			}
 		}
 		
-		try {
-			activity.setXmlSvcResponse(opActivity.getXmlSvcResponse().getSubString(1, (int)opActivity.getXmlSvcResponse().length()));
-		} catch (SQLException e) {
-			activity.setXmlSvcRequest("Ha ocurrido el siguente error recuperando la respuesta: " + e);
+		if (opActivity.getXmlSvcResponse() != null) {
+			try {
+				activity.setXmlSvcResponse(opActivity.getXmlSvcResponse().getSubString(1, (int)opActivity.getXmlSvcResponse().length()));
+			} catch (Exception e) {
+				activity.setXmlSvcResponse("Ha ocurrido el siguente error recuperando la respuesta: " + e);
+			}
 		}
 		
 		return activity;
-	}
-	
-	private int retrieveLowRowRange(int pageNumber, int pageSize) {
-		int iMaxRow = pageNumber * pageSize;
-		int iMinRow = iMaxRow - pageSize + 1;
-		return iMinRow;
-	}
-
-	private int retrieveHighRowRange(int pageNumber, int pageSize) {
-		int numberOfRows = pageNumber * pageSize;
-		return numberOfRows;
 	}
 }

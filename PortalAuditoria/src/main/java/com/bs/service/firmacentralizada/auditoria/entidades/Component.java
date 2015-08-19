@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -22,6 +24,10 @@ public class Component implements Serializable {
 
 	@Column (name="IS_EXTERNAL")
 	private int isExternal;
+	
+	@ManyToOne
+	@JoinColumn(name="LAYER_ID", nullable = false)
+	private Layer layer;
 
 	public long getComponentId() {
 		return componentId;
@@ -45,5 +51,13 @@ public class Component implements Serializable {
 
 	public void setIsExternal(int isExternal) {
 		this.isExternal = isExternal;
+	}
+
+	public Layer getLayer() {
+		return layer;
+	}
+
+	public void setLayer(Layer layer) {
+		this.layer = layer;
 	}
 }

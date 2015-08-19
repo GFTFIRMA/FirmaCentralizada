@@ -23,7 +23,7 @@ public class ComponentService  implements Serializable {
 	private String description;
 
 	@ManyToOne
-	@JoinColumn(name="COMPONENT", referencedColumnName = "COMPONENT_ID")
+	@JoinColumn(name="COMPONENT_ID", referencedColumnName = "COMPONENT_ID")
 	private Component component;
 
 	public long getServiceId() {

@@ -1,127 +1,427 @@
 package com.bs.service.firmacentralizada.auditoria.tests;
 
-import com.bs.service.firmacentralizada.auditoria.entidades.Operation;
-import com.bs.service.firmacentralizada.auditoria.entidades.OperationActivity;
-import com.bs.service.firmacentralizada.auditoria.entidades.OperationData;
+import static org.junit.Assert.assertFalse;
+
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.List;
+
+import org.junit.Test;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import com.bs.service.firmacentralizada.auditoria.AuditoriaConfig;
+import com.bs.service.firmacentralizada.auditoria.dao.AuditoriaDAO;
+import com.bs.service.firmacentralizada.auditoria.dto.ActivityDTO;
+import com.bs.service.firmacentralizada.auditoria.dto.OperationDTO;
+import com.bs.service.firmacentralizada.auditoria.dto.SearchResultDTO;
+import com.bs.service.firmacentralizada.auditoria.dto.SearchStatsDTO;
+import com.bs.service.firmacentralizada.auditoria.dto.filtros.ActivityFilterDTO;
+import com.bs.service.firmacentralizada.auditoria.dto.filtros.OperationFilterDTO;
+import com.bs.service.firmacentralizada.auditoria.dto.filtros.PaginationDTO;
+import com.bs.service.firmacentralizada.auditoria.dto.filtros.SortDTO;
+import com.bs.service.firmacentralizada.auditoria.dto.filtros.SortDTO.OrderField;
+import com.bs.service.firmacentralizada.auditoria.dto.filtros.SortDTO.OrderType;
 
 public class OperationTest {
 	
-//	@Test
-//	public void testSelectOperationActivity() {
-//		
-//		AnnotationConfigApplicationContext context =
-//			    new AnnotationConfigApplicationContext(AuditoriaConfig.class);
-//		AuditoriaDAO auditoriaDao = context.getBean(AuditoriaDAO.class);
-//		
-//		List<OperationActivity> result = auditoriaDao.getOperationActivity(4, 1);
-//		
-//		System.out.println(" -- Número de entradas: " + result.size());
-//		for (int i = 0; i < result.size(); i++) 
-//			printOperationActivity(result.get(i));
-//		
-//		assertFalse(result.isEmpty());
-//		context.close();
-//	}
-//	
-//	@Test
-//	public void testSelectAllOperationData() {
-//		
-//		AnnotationConfigApplicationContext context =
-//			    new AnnotationConfigApplicationContext(AuditoriaConfig.class);
-//		AuditoriaDAO auditoriaDao = context.getBean(AuditoriaDAO.class);
-//		
-//		List<OperationData> result = auditoriaDao.getOperationData(null);
-//		
-//		System.out.println(" -- Número de entradas: " + result.size());
-//		for (int i = 0; i < result.size(); i++) 
-//			printOperationData(result.get(i));
-//		
-//		assertFalse(result.isEmpty());
-//		context.close();
-//	}
-//	
-//	@Test
-//	public void testSelectFilteredOperationData() {
-//		
-//		AnnotationConfigApplicationContext context =
-//			    new AnnotationConfigApplicationContext(AuditoriaConfig.class);
-//		AuditoriaDAO auditoriaDao = context.getBean(AuditoriaDAO.class);
-//		
-//		OperationDataFilter odf = new OperationDataFilter();
-//		Calendar d = Calendar.getInstance();
-//		odf.setOperationId(4);
-//		odf.setFlow("20");
-//		odf.setSessionId("sessionabcdef");
-//		odf.setFcId("fcidabcdef");
-//		odf.setStatusId(12);
-//		d.set(2015, 06, 12, 14, 34, 00);
-//		odf.setStartTime(new Date(d.getTimeInMillis()));
-//		d.set(2015, 06, 12, 15, 59, 59);
-//		odf.setEndTime(new Date(d.getTimeInMillis()));
-//		odf.setInputChannel("inputChannel1");
-//		
-//		List<OperationData> result = auditoriaDao.getOperationData(odf);
-//		
-//		System.out.println(" -- Número de entradas: " + result.size());
-//		for (int i = 0; i < result.size(); i++) 
-//			printOperationData(result.get(i));
-//		
-//		assertFalse(result.isEmpty());
-//		context.close();
-//	}
-//	
-//	@Test
-//	public void testSelectNumIterations() {
-//		
-//		AnnotationConfigApplicationContext context =
-//			    new AnnotationConfigApplicationContext(AuditoriaConfig.class);
-//		AuditoriaDAO auditoriaDao = context.getBean(AuditoriaDAO.class);
-//		
-//		Integer i = auditoriaDao.getTotalIterations(4);
-//		
-//		System.out.println(" -- Número de iteraciones: " + i);
-//		
-//		assertTrue(i == 3);
-//		context.close();
-//	}
+	//@Test
+	public void testSelectOperation() {
+		
+		AnnotationConfigApplicationContext context =
+			    new AnnotationConfigApplicationContext(AuditoriaConfig.class);
+		AuditoriaDAO auditoriaDao = context.getBean(AuditoriaDAO.class);
+		
+		// CAMBIAR LOS VALORES DE LOS PARÁMETROS PARA PROBAR DIFERENTES CASOS
+		int operationId = 4;
+		int iteration = 3;
+		OperationDTO result = auditoriaDao.getOperationById(operationId, iteration);
+
+		printOperation(result);
+		
+		assertFalse(result == null);
+		
+		context.close();
+	}
+	
+	//@Test
+	public void testSelectLastIterationByOperationId() {
+		
+		AnnotationConfigApplicationContext context =
+			    new AnnotationConfigApplicationContext(AuditoriaConfig.class);
+		AuditoriaDAO auditoriaDao = context.getBean(AuditoriaDAO.class);
+
+		// CAMBIAR LOS VALORES DE LOS PARÁMETROS PARA PROBAR DIFERENTES CASOS
+		int operationId = 4;
+		OperationDTO result = auditoriaDao.getLastIterationByOperationId(operationId);
+
+		printOperation(result);
+		
+		assertFalse(result == null);
+		
+		context.close();
+	}
+	
+	//@Test
+	public void testSelectActivityById() {
+		
+		AnnotationConfigApplicationContext context =
+			    new AnnotationConfigApplicationContext(AuditoriaConfig.class);
+		AuditoriaDAO auditoriaDao = context.getBean(AuditoriaDAO.class);
+
+		// CAMBIAR LOS VALORES DE LOS PARÁMETROS PARA PROBAR DIFERENTES CASOS
+		int activityId = 1114;
+		ActivityDTO result = auditoriaDao.getActivityById(activityId);
+
+		printActivity(result);
+		
+		assertFalse(result == null);
+		
+		context.close();
+	}
+	
+	//@Test
+	public void testSelectActivitiesByOperationNoSortNoPag() {
+		
+		AnnotationConfigApplicationContext context =
+			    new AnnotationConfigApplicationContext(AuditoriaConfig.class);
+		AuditoriaDAO auditoriaDao = context.getBean(AuditoriaDAO.class);
+
+		// CAMBIAR LOS VALORES DE LOS PARÁMETROS PARA PROBAR DIFERENTES CASOS
+		int operationId = 2;
+		SearchResultDTO<ActivityDTO> result = auditoriaDao.getOperationActivityList(operationId, null, null);
+
+		printActivityList(result.getSearchData());
+		printStats(result.getSearchStats());
+		
+		assertFalse(result == null);
+		
+		context.close();
+	}
+	
+	//@Test
+	public void testSelectActivitiesByOperationWithPagination() {
+		
+		AnnotationConfigApplicationContext context =
+			    new AnnotationConfigApplicationContext(AuditoriaConfig.class);
+		AuditoriaDAO auditoriaDao = context.getBean(AuditoriaDAO.class);
+		
+		// CAMBIAR LOS VALORES DE LA BUSQUEDA PARA PROBAR DIFERENTES CASOS
+		int operationId = 2;
+		PaginationDTO pagination = new PaginationDTO();
+		pagination.setNumRegisters(PaginationDTO.DEFAULT_PAGE_SIZE);
+		pagination.setNumPage(PaginationDTO.DEFAULT_PAGE_NUMBER);
+		
+		SearchResultDTO<ActivityDTO> result = auditoriaDao.getOperationActivityList(operationId, null, pagination);
+
+		printActivityList(result.getSearchData());
+		printStats(result.getSearchStats());
+		
+		assertFalse(result == null);
+		
+		context.close();
+	}
+	
+	//@Test
+	public void testSelectActivitiesByOperationWithSort() {
+		
+		AnnotationConfigApplicationContext context =
+			    new AnnotationConfigApplicationContext(AuditoriaConfig.class);
+		AuditoriaDAO auditoriaDao = context.getBean(AuditoriaDAO.class);
+		
+		// CAMBIAR LOS VALORES DE LA BUSQUEDA PARA PROBAR DIFERENTES CASOS
+		int operationId = 4;
+		SortDTO sort = new SortDTO();
+		sort.setField(OrderField.FIN_ACTIVIDAD);
+		sort.setType(OrderType.DESC);
+		
+		SearchResultDTO<ActivityDTO> result = auditoriaDao.getOperationActivityList(operationId, sort, null);
+
+		printActivityList(result.getSearchData());
+		printStats(result.getSearchStats());
+		
+		assertFalse(result == null);
+		
+		context.close();
+	}
+	
+	//@Test
+	public void testSelectActivitiesByOperationWithSortAndPagination() {
+		
+		AnnotationConfigApplicationContext context =
+			    new AnnotationConfigApplicationContext(AuditoriaConfig.class);
+		AuditoriaDAO auditoriaDao = context.getBean(AuditoriaDAO.class);
+		
+		// CAMBIAR LOS VALORES DE LA BUSQUEDA PARA PROBAR DIFERENTES CASOS
+		int operationId = 4;
+		PaginationDTO pagination = new PaginationDTO();
+		SortDTO sort = new SortDTO();
+		pagination.setNumRegisters(3);
+		pagination.setNumPage(1);
+		sort.setField(OrderField.ID_ACTIVIDAD);
+		sort.setType(OrderType.DESC);
+		
+		SearchResultDTO<ActivityDTO> result = auditoriaDao.getOperationActivityList(operationId, sort, pagination);
+
+		printActivityList(result.getSearchData());
+		printStats(result.getSearchStats());
+		
+		assertFalse(result == null);
+		
+		context.close();
+	}
+
+	//@Test
+	public void testSelectFilteredActivities() {
+		
+		AnnotationConfigApplicationContext context =
+			    new AnnotationConfigApplicationContext(AuditoriaConfig.class);
+		AuditoriaDAO auditoriaDao = context.getBean(AuditoriaDAO.class);
+		
+		// CAMBIAR LOS VALORES DEL FILTRO PARA PROBAR DIFERENTES CASOS
+		ActivityFilterDTO filter = new ActivityFilterDTO();
+		filter.setActivityId(null);
+		filter.setOperationId(null);
+		filter.setFlowId(null);
+		filter.setResultCodeId(null);
+		filter.setExecutionPointId(null);
+		filter.setTrackingId(null);
+		filter.setLayerId(null);
+		filter.setComponentId(null);
+		filter.setServiceId(null);
+		filter.setStatusId(null);
+
+		Calendar c = Calendar.getInstance();
+		
+		c.set(2015, 07, 11);
+		Timestamp t = new Timestamp(c.getTimeInMillis());
+		filter.setStartTime(null);
+		
+		c.set(2015, 07, 11, 00, 00, 00);
+		t.setTime(c.getTimeInMillis());
+		filter.setEndTime(t);
+		
+		SearchResultDTO<ActivityDTO> result = auditoriaDao.getActivityList(filter, null, null);
+
+		printActivityList(result.getSearchData());
+		printStats(result.getSearchStats());
+		
+		assertFalse(result == null);
+		
+		context.close();
+	}
+
+	//@Test
+	public void testSelectFilteredActivitiesWithSortAndPagination() {
+		
+		AnnotationConfigApplicationContext context =
+			    new AnnotationConfigApplicationContext(AuditoriaConfig.class);
+		AuditoriaDAO auditoriaDao = context.getBean(AuditoriaDAO.class);
+		
+		// CAMBIAR LOS VALORES DEL FILTRO PARA PROBAR DIFERENTES CASOS
+		PaginationDTO pagination = new PaginationDTO();
+		SortDTO sort = new SortDTO();
+		ActivityFilterDTO filter = new ActivityFilterDTO();
+		
+		// Paginación
+		pagination.setNumRegisters(PaginationDTO.DEFAULT_PAGE_SIZE);
+		pagination.setNumPage(PaginationDTO.DEFAULT_PAGE_NUMBER);
+		
+		// Ordenación
+		sort.setField(OrderField.ID_ACTIVIDAD);
+		sort.setType(OrderType.ASC);
+		
+		// Filtros
+		filter.setActivityId(null);
+		filter.setOperationId(4L);
+		filter.setFlowId(null);
+		filter.setResultCodeId(401);
+		filter.setExecutionPointId(null);
+		filter.setTrackingId(null);
+		filter.setLayerId(null);
+		filter.setComponentId(null);
+		filter.setServiceId(null);
+		filter.setStatusId(null);
+
+		Calendar c = Calendar.getInstance();
+		
+		c.set(2015, 07, 11);
+		Timestamp t = new Timestamp(c.getTimeInMillis());
+		filter.setStartTime(null);
+		
+		c.set(2015, 07, 11, 00, 00, 00);
+		t.setTime(c.getTimeInMillis());
+		filter.setEndTime(null);
+		
+		SearchResultDTO<ActivityDTO> result = auditoriaDao.getActivityList(filter, sort, pagination);
+
+		printActivityList(result.getSearchData());
+		printStats(result.getSearchStats());
+		
+		assertFalse(result == null);
+		
+		context.close();
+	}
+	
+	//@Test
+	public void testSelectFilteredOperationsNoSortNoPag() {
+		
+		AnnotationConfigApplicationContext context =
+			    new AnnotationConfigApplicationContext(AuditoriaConfig.class);
+		AuditoriaDAO auditoriaDao = context.getBean(AuditoriaDAO.class);
+
+		// CAMBIAR LOS VALORES DE LOS PARÁMETROS PARA PROBAR DIFERENTES CASOS
+		OperationFilterDTO filter = new OperationFilterDTO();
+		
+		filter.setOperationId(null);
+		filter.setFlowId(null);
+		filter.setResultCodeId(null);
+		filter.setFcId(null);
+		filter.setRequestcId(null);
+		filter.setInputChannel(null);
+		filter.setSessionId(null);
+		filter.setStatusId(null);
+
+		Calendar c = Calendar.getInstance();
+		
+		c.set(2015, 07, 11);
+		Timestamp t = new Timestamp(c.getTimeInMillis());
+		filter.setStartTime(null);
+		
+		c.set(2015, 07, 11, 00, 00, 00);
+		t.setTime(c.getTimeInMillis());
+		filter.setEndTime(null);
+		
+		SearchResultDTO<OperationDTO> result = auditoriaDao.getOperationList(filter, null, null);
+
+		printOperationList(result.getSearchData());
+		printStats(result.getSearchStats());
+		
+		assertFalse(result == null);
+		
+		context.close();
+	}
+	
+	@Test
+	public void testSelectFilteredOperationsWithSortAndPag() {
+		
+		AnnotationConfigApplicationContext context =
+			    new AnnotationConfigApplicationContext(AuditoriaConfig.class);
+		AuditoriaDAO auditoriaDao = context.getBean(AuditoriaDAO.class);
+
+		// CAMBIAR LOS VALORES DE LOS PARÁMETROS PARA PROBAR DIFERENTES CASOS
+		PaginationDTO pagination = new PaginationDTO();
+		SortDTO sort = new SortDTO();
+		OperationFilterDTO filter = new OperationFilterDTO();
+		
+		// Paginación
+		pagination.setNumRegisters(PaginationDTO.DEFAULT_PAGE_SIZE);
+		pagination.setNumPage(PaginationDTO.DEFAULT_PAGE_NUMBER);
+		
+		// Ordenación
+		sort.setField(OrderField.ID_OPERACION);
+		sort.setType(OrderType.ASC);
+		
+		// Filtros
+		filter.setOperationId(null);
+		filter.setFlowId(null);
+		filter.setResultCodeId(200);
+		filter.setFcId(null);
+		filter.setRequestcId(666666L);
+		filter.setInputChannel(null);
+		filter.setSessionId(null);
+		filter.setStatusId(null);
+
+		Calendar c = Calendar.getInstance();
+		
+		c.set(2015, 07, 11);
+		Timestamp t = new Timestamp(c.getTimeInMillis());
+		filter.setStartTime(null);
+		
+		c.set(2015, 07, 11, 00, 00, 00);
+		t.setTime(c.getTimeInMillis());
+		filter.setEndTime(null);
+		
+		SearchResultDTO<OperationDTO> result = auditoriaDao.getOperationList(filter, sort, pagination);
+
+		printOperationList(result.getSearchData());
+		printStats(result.getSearchStats());
+		
+		assertFalse(result == null);
+		
+		context.close();
+	}
 	
 	//** UTILIDADES **//
 	
-	private void printOperation(Operation o) {
-		System.out.println("  ---- OPERATION ID: " + o.getOperationPK().getOperationId());
-		System.out.println("  ---- ITERATION: " + o.getOperationPK().getIteration());
-		System.out.println("  ---- OPERATION START TIME: " + o.getStartTime());
-		System.out.println("  ---- OPERATION END TIME: " + o.getEndTime());
-		System.out.println("  ---- RESULT CODE: " + o.getResultCode().getCode());
-		System.out.println("  ---- OPERATION NODE: " + o.getNode());
-		System.out.println("  ---- OPERATION STATUS ID: " + o.getStatus().getStatusId());
+	private void printStats(SearchStatsDTO s) {
+		System.out.println();
+		System.out.println(" -- TOTAL RESULTS: " + s.getTotalResults());
+		System.out.println(" -- CURRENT PAGE: " + s.getCurrentPage());
+		System.out.println(" -- TOTAL PAGES: " + s.getTotalPages());
+		System.out.println();
+	}
+
+	private void printOperationList(List<OperationDTO> oList) {
+		System.out.println();
+		System.out.println(" -- TOTAL ENTRIES: " + oList.size());
+		for (OperationDTO o : oList) {
+			printOperation(o);
+		}
 	}
 	
-	private void printOperationData(OperationData o) {
-		printOperation(o.getOperation());
-		System.out.println("  ---- FLOW: " + o.getFlow().getFlow());
-		System.out.println("  ---- INPUT_CHANNEL: " + o.getInputChannel());
-		System.out.println("  ---- FC_ID: " + o.getFcId());
-		System.out.println("  ---- SESSION_ID: " + o.getSessionId());
-		System.out.println("  ---- REQUEST: " + o.getXmlRequest());
-		System.out.println("  ---- RESPONSE: " + o.getXmlResponse());
+	private void printOperation(OperationDTO o) {
+		
+		if (o == null) {
+			System.out.println("  NO DATA");
+			return;
+		}
+
+		System.out.println();
+		System.out.println("  ---- OPERATION ID: " + o.getOperationId());
+		System.out.println("  ---- ITERATION: " + o.getIteration());
+		System.out.println("  ---- FC ID: " + o.getFcId());
+		System.out.println("  ---- FLOW: " + o.getFlow());
+		System.out.println("  ---- RESULT CODE: " + o.getResultCode());
+		System.out.println("  ---- INPUT CHANNEL: " + o.getInputChannel());
+		System.out.println("  ---- STATUS ID: " + o.getStatusId());
+		System.out.println("  ---- REQUEST C: " + o.getRequestcId());
+		System.out.println("  ---- SESSION ID: " + o.getSessionId());
+		System.out.println("  ---- START TIME: " + o.getStartTime());
+		System.out.println("  ---- END TIME: " + o.getEndTime());
+	}
+
+	private void printActivityList(List<ActivityDTO> aList) {
+		System.out.println();
+		System.out.println(" -- TOTAL ENTRIES: " + aList.size());
+		for (ActivityDTO a : aList) {
+			printActivity(a);
+		}
 	}
 	
-	private void printOperationActivity(OperationActivity o) {
-		System.out.println("  ---- ACTIVITY ID: " + o.getActivityId());
-		printOperation(o.getOperation());
-		System.out.println("  ---- LAYER ID: " + o.getLayer().getLayerId());
-		System.out.println("  ---- COMPONENT: " + o.getComponentService().getComponentServicePK().getComponent().getComponent());
-		System.out.println("  ---- SERVICE: " + o.getComponentService().getComponentServicePK().getService());
-		System.out.println("  ---- EXECUTION POINT: " + o.getExecutionPoint().getExecutionPoint());
-		System.out.println("  ---- ACTIVITY START TIME: " + o.getStartTime());
-		System.out.println("  ---- ACTIVITY END TIME: " + o.getEndTime());
-		System.out.println("  ---- TRACKING ID: " + o.getTrackingId());
-		System.out.println("  ---- ACTIVITY NODE: " + o.getNode());
-		System.out.println("  ---- STATUS ID: " + o.getStatus().getStatusId());
-		System.out.println("  ---- RETURN CODE: " + o.getReturnCode());
-		System.out.println("  ---- RETURN DESCRIPTION: " + o.getReturnDescription());
-		System.out.println("  ---- REQUEST: " + o.getXmlSvcRequest());
-		System.out.println("  ---- RESPONSE: " + o.getXmlSvcResponse());
+	private void printActivity(ActivityDTO a) {
+		
+		if (a == null) {
+			System.out.println("  NO DATA");
+			return;
+		}
+
+		System.out.println();
+		System.out.println("  ---- ACTIVITY ID: " + a.getActivityId());
+		System.out.println("  ---- OPERATION ID: " + a.getOperationId());
+		System.out.println("  ---- ITERATION: " + a.getIteration());
+		System.out.println("  ---- LAYER: " + a.getLayer());
+		System.out.println("  ---- SOURCE COMPONENT: " + a.getSourceComponent());
+		System.out.println("  ---- DEST COMPONENT: " + a.getDestinationComponent());
+		System.out.println("  ---- DEST SERVICE: " + a.getService());
+		System.out.println("  ---- EXECUTION POINT: " + a.getExecutionPoint());
+		System.out.println("  ---- ACTIVITY START TIME: " + a.getStartTime());
+		System.out.println("  ---- ACTIVITY END TIME: " + a.getEndTime());
+		System.out.println("  ---- TRACKING ID: " + a.getTrackingId());
+		System.out.println("  ---- NODE: " + a.getNode());
+		System.out.println("  ---- STATUS ID: " + a.getStatusId());
+		System.out.println("  ---- RETURN CODE: " + a.getReturnCode());
+		System.out.println("  ---- RETURN DESCRIPTION: " + a.getReturnDescription());
+		System.out.println("  ---- REQUEST: " + a.getXmlSvcRequest());
+		System.out.println("  ---- RESPONSE: " + a.getXmlSvcResponse());
 	}
 }

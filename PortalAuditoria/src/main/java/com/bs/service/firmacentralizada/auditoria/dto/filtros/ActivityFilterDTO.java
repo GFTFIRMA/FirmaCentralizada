@@ -1,20 +1,28 @@
 package com.bs.service.firmacentralizada.auditoria.dto.filtros;
 
+/**
+ * Class ActivityFilterDTO.java
+ * 
+ * Clase que proporciona una serie de filtros para ser utilizados en la recuperación de actividades de la BBDD.
+ * 
+ * Todos aquellos campos con valor null no serán añadidos a la consulta.
+ * 
+ */
 public class ActivityFilterDTO extends FilterDTO {
 
 	private Long activityId;
 	
 	private Long operationId;
 	
-	private Long flowId;
+	private Integer flowId;
 	
-	private String resultCode;
+	private Integer resultCodeId;
 	
-	private Long executionPointId;
+	private Integer executionPointId;
 	
 	private String trackingId;
 	
-	private Long layerId;
+	private Integer layerId;
 	
 	private Long componentId;
 	
@@ -36,12 +44,12 @@ public class ActivityFilterDTO extends FilterDTO {
 		this.operationId = operationId;
 	}
 
-	public String getResultCode() {
-		return resultCode;
+	public Integer getResultCodeId() {
+		return resultCodeId;
 	}
 
-	public void setResultCode(String resultCode) {
-		this.resultCode = resultCode;
+	public void setResultCodeId(Integer resultCodeId) {
+		this.resultCodeId = resultCodeId;
 	}
 
 	public String getTrackingId() {
@@ -52,27 +60,27 @@ public class ActivityFilterDTO extends FilterDTO {
 		this.trackingId = trackingId;
 	}
 
-	public Long getFlowId() {
+	public Integer getFlowId() {
 		return flowId;
 	}
 
-	public void setFlowId(Long flowId) {
+	public void setFlowId(Integer flowId) {
 		this.flowId = flowId;
 	}
 
-	public Long getExecutionPointId() {
+	public Integer getExecutionPointId() {
 		return executionPointId;
 	}
 
-	public void setExecutionPointId(Long executionPointId) {
+	public void setExecutionPointId(Integer executionPointId) {
 		this.executionPointId = executionPointId;
 	}
 
-	public Long getLayerId() {
+	public Integer getLayerId() {
 		return layerId;
 	}
 
-	public void setLayerId(Long layerId) {
+	public void setLayerId(Integer layerId) {
 		this.layerId = layerId;
 	}
 

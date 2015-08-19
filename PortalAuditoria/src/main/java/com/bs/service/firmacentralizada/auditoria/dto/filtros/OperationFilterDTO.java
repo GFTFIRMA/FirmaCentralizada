@@ -4,15 +4,15 @@ public class OperationFilterDTO extends FilterDTO {
 
 	private Long operationId;
 	
-	private Long flowId;
+	private Integer flowId;
 	
-	private String resultCode;
+	private Integer resultCodeId;
 	
 	private String inputChannel;
 	
 	private String fcId;
 	
-	private String requestcId;
+	private Long requestcId;
 	
 	private String sessionId;
 	
@@ -48,27 +48,27 @@ public class OperationFilterDTO extends FilterDTO {
 		this.sessionId = sessionId;
 	}
 
-	public String getResultCode() {
-		return resultCode;
+	public Integer getResultCodeId() {
+		return resultCodeId;
 	}
 
-	public void setResultCode(String resultCode) {
-		this.resultCode = resultCode;
+	public void setResultCodeId(Integer resultCodeId) {
+		this.resultCodeId = resultCodeId;
 	}
 
-	public String getRequestcId() {
+	public Long getRequestcId() {
 		return requestcId;
 	}
 
-	public void setRequestcId(String requestcId) {
+	public void setRequestcId(Long requestcId) {
 		this.requestcId = requestcId;
 	}
 
-	public Long getFlowId() {
+	public Integer getFlowId() {
 		return flowId;
 	}
 
-	public void setFlowId(Long flowId) {
+	public void setFlowId(Integer flowId) {
 		this.flowId = flowId;
 	}
 }

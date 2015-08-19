@@ -27,7 +27,7 @@ public class OperationData  implements Serializable {
 	private Operation operation;
 	
 	@ManyToOne
-	@JoinColumn(name = "FLOW")
+	@JoinColumn(name = "FLOW_ID")
 	private Flow flow;
 
 	@Column(name="REQUESTC_ID")

@@ -1,14 +1,14 @@
 package com.bs.service.firmacentralizada.auditoria.dto.filtros;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class FilterDTO {
 
 	private Integer statusId;
 	
-	private Date startTime;
+	private Timestamp startTime;
 	
-	private Date endTime;
+	private Timestamp endTime;
 
 	public Integer getStatusId() {
 		return statusId;
@@ -18,19 +18,19 @@ public class FilterDTO {
 		this.statusId = statusId;
 	}
 
-	public Date getStartTime() {
+	public Timestamp getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(Date startTime) {
+	public void setStartTime(Timestamp startTime) {
 		this.startTime = startTime;
 	}
 
-	public Date getEndTime() {
+	public Timestamp getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(Date endTime) {
+	public void setEndTime(Timestamp endTime) {
 		this.endTime = endTime;
 	}
 }

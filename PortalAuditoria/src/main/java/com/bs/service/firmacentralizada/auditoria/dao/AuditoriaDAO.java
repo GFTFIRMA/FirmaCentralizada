@@ -90,7 +90,7 @@ public interface AuditoriaDAO {
 	 * @return
 	 * 		Una lista de servicios, identificados por su Id y su descripción. Si no existen servicios, devolverá una lista vacía.
 	 */
-	public List<BasicDTO> getServicesByComponentId(String componentId);
+	public List<BasicDTO> getServicesByComponentId(long componentId);
 	
 	/**
 	 * Recupera la lista de operaciones ejecutadas dentro de la plataforma que cumplan los requisitos indicados en el filtro,

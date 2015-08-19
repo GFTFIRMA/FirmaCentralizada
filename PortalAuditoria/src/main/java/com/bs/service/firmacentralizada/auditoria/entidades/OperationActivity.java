@@ -37,11 +37,11 @@ public class OperationActivity  implements Serializable {
 	@JoinColumn(name="EXECUTION_POINT_ID")
 	private ExecutionPoint executionPoint;
 
-	@ManyToOne
+	@ManyToOne (targetEntity = Component.class)
 	@JoinColumn(name="ORIG_COMPONENT_ID", referencedColumnName="COMPONENT_ID")
 	private Component origComponent;
 	
-	@ManyToOne
+	@ManyToOne (targetEntity = ComponentService.class)
     @JoinColumn(name="DEST_SERVICE_ID", referencedColumnName="SERVICE_ID")
 	private ComponentService destService;
 
