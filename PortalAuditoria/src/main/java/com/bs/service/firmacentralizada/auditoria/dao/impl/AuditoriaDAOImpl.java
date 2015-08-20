@@ -1,5 +1,6 @@
 package com.bs.service.firmacentralizada.auditoria.dao.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,7 @@ import com.bs.service.firmacentralizada.auditoria.entidades.OperationResultCode;
 import com.bs.service.firmacentralizada.auditoria.entidades.OperationStatus;
 
 public class AuditoriaDAOImpl implements AuditoriaDAO {
-
+	
 	@PersistenceUnit
 	private EntityManagerFactory emf;
 		
@@ -111,11 +112,21 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<BasicDTO> getAllInputChannels() {
-		
+
 		List<BasicDTO> result = new ArrayList<BasicDTO>();
-		// TODO Implementar cuando se puedan obtener canales de entrada
+		List<Object[]> inputChannels= emf.createEntityManager().createNativeQuery("SELECT * FROM FC_GCONFIG_REGLAS WHERE TABLA_ID = 'GLOBAL_CANALESENTRADA'").getResultList();
+		
+		for (Object[] inputChannel : inputChannels) {
+			
+			if (((String)inputChannel[5]).equals("L_CONFIG"))
+				continue;
+			
+			result.add(new BasicDTO(((BigDecimal)inputChannel[0]).longValue(), (String) inputChannel[4]));
+		}
+		
 		return result;
 	}
 
@@ -203,7 +214,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 		if (filter.getEndTime() != null) {
 			typedQuery.setParameter("endTime", filter.getEndTime(), TemporalType.TIMESTAMP);
 		}
-		
+
 		stats = setStats(typedQuery, pagination);
 		
 		// Paginación

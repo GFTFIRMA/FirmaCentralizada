@@ -103,7 +103,7 @@ public class MasterTablesTest {
 		context.close();
 	}
 	
-	//@Test
+	@Test
 	public void testSelectAllInputChannels() {
 		
 		AnnotationConfigApplicationContext context =

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertFalse;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -231,7 +232,7 @@ public class OperationTest {
 		sort.setType(OrderType.ASC);
 		
 		// Filtros
-		filter.setActivityId(null);
+		filter.setActivityId(1123L);
 		filter.setOperationId(4L);
 		filter.setFlowId(null);
 		filter.setResultCodeId(401);
@@ -244,18 +245,19 @@ public class OperationTest {
 
 		Calendar c = Calendar.getInstance();
 		
-		c.set(2015, 07, 11);
-		Timestamp t = new Timestamp(c.getTimeInMillis());
-		filter.setStartTime(null);
+		c.set(2015, 7, 11, 10, 33, 00);
+		Timestamp startT = new Timestamp(c.getTimeInMillis());
+		filter.setStartTime(startT);
 		
-		c.set(2015, 07, 11, 00, 00, 00);
-		t.setTime(c.getTimeInMillis());
-		filter.setEndTime(null);
+		c.set(2015, 7, 11, 10, 37, 00);
+		Timestamp endT = new Timestamp(c.getTimeInMillis());
+		filter.setEndTime(endT);
 		
 		SearchResultDTO<ActivityDTO> result = auditoriaDao.getActivityList(filter, sort, pagination);
 
 		printActivityList(result.getSearchData());
 		printStats(result.getSearchStats());
+		
 		
 		assertFalse(result == null);
 		
@@ -314,31 +316,31 @@ public class OperationTest {
 		OperationFilterDTO filter = new OperationFilterDTO();
 		
 		// Paginación
-		pagination.setNumRegisters(PaginationDTO.DEFAULT_PAGE_SIZE);
-		pagination.setNumPage(PaginationDTO.DEFAULT_PAGE_NUMBER);
+		pagination.setNumRegisters(3);
+		pagination.setNumPage(1);
 		
 		// Ordenación
-		sort.setField(OrderField.ID_OPERACION);
-		sort.setType(OrderType.ASC);
+		sort.setField(OrderField.INICIO_OPERACION);
+		sort.setType(OrderType.DESC);
 		
 		// Filtros
 		filter.setOperationId(null);
 		filter.setFlowId(null);
 		filter.setResultCodeId(200);
 		filter.setFcId(null);
-		filter.setRequestcId(666666L);
+		filter.setRequestcId(null);
 		filter.setInputChannel(null);
-		filter.setSessionId(null);
-		filter.setStatusId(null);
+		filter.setSessionId("session_sess4");
+		filter.setStatusId(100);
 
 		Calendar c = Calendar.getInstance();
 		
-		c.set(2015, 07, 11);
-		Timestamp t = new Timestamp(c.getTimeInMillis());
-		filter.setStartTime(null);
+		c.set(2015, 06, 15, 7, 13, 00);
+		Timestamp startT = new Timestamp(c.getTimeInMillis());
+		filter.setStartTime(startT);
 		
-		c.set(2015, 07, 11, 00, 00, 00);
-		t.setTime(c.getTimeInMillis());
+		c.set(2015, 06, 15, 8, 17, 59);
+		Timestamp endT = new Timestamp(c.getTimeInMillis());
 		filter.setEndTime(null);
 		
 		SearchResultDTO<OperationDTO> result = auditoriaDao.getOperationList(filter, sort, pagination);
