@@ -1,0 +1,96 @@
+<!-- Page Content -->
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-lg-12">
+            <h1 class="page-header">Operaciones
+                <small>Buscador de peticiones a los servicios de la plataforma</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="../index.html">Inicio</a></li>
+                <li class="active">Operaciones</li>
+            </ol>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <div class="row">
+
+        <div class="col-lg-12">
+            <form role="form" method="POST" action="#">
+                <div class="row well">
+                    <div class="form-group col-lg-3">
+                        <label for="idOp">Id. Operaci&oacute;n</label>
+                        <input type="text" name="operationId" class="form-control" id="idOp">
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="flow">Flujo</label>
+					    <ui-select id="flow" ng-model="flow.selected" theme="selectize" ng-disabled="disabled">
+						    <ui-select-match placeholder="Seleccione un flujo...">{{$select.selected.description}}</ui-select-match>
+						    <ui-select-choices repeat="flow in flowList | filter: $select.search">
+						      <span ng-bind-html="flow.description | highlight: $select.search"></span>						      
+						    </ui-select-choices>
+					  	</ui-select>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="startTime">Inicio</label>
+                        <input type="text" name="startTime" class="form-control" id="startTime">
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="endTime">Fin</label>
+                        <input type="text" name="endTime" class="form-control" id="endTime">
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="status">Estado</label>
+					    <ui-select id="status" ng-model="status.selected" theme="selectize" ng-disabled="disabled">
+						    <ui-select-match placeholder="Seleccione un estado...">{{$select.selected.description}}</ui-select-match>
+						    <ui-select-choices repeat="status in statusList | filter: $select.search">
+						      <span ng-bind-html="status.description | highlight: $select.search"></span>						      
+						    </ui-select-choices>
+					  	</ui-select>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="result">Resultado</label>
+					    <ui-select id="result" ng-model="result.selected" theme="selectize" ng-disabled="disabled">
+						    <ui-select-match placeholder="Seleccione un resultado...">{{$select.selected.description}}</ui-select-match>
+						    <ui-select-choices repeat="result in resultList | filter: $select.search">
+						      <span ng-bind-html="result.description | highlight: $select.search"></span>						      
+						    </ui-select-choices>
+					  	</ui-select>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="fcId">Id. Firma</label>
+                        <input type="text" name="fcId" class="form-control" id="fcId">
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="requestcId">Id. Petici&oacute;n</label>
+                        <input type="text" name="requestcId" class="form-control" id="requestcId">
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="inputChannel">Canal entrada</label>
+					    <ui-select id="inputChannel" ng-model="inputChannel.selected" theme="selectize" ng-disabled="disabled">
+						    <ui-select-match placeholder="Seleccione un canal...">{{$select.selected.description}}</ui-select-match>
+						    <ui-select-choices repeat="inputChannel in inputChannelList | filter: $select.search">
+						      <span ng-bind-html="inputChannel.description | highlight: $select.search"></span>						      
+						    </ui-select-choices>
+					  	</ui-select>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="sessionId">Id. Session</label>
+                        <input type="text" name="sessionId" class="form-control" id="sessionId">
+                    </div>                                                                                                                                               
+                    <div class="clearfix"></div>
+                    <div class="form-group col-lg-12">
+                        <input type="hidden" name="save" value="contact">
+                        <button type="submit" class="btn btn-primary">Buscar</button>
+                        <button type="reset" class="btn btn-primary">Limpiar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+    <!-- /.row -->
+
+</div><!-- /.container -->
