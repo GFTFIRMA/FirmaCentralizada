@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html ng-app="elements">
+<head>
+	<meta charset="UTF-8" />
+	<title>REST Auditoria</title>
+</head>
+
+<body ng-app="servicio-auditoria" ng-controller="AuditoriaServiceController" ng-init="reset()">
+
+	<!--  GET ALL  -->
+
+	<button id="resetBtn" class="btn" ng-click="reset()">Reset</button>
+	<br/><br/>
+	<h4><span><b>getAll</b></span></h4>
+	<button id="stBtn" class="btn" ng-click="getOperationStatus()">Status</button>
+	<button id="flBtn" class="btn" ng-click="getFlows()">Flows</button>
+	<button id="icBtn" class="btn" ng-click="getInputChannels()">Input Channels</button>
+	<button id="rcBtn" class="btn" ng-click="getResultCodes()">Result Codes</button>
+	<button id="cmBtn" class="btn" ng-click="getComponents()">Components</button>
+	<button id="lyBtn" class="btn" ng-click="getLayers()">Layers</button>
+	<button id="epBtn" class="btn" ng-click="getExecutionPoints()">Execution Points</button>
+	
+	<div class="container" ng-style="{'height':'auto'}">
+		<div ng-repeat="element in elements">
+			<h4><span> Id: {{element.id}} - Desc: {{element.description}} </span></h4>
+		</div>
+	</div>
+	<br/>
+	
+	<!--  GET SERVICES BY COMPONENT ID  -->
+	
+	<h4><span><b>GetServicesByComponentId</b></span></h4>
+	<div class="form">
+		<label for="componentId">Id:</label>
+		<input id="componentId" ng-model="componentId" type="number" />
+		<button id="csBtn" class="btn" ng-click="getServices()">Get Services</button>
+	</div>
+	<div class="container" ng-style="{'height':'auto'}">
+		<div ng-repeat="service in services">
+			<h4><span> Id: {{service.id}} - Desc: {{service.description}} </span></h4>
+		</div>
+	</div>
+	<br/>
+	
+	<!--  GET ACTIVITY DATA  -->
+	
+	<h4><span><b>GetActivityData</b></span></h4>
+	<div class="form">
+		<label for="activityId">Id:</label>
+		<input id="activityId" ng-model="GADactivityId" type="number" />
+		<button id="csBtn" class="btn" ng-click="getActivityData()">Get Activity</button>
+	</div>
+	<div class="container" ng-style="{'height':'auto'}">
+		<div ng-show="activity != null">
+			<h4><span>Id: {{activity.activityId}} - Op Id: {{activity.operationId}} - Iter: {{activity.iteration}} - Layer: {{activity.layer}} - E.P: {{activity.executionPoint}} - Orig: {{activity.sourceComponent}} - Dest: {{activity.destinationComponent}} - Serv: {{activity.service}} - S.T: {{activity.startTime | date:'medium'}} - E.T: {{activity.endTime | date:'medium'}} - Tracking: {{activity.trackingId}} - Return: {{activity.returnCode}} - Return Desc: {{activity.returnDescription}} - Nodo: {{activity.node}} - Status: {{activity.statusId}}</span></h4> 
+		</div>
+	</div>
+	
+	
+	<!--  GET ACTIVITIES  -->
+	
+	<br/>
+	<h4><span><b>GetActivities</b></span></h4>
+	<div class="form">
+		<label for="activityId">ActivityId:</label>
+		<input id="activityId" ng-model="GAactivityId" type="number" />
+		<label for="operationId">OperationId:</label>
+		<input id="operationId" ng-model="GAoperationId" type="number" />
+		<label for="flowId">flowId:</label>
+		<input id="flowId" ng-model="GAflowId" type="number" />
+		<label for="resultCode">resultCode:</label>
+		<input id="resultCode" ng-model="GAresultCodeId" type="number" />
+		<label for="resultCode">executionPoint:</label>
+		<input id="resultCode" ng-model="GAexecutionPointId" type="number" />
+		<br/><br/>
+		<label for="trackingId">trackingId:</label>
+		<input id="trackingId" ng-model="GAtrackingId" type="text" />
+		<label for="layerId">layerId:</label>
+		<input id="layerId" ng-model="GAlayerId" type="number" />
+		<label for="componentId">componentId:</label>
+		<input id="componentId" ng-model="GAcomponentId" type="number" />
+		<label for="serviceId">serviceId:</label>
+		<input id="serviceId" ng-model="GAserviceId" type="number" />
+		<label for="statusId">statusId:</label>
+		<input id="statusId" ng-model="GAstatusId" type="number" />
+		<br/><br/>
+		<label for="startTime">Start time:</label>
+		<input type="date" id="startTime" name="input" ng-model="GAstartTime"
+       placeholder="yyyy-MM-dd" min="2015-01-01" max="2015-12-31"/>
+		<label for="endTime">End time:</label>
+		<input type="date" id="endTime" name="input" ng-model="GAendTime"
+       placeholder="yyyy-MM-dd" min="2015-01-01" max="2015-12-31"/>
+		<button id="csBtn" class="btn" ng-click="getActivities()">Get Activities</button>
+		<br/>
+		<br/>
+		<label for="numRecsOp">Page size:</label>
+		<input id="numRecsOp" ng-model="GAnumRecs" type="number" />
+		<label for="numPagOp">Page number:</label>
+		<input id="numPagOp" ng-model="GAnumPag" type="number" /><br/>
+		<br/>
+		<label for="field">Order by:</label>
+		<input id="field" ng-model="GAfield" type="text" />
+		<label for="type">ASC / DESC</label>
+		<input id="type" ng-model="GAtype" type="text" />
+	</div>
+	<div class="container" ng-style="{'height':'auto'}">
+		<div ng-show="activities != null">
+			<div ng-repeat="activity in activities.searchData">
+				<h4><span>Id: {{activity.activityId}} - Op Id: {{activity.operationId}} - Iter: {{activity.iteration}} - Layer: {{activity.layer}} - E.P: {{activity.executionPoint}} - Orig: {{activity.sourceComponent}} - Dest: {{activity.destinationComponent}} - Serv: {{activity.service}} - S.T: {{activity.startTime | date:'medium'}} - E.T: {{activity.endTime | date:'medium'}} - Tracking: {{activity.trackingId}} - Return: {{activity.returnCode}} - Return Desc: {{activity.returnDescription}} - Nodo: {{activity.node}} - Status: {{activity.statusId}}</span></h4> 
+			</div>
+			<h4><span>Total Results: {{activities.searchStats.totalResults}}</span></h4>
+			<h4><span>Total Pages: {{activities.searchStats.totalPages}}</span></h4>
+			<h4><span>Current Page: {{activities.searchStats.currentPage}}</span></h4>
+		</div>
+	</div>
+	
+	<!--  GET OPERATION DATA  -->
+	
+	<br/>
+	<h4><span><b>GetOperationData</b></span></h4>
+	<div class="form">
+		<label for="operationId">Operation Id:</label>
+		<input id="operationId" ng-model="GODoperationId" type="number" />
+		<button id="csBtn" class="btn" ng-click="getOperationData()">Get Operation</button>
+		<br/>
+		<br/>
+		<label for="numRecs">Page size:</label>
+		<input id="numRecs" ng-model="GODnumRecs" type="number" />
+		<label for="numPag">Page number:</label>
+		<input id="numPag" ng-model="GODnumPag" type="number" /><br/>
+		<br/>
+		<label for="field">Order by:</label>
+		<input id="field" ng-model="GODfield" type="text" />
+		<label for="type">ASC / DESC</label>
+		<input id="type" ng-model="GODtype" type="text" />
+	</div>
+	<div class="container" ng-style="{'height':'auto'}">
+		<div ng-show="GODsearch != null">
+			<div ng-repeat="activity in GODsearch.searchData">
+				<h4><span>Id: {{activity.activityId}} - Op Id: {{activity.operationId}} - Iter: {{activity.iteration}} - Layer: {{activity.layer}} - E.P: {{activity.executionPoint}} - Orig: {{activity.sourceComponent}} - Dest: {{activity.destinationComponent}} - Serv: {{activity.service}} - S.T: {{activity.startTime | date:'medium'}} - E.T: {{activity.endTime | date:'medium'}} - Tracking: {{activity.trackingId}} - Return: {{activity.returnCode}} - Return Desc: {{activity.returnDescription}} - Nodo: {{activity.node}} - Status: {{activity.statusId}}</span></h4> 
+			</div>
+			<h4><span>Total Results: {{GODsearch.searchStats.totalResults}}</span></h4>
+			<h4><span>Total Pages: {{GODsearch.searchStats.totalPages}}</span></h4>
+			<h4><span>Current Page: {{GODsearch.searchStats.currentPage}}</span></h4>
+		</div>
+	</div>
+	
+	<!--  GET OPERATIONS  -->
+	
+	<br/>
+	<h4><span><b>GetOperations</b></span></h4>
+	<div class="form">
+		<label for="operation">operationId:</label>
+		<input id="operation" ng-model="GOoperationId" type="number" />
+		<label for="flowId">flowId:</label>
+		<input id="flowId" ng-model="GOflowId" type="number" />
+		<label for="resultCode">resultCode:</label>
+		<input id="resultCode" ng-model="GOresultCodeId" type="number" />
+		<label for="inputChannel">inputChannel:</label>
+		<input id="inputChannel" ng-model="GOinputChannel" type="text" />
+		<br/><br/>
+		<label for="fcId">FC Id</label>
+		<input id="fcId" ng-model="GOfcId" type="text" />
+		<label for="requestcId">requestcId:</label>
+		<input id="requestcId" ng-model="GOrequestcId" type="number" />
+		<label for="sessionId">sessionId:</label>
+		<input id="sessionId" ng-model="GOsessionId" type="text" />
+		<label for="statusId">statusId:</label>
+		<input id="statusId" ng-model="GOstatusId" type="number" />
+		<br/><br/>
+		<label for="startTime">Start time:</label>
+		<input type="date" id="startTime" name="input" ng-model="GOstartTime"
+       placeholder="yyyy-MM-dd" min="2015-01-01" max="2015-12-31"/>
+		<label for="endTime">End time:</label>
+		<input type="date" id="endTime" name="input" ng-model="GOendTime"
+       placeholder="yyyy-MM-dd" min="2015-01-01" max="2015-12-31"/>
+		<button id="csBtn" class="btn" ng-click="getOperations()">Get Operation</button>
+		<br/>
+		<br/>
+		<label for="numRecs">Page size:</label>
+		<input id="numRecs" ng-model="GOnumRecs" type="number" />
+		<label for="numPag">Page number:</label>
+		<input id="numPag" ng-model="GOnumPag" type="number" /><br/>
+		<br/>
+		<label for="field">Order by:</label>
+		<input id="field" ng-model="GOfield" type="text" />
+		<label for="type">ASC / DESC</label>
+		<input id="type" ng-model="GOtype" type="text" />
+	</div>
+	<div class="container" ng-style="{'height':'auto'}">
+		<div ng-show="GOsearch != null">
+			<div ng-repeat="operation in GOsearch.searchData">
+				<h4><span>OpId: {{operation.operationId}} - Iter: {{operation.iteration}} - Flow: {{operation.flow}} - InChannel: {{operation.inputChannel}} - S.T: {{operation.startTime | date:'medium'}} - E.T: {{operation.endTime | date:'medium'}} - Status: {{operation.statusId}} - Result: {{operation.resultCode}} - FcId: {{operation.fcId}} - ReqCid: {{operation.requestcId}} - Session: {{operation.sessionId}} </span></h4>
+			</div>
+			<h4><span>Total Results: {{GOsearch.searchStats.totalResults}}</span></h4>
+			<h4><span>Total Pages: {{GOsearch.searchStats.totalPages}}</span></h4>
+			<h4><span>Current Page: {{GOsearch.searchStats.currentPage}}</span></h4>
+		</div>
+	</div>
+
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular-resource.js"></script>
+	<script src="./js/services.js"></script>
+</body>
+</html>
+
