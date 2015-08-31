@@ -1,0 +1,141 @@
+<!-- Page Content -->
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-lg-12">
+            <h1 class="page-header">Actividades
+                <small>Buscador de actividades de los servicios de la plataforma</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="../../index.html">Inicio</a></li>
+                <li class="active">Actividades</li>
+            </ol>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <div class="row">
+
+        <div class="col-lg-12">
+            <form role="form" method="POST" action="#">
+                <div class="row well">
+                	<div class="form-group col-lg-3">
+                        <label for="idAct">Id. Actividad</label>
+                        <input type="text" name="activityId" class="form-control" id="idOp">
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="idOp">Id. Operaci&oacute;n</label>
+                        <input type="text" name="operationId" class="form-control" id="idOp">
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="flow">Flujo</label>
+					    <ui-select id="flow" ng-model="flow.selected" theme="selectize" ng-disabled="disabled">
+						    <ui-select-match placeholder="Seleccione un flujo...">{{$select.selected.description}}</ui-select-match>
+						    <ui-select-choices repeat="flow in flowList | filter: $select.search">
+						      <span ng-bind-html="flow.description | highlight: $select.search"></span>						      
+						    </ui-select-choices>
+					  	</ui-select>
+                    </div>
+                    
+                    <div class='form-group col-lg-3'>
+                      	<label for="startTime">Inicio</label>
+			            <div class='input-group date' id='datetimepickerstart'>
+			                <input type="text" class="form-control" ng-model="startTime"/>
+			                <span class="input-group-addon">
+			                    <span class="glyphicon glyphicon-calendar"></span>
+			                </span>
+			            </div>
+				    </div>
+
+				    <div class='form-group col-lg-3'>
+                      	<label for="endTime">Fin</label>
+			            <div class='input-group date' id='datetimepickerend'>
+			                <input type='text' class="form-control" ng-model="endTime" />
+			                <span class="input-group-addon">
+			                    <span class="glyphicon glyphicon-calendar"></span>
+			                </span>
+			            </div>
+				    </div>
+				    
+                    <div class="form-group col-lg-3">
+                        <label for="status">Estado</label>
+					    <ui-select id="status" ng-model="status.selected" theme="selectize" ng-disabled="disabled">
+						    <ui-select-match placeholder="Seleccione un estado...">{{$select.selected.description}}</ui-select-match>
+						    <ui-select-choices repeat="status in statusList | filter: $select.search">
+						      <span ng-bind-html="status.description | highlight: $select.search"></span>						      
+						    </ui-select-choices>
+					  	</ui-select>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="result">Resultado</label>
+					    <ui-select id="result" ng-model="result.selected" theme="selectize" ng-disabled="disabled">
+						    <ui-select-match placeholder="Seleccione un resultado...">{{$select.selected.description}}</ui-select-match>
+						    <ui-select-choices repeat="result in resultList | filter: $select.search">
+						      <span ng-bind-html="result.description | highlight: $select.search"></span>						      
+						    </ui-select-choices>
+					  	</ui-select>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="executionPoint">Punto Ejecuci&oacute;n</label>
+					    <ui-select id="executionPoint" ng-model="executionPoint.selected" theme="selectize" ng-disabled="disabled">
+						    <ui-select-match placeholder="Seleccione un execution point...">{{$select.selected.description}}</ui-select-match>
+						    <ui-select-choices repeat="executionPoint in executionPointList | filter: $select.search">
+						      <span ng-bind-html="executionPoint.description | highlight: $select.search"></span>						      
+						    </ui-select-choices>
+					  	</ui-select>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="trackingId">Tracking Id</label>
+                        <input type="text" name="trackingId" class="form-control" id="trackingId">
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="layer">Capa</label>
+					    <ui-select id="layer" ng-model="layer.selected" theme="selectize" ng-disabled="disabled">
+						    <ui-select-match placeholder="Seleccione una capa...">{{$select.selected.description}}</ui-select-match>
+						    <ui-select-choices repeat="layer in layerList | filter: $select.search">
+						      <span ng-bind-html="layer.description | highlight: $select.search"></span>						      
+						    </ui-select-choices>
+					  	</ui-select>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="component">Componente</label>
+                        <ui-select id="component" ng-model="component.selected" theme="selectize" ng-disabled="disabled">
+						    <ui-select-match placeholder="Seleccione un componente...">{{$select.selected.description}}</ui-select-match>
+						    <ui-select-choices repeat="component in componentList | filter: $select.search">
+						      <span ng-bind-html="component.description | highlight: $select.search"></span>						      
+						    </ui-select-choices>
+					  	</ui-select>
+                    </div>        
+                    <div class="form-group col-lg-3">
+                        <label for="serviceId">Servicio</label>
+                        <input type="text" name="serviceId" class="form-control" id="serviceId">
+                    </div>                                                                                                                                         
+                    <div class="clearfix"></div>
+                    <div class="form-group col-lg-12">
+                        <input type="hidden" name="save" value="contact">
+                        <button type="submit" class="btn btn-primary">Buscar</button>
+                        <button type="reset" class="btn btn-primary">Limpiar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- /.row -->
+
+	<script type="text/javascript">
+		$(function () {
+		    $('#datetimepickerstart').datetimepicker();
+		    $('#datetimepickerend').datetimepicker({
+		        useCurrent: false //Important! See issue #1075
+		    });
+		    $("#datetimepickerstart").on("dp.change", function (e) {
+		        $('#datetimepickerend').data("DateTimePicker").minDate(e.date);
+		    });
+		    $("#datetimepickerend").on("dp.change", function (e) {
+		        $('#datetimepickerstart').data("DateTimePicker").maxDate(e.date);
+		    });
+		});
+	</script>
+
+</div><!-- /.container -->
